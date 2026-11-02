@@ -1,0 +1,6 @@
+{
+  "name": "Fruit Studio",
+  "description": "Studio de pré-production IA pour séries et vidéos virales Fruit Drama (TikTok, Reels, Shorts).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
