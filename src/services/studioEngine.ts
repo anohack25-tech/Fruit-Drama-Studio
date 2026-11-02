@@ -414,6 +414,20 @@ VISUAL STYLE: High-end feature-film 3D animation (Octane/Redshift aesthetic), ph
       materials: 'Polished white Carrara marble, gilded 24k gold ornaments, crystalline orchid petals, stained glass',
       palette: 'Imperial gold, ruby crimson, ivory white, deep midnight shadow accents',
     },
+    {
+      id: `loc-${timestamp}-2`,
+      name: 'The Moonlit Balcony Terrace',
+      masterPlatePrompt: `Create a cinematic vertical 9:16 3D animated environment reference plate for "The Moonlit Balcony Terrace" of an original American ${genre} series for TikTok.
+
+[PRODUCTION SPEC: 8K CGI VERTICAL 9:16 ENVIRONMENT MASTER PLATE]
+CAMERA & COMPOSITION: Vertical 9:16 portrait framing. Eye-level architectural perspective looking out over a sprawling nocturnal estate with glowing fruit orchards. Foreground has balustrades in wrought iron and climbing ivy; midground is a polished limestone terrace.
+LIGHTING: Cool cyan moonlight casting crisp long shadows, complemented by warm amber sconce lights mounted on stone pillars.
+EMPTY ENVIRONMENT MANDATE: Strictly empty environment. No fruit characters, no humans. Vacant set for compositing.
+VISUAL STYLE: High-end 3D animated film quality, physical atmospheric night mist, no text.`,
+      lighting: 'Cool blue-cyan moonlight with warm golden lanterns, soft bokeh night fog',
+      materials: 'Aged limestone, dark wrought iron, dew-dusted ivy leaves, champagne glasses on marble side table',
+      palette: 'Midnight sapphire, warm amber, moss green, polished obsidian',
+    },
   ];
 
   // Generate Beat Sheet

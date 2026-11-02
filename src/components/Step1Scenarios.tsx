@@ -16,6 +16,9 @@ import {
   CheckCircle2,
   AlertCircle,
   HelpCircle,
+  Zap,
+  Repeat,
+  Tv,
 } from 'lucide-react';
 import { FruitProject, Scenario, ViralDna } from '../types/fruitStudio';
 import {
@@ -23,6 +26,13 @@ import {
   analyzeStudioVideoDna,
   mergeStudioScenarios,
 } from '../services/studioEngine';
+import {
+  PRESET_VIRAL_STORIES,
+  VIRAL_TROPES_LIST,
+  generateSmartViralStory,
+  convertViralStoryToStudioProject,
+  ViralStoryIdea,
+} from '../services/viralDramaEngine';
 
 interface Step1ScenariosProps {
   project: FruitProject;
@@ -52,9 +62,16 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
   onUpdateProject,
   onSelectScenarioAndProceed,
 }) => {
-  const [activeTab, setActiveTab] = useState<'scratch' | 'video_analysis'>(
-    project.inputMode || 'scratch'
+  const [activeTab, setActiveTab] = useState<'scratch' | 'video_analysis' | 'moqi_viral'>(
+    'moqi_viral'
   );
+
+  // Moqi Viral state
+  const [moqiStories, setMoqiStories] = useState<ViralStoryIdea[]>(PRESET_VIRAL_STORIES);
+  const [selectedMoqiStoryId, setSelectedMoqiStoryId] = useState<string>(PRESET_VIRAL_STORIES[0].id);
+  const [moqiCustomTrope, setMoqiCustomTrope] = useState<string>('Trahison & Vengeance');
+  const [moqiCustomPitch, setMoqiCustomPitch] = useState<string>('');
+  const [isMoqiGenerating, setIsMoqiGenerating] = useState<boolean>(false);
 
   // Scratch state
   const [genre, setGenre] = useState(project.scratchConfig.genre || 'Drama soap-opera');
@@ -276,6 +293,17 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
         {/* Tab switch */}
         <div className="mt-6 flex flex-wrap gap-2 border-b border-zinc-800/80 pb-3">
           <button
+            onClick={() => setActiveTab('moqi_viral')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
+              activeTab === 'moqi_viral'
+                ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow-lg shadow-rose-950/50 ring-1 ring-white/20'
+                : 'bg-zinc-800/80 text-amber-300 hover:text-white hover:bg-zinc-800 border border-amber-500/30'
+            }`}
+          >
+            <Flame className="w-4 h-4 text-amber-300 fill-amber-300" />
+            MODE C — 🔥 TrendStory & Moqi (Sagas Virales Complètes)
+          </button>
+          <button
             onClick={() => setActiveTab('scratch')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
               activeTab === 'scratch'
@@ -299,6 +327,197 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
           </button>
         </div>
       </div>
+
+      {/* MODE C: TrendStory & Moqi Viral Engine */}
+      {activeTab === 'moqi_viral' && (
+        <div className="bg-zinc-900/90 border border-rose-500/30 rounded-2xl p-6 space-y-6 shadow-2xl shadow-rose-950/20">
+          {/* Header Banner */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-gradient-to-r from-rose-950/40 via-purple-950/20 to-zinc-900 border border-rose-500/30">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                  ⚡ Moteur TrendStory & Moqi Intégré
+                </span>
+                <span className="text-xs text-amber-300 font-bold">
+                  Score de Rétention Garanti 96-99%
+                </span>
+              </div>
+              <h2 className="text-base sm:text-lg font-bold text-white">
+                Sagas Dramatiques Conçues du Début à la Fin
+              </h2>
+              <p className="text-xs text-zinc-400">
+                Chaque histoire inclut l'accroche 0-2s, 6 scènes à forte tension, le twist cathartique et l'astuce de boucle infinie TikTok.
+              </p>
+            </div>
+
+            <button
+              onClick={() => {
+                setIsMoqiGenerating(true);
+                setTimeout(() => {
+                  const newStory = generateSmartViralStory({
+                    tropeCategory: moqiCustomTrope,
+                    characterType: 'Fruits 3D stylisés',
+                    customIdea: moqiCustomPitch,
+                  });
+                  setMoqiStories((prev) => [newStory, ...prev]);
+                  setSelectedMoqiStoryId(newStory.id);
+                  setIsMoqiGenerating(false);
+                }, 500);
+              }}
+              disabled={isMoqiGenerating}
+              className="px-4 py-2.5 bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 hover:opacity-95 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-rose-950/50 transition cursor-pointer whitespace-nowrap"
+            >
+              {isMoqiGenerating ? (
+                <>
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-200" />
+                  <span>Génération Moqi...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-200" />
+                  <span>+ Générer un Drame Original Moqi</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Trope quick filters */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+            <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1 mr-1">
+              <Tv className="w-3 h-3 text-amber-400" /> Tropes :
+            </span>
+            {VIRAL_TROPES_LIST.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setMoqiCustomTrope(t.category)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
+                  moqiCustomTrope === t.category
+                    ? 'bg-rose-600 text-white shadow-md shadow-rose-950/50'
+                    : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+                }`}
+              >
+                {t.emoji} {t.category}
+              </button>
+            ))}
+          </div>
+
+          {/* Sagas Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {moqiStories.map((story) => {
+              const isSelected = selectedMoqiStoryId === story.id;
+              return (
+                <div
+                  key={story.id}
+                  onClick={() => setSelectedMoqiStoryId(story.id)}
+                  className={`p-5 rounded-xl border text-left transition-all cursor-pointer space-y-4 ${
+                    isSelected
+                      ? 'bg-gradient-to-br from-rose-950/40 via-zinc-950 to-zinc-950 border-rose-500 shadow-xl shadow-rose-950/40 ring-1 ring-rose-500/50'
+                      : 'bg-zinc-950/80 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-950'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-zinc-900 text-amber-300 border border-zinc-700">
+                      {story.tropeCategory}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-extrabold text-emerald-400 bg-emerald-950/50 border border-emerald-800/60 px-2 py-0.5 rounded">
+                        Rétention 3s : {story.predictedRetention3s}%
+                      </span>
+                      <span className="text-xs font-extrabold text-rose-400 bg-rose-950/50 border border-rose-800/60 px-2 py-0.5 rounded">
+                        Score : {story.viralScore}/100
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-base font-bold text-white flex items-center justify-between">
+                      <span>{story.title}</span>
+                      <span className="text-xs text-zinc-400 font-normal italic">({story.titleEn})</span>
+                    </h3>
+                    <p className="text-xs text-zinc-300 mt-1.5 leading-relaxed">
+                      {story.logline}
+                    </p>
+                  </div>
+
+                  {/* Hook preview */}
+                  <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800/80 text-xs space-y-1">
+                    <div className="flex items-center justify-between text-rose-400 font-bold text-[11px]">
+                      <span className="flex items-center gap-1">
+                        <Zap className="w-3 h-3 text-amber-400" /> ACCROCHE 0-2s (Scroll-Stopper)
+                      </span>
+                      <span className="text-zinc-400 font-mono text-[10px]">
+                        Overlay : {story.hook0to2s.textSticker}
+                      </span>
+                    </div>
+                    <p className="text-zinc-200 text-[11px]">
+                      "{story.hook0to2s.visualShock}"
+                    </p>
+                    <p className="font-mono text-amber-300 text-[11px]">
+                      🗣️ "{story.hook0to2s.spokenLineEn}"
+                    </p>
+                  </div>
+
+                  {/* Loop & Pacing Preview */}
+                  <div className="grid grid-cols-2 gap-2 text-[11px] text-zinc-400">
+                    <div className="p-2 rounded bg-zinc-900/60 border border-zinc-800/60 flex items-center gap-1.5">
+                      <Repeat className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                      <span className="line-clamp-1">{story.loopTrick}</span>
+                    </div>
+                    <div className="p-2 rounded bg-zinc-900/60 border border-zinc-800/60 flex items-center gap-1.5">
+                      <Tv className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                      <span>{story.scenes.length} scènes de 10s complètes</span>
+                    </div>
+                  </div>
+
+                  {/* Actions for this saga */}
+                  <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const projectPartial = convertViralStoryToStudioProject(story, project.settings);
+                        onUpdateProject((prev) => ({
+                          ...prev,
+                          ...projectPartial,
+                          isBibleLocked: true,
+                          currentStep: 1,
+                        }));
+                      }}
+                      className="flex-1 py-2 px-3 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-1.5 shadow-md shadow-rose-950/40 transition cursor-pointer"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-amber-200" />
+                      <span>Charger la Saga Complète (1-Clic)</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const scen: Scenario = {
+                          id: `sc-moqi-${story.id}-${Date.now()}`,
+                          title: story.title,
+                          logline: story.logline,
+                          mainCharacters: story.characters.map((c) => `${c.name} (${c.species})`),
+                          centralSecret: story.characters[0]?.secret || 'Complot secret caché.',
+                          ending: story.scenes[story.scenes.length - 1]?.visualAction || 'Victoire éclatante.',
+                          estimatedScenes: story.scenes.length,
+                          estimatedEpisodes: 1,
+                          whyViral: `Score viral certifié ${story.viralScore}/100. Accroche 0-2s : "${story.hook0to2s.spokenLineEn}". Astuce de boucle : ${story.loopTrick}`,
+                        };
+                        onSelectScenarioAndProceed(scen);
+                      }}
+                      className="py-2 px-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white font-semibold rounded-lg text-xs flex items-center gap-1 border border-zinc-700 transition cursor-pointer"
+                    >
+                      <span>Valider Scénario</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-rose-400" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* MODE A: Scratch */}
       {activeTab === 'scratch' && (

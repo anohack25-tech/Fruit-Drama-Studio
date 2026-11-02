@@ -21,6 +21,7 @@ import { NarrativeArcVisualizer } from './components/NarrativeArcVisualizer';
 import { ViralAnalyticsDashboard } from './components/ViralAnalyticsDashboard';
 import { ProductionDossierModal } from './components/ProductionDossierModal';
 import { SettingsModal } from './components/SettingsModal';
+import { ViralDramaStudioModal } from './components/ViralDramaStudioModal';
 import { AlertTriangle, Sparkles } from 'lucide-react';
 import { generateFullStudioProject } from './services/studioEngine.ts';
 
@@ -78,6 +79,7 @@ export default function App() {
   const [isViralAnalyticsOpen, setIsViralAnalyticsOpen] = useState(false);
   const [isProductionDossierOpen, setIsProductionDossierOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isViralDramaStudioOpen, setIsViralDramaStudioOpen] = useState(false);
 
   // Sync to localStorage
   useEffect(() => {
@@ -273,6 +275,7 @@ export default function App() {
         onOpenViralAnalytics={() => setIsViralAnalyticsOpen(true)}
         onOpenProductionDossier={() => setIsProductionDossierOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenViralDramaStudio={() => setIsViralDramaStudioOpen(true)}
       />
 
       {/* Step Progress Bar */}
@@ -412,6 +415,21 @@ export default function App() {
             updateCurrentProject((prev) => ({ ...prev, settings: newSettings }))
           }
           onClose={() => setIsSettingsOpen(false)}
+        />
+      )}
+
+      {isViralDramaStudioOpen && (
+        <ViralDramaStudioModal
+          isOpen={isViralDramaStudioOpen}
+          onClose={() => setIsViralDramaStudioOpen(false)}
+          onLoadStoryIntoStudio={(projectPartial) => {
+            updateCurrentProject((prev) => ({
+              ...prev,
+              ...projectPartial,
+              isBibleLocked: true,
+              currentStep: 1,
+            }));
+          }}
         />
       )}
     </div>

@@ -18,6 +18,7 @@ import {
   Upload,
   Check,
   FolderOpen,
+  Flame,
 } from 'lucide-react';
 import { FruitProject } from '../types/fruitStudio';
 import { downloadFile } from '../utils/formatters';
@@ -35,6 +36,7 @@ interface HeaderProps {
   onOpenViralAnalytics: () => void;
   onOpenProductionDossier: () => void;
   onOpenSettings: () => void;
+  onOpenViralDramaStudio?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -50,6 +52,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenViralAnalytics,
   onOpenProductionDossier,
   onOpenSettings,
+  onOpenViralDramaStudio,
 }) => {
   const [copiedNotification, setCopiedNotification] = useState(false);
 
@@ -141,6 +144,17 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Studio Tools Navigation */}
         <div className="flex items-center gap-1.5 flex-wrap">
+          {onOpenViralDramaStudio && (
+            <button
+              onClick={onOpenViralDramaStudio}
+              title="Studio de Dramas Viraux Moqi & TrendStory (Histoires complètes du début à la fin)"
+              className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 hover:opacity-95 text-white rounded-lg px-2.5 py-1.5 text-xs font-bold shadow-md shadow-rose-950/50 transition cursor-pointer ring-1 ring-white/20"
+            >
+              <Flame className="w-3.5 h-3.5 text-amber-200 fill-amber-200" />
+              <span>TrendStory & Moqi</span>
+            </button>
+          )}
+
           <button
             onClick={onOpenFlowAssistant}
             title="Assistant de génération scène par scène dans Google Flow / Veo"
