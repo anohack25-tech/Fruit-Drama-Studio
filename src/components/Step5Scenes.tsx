@@ -379,7 +379,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
           return (
             <div
               key={scene.id}
-              className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-6 shadow-xl space-y-5"
+              className="bg-zinc-900/60 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-colors duration-300 rounded-2xl p-6 shadow-xl space-y-5"
             >
               {/* Scene Card Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 pb-4">
@@ -542,7 +542,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
               )}
 
               {/* Full Flow Prompt Box (6C) */}
-              <div className="bg-zinc-950 border-2 border-emerald-500/60 rounded-xl p-4 space-y-3 shadow-lg shadow-emerald-950/20">
+              <div className="bg-zinc-950 border border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.1)] rounded-xl p-4 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-2">
                   <div>
                     <div className="flex items-center gap-2">
@@ -562,7 +562,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                     {/* Copy Full Flow Package Button */}
                     <button
                       onClick={() => handleCopy(formatFullFlowPackage(scene, bible), `pack-${scene.id}`)}
-                      className="flex items-center gap-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md transition cursor-pointer"
+                      className="flex items-center gap-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer"
                       title="Copie le pack complet prêt pour Google Flow : Ingrédients + Prompt + Dialogues + Réglages"
                     >
                       {copiedKey === `pack-${scene.id}` ? (
@@ -581,7 +581,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                     {/* Copy Prompt Only */}
                     <button
                       onClick={() => handleCopy(scene.flowPrompt, promptKey)}
-                      className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md transition cursor-pointer"
+                      className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer"
                     >
                       {copiedKey === promptKey ? (
                         <>
@@ -661,7 +661,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                         key: shortKey,
                       })
                     }
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer"
                   >
                     <FileText className="w-3.5 h-3.5 text-amber-400" />
                     <span>Version courte 6D</span>
@@ -677,7 +677,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                           key: firstFrameKey,
                         })
                       }
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition cursor-pointer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer"
                     >
                       <Camera className="w-3.5 h-3.5 text-cyan-400" />
                       <span>Première image 6E</span>
@@ -687,7 +687,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                   {/* Regenerate scene button */}
                   <button
                     onClick={() => setRegeneratingScene(scene)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer"
                   >
                     <RefreshCw className="w-3.5 h-3.5 text-rose-400" />
                     <span>Régénérer avec consigne</span>
