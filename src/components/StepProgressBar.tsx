@@ -61,9 +61,9 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                 <div
                   className={`flex items-center justify-center w-10 h-10 rounded-xl font-bold text-xs transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/20 shadow-lg shadow-rose-950/50 scale-110'
+                      ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/30 animate-pulse shadow-[0_0_15px_rgba(244,63,94,0.5)] scale-110'
                       : isCompleted
-                      ? 'bg-zinc-800 text-rose-300 border border-rose-500/40 hover:bg-zinc-700'
+                      ? 'bg-zinc-800 text-rose-300 border border-rose-500/40 hover:bg-zinc-700 hover:scale-105 transition-transform'
                       : 'bg-zinc-900 text-zinc-500 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-400'
                   }`}
                 >

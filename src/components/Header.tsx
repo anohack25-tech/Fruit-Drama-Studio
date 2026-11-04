@@ -158,7 +158,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenFlowAssistant}
             title="Assistant de génération scène par scène dans Google Flow / Veo"
-            className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg px-2.5 py-1.5 text-xs font-semibold shadow-md shadow-emerald-950/40 transition cursor-pointer"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg px-2.5 py-1.5 text-xs font-semibold shadow-md shadow-emerald-950/40 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
           >
             <PlaySquare className="w-3.5 h-3.5" />
             <span>Assistant Flow</span>
@@ -167,7 +167,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenPublicationAssistant}
             title="Assistant pas à pas pour publier sur TikTok, Reels et Shorts"
-            className="flex items-center gap-1.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white rounded-lg px-2.5 py-1.5 text-xs font-semibold shadow-md shadow-rose-950/40 transition cursor-pointer"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white rounded-lg px-2.5 py-1.5 text-xs font-semibold shadow-md shadow-rose-950/40 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
           >
             <Share2 className="w-3.5 h-3.5" />
             <span className="hidden md:inline">Assistant</span> Publi

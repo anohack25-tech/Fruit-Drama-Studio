@@ -483,7 +483,7 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                           currentStep: 1,
                         }));
                       }}
-                      className="flex-1 py-2 px-3 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-1.5 shadow-md shadow-rose-950/40 transition cursor-pointer"
+                      className="flex-1 py-2 px-3 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-1.5 shadow-md shadow-rose-950/40 cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300"
                     >
                       <Sparkles className="w-3.5 h-3.5 text-amber-200" />
                       <span>Charger la Saga Complète (1-Clic)</span>
