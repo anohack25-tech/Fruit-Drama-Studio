@@ -257,7 +257,7 @@ export default function App() {
     !currentProject.publicationPack?.thumbnails?.length;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans selection:bg-rose-500 selection:text-white">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-50 flex flex-col font-sans selection:bg-rose-500 selection:text-white">
       {/* Header */}
       <Header
         project={currentProject}
