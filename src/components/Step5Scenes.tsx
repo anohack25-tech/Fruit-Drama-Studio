@@ -379,7 +379,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
           return (
             <div
               key={scene.id}
-              className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-6 shadow-xl space-y-5"
+              className="bg-zinc-900/40 backdrop-blur-lg border border-white/10 hover:border-emerald-500/30 transition-colors duration-300 rounded-2xl p-6 shadow-2xl space-y-5"
             >
               {/* Scene Card Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 pb-4">
@@ -542,7 +542,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
               )}
 
               {/* Full Flow Prompt Box (6C) */}
-              <div className="bg-zinc-950 border-2 border-emerald-500/60 rounded-xl p-4 space-y-3 shadow-lg shadow-emerald-950/20">
+              <div className="bg-zinc-950 border border-emerald-500/50 ring-1 ring-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.15)] rounded-xl p-4 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-2">
                   <div>
                     <div className="flex items-center gap-2">
