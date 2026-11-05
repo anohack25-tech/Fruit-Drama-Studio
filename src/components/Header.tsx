@@ -84,7 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 px-4 py-2.5 shadow-xl">
+    <header className="sticky top-0 z-40 bg-zinc-950/60 backdrop-blur-xl border-b border-white/10 px-4 py-2.5 shadow-2xl">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
         {/* Brand */}
         <div className="flex items-center gap-3">
