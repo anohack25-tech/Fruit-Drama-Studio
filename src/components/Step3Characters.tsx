@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Users,
   MapPin,
@@ -16,11 +16,11 @@ import {
   Volume2,
   Lock,
   Layers,
-} from 'lucide-react';
-import { FruitProject, CharacterRef, LocationRef } from '../types/fruitStudio';
-import { copyToClipboard } from '../utils/formatters';
-import { generateFullStudioProject } from '../services/studioEngine';
-import { DEMO_PROJECT } from '../data/demoProject';
+} from "lucide-react";
+import { FruitProject, CharacterRef, LocationRef } from "../types/fruitStudio";
+import { copyToClipboard } from "../utils/formatters";
+import { generateFullStudioProject } from "../services/studioEngine";
+import { DEMO_PROJECT } from "../data/demoProject";
 
 interface Step3CharactersProps {
   project: FruitProject;
@@ -50,14 +50,14 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
     setIsGenerating(true);
     setError(null);
     try {
-      const res = await fetch('/api/gemini/generate-characters-locations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini/generate-characters-locations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bible, settings }),
       });
 
       if (!res.ok) {
-        throw new Error('Fallback to studio engine');
+        throw new Error("Fallback to studio engine");
       }
 
       const data = await res.json();
@@ -67,9 +67,19 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
         locations: data.locations,
       }));
     } catch (err: any) {
-      console.warn('Utilisation du moteur studio pour les personnages & lieux:', err);
-      const scen = project.scenarios.find((s) => s.id === project.selectedScenarioId) || project.scenarios[0] || DEMO_PROJECT.scenarios[0];
-      const fullData = generateFullStudioProject(scen, project.scratchConfig, project.settings);
+      console.warn(
+        "Utilisation du moteur studio pour les personnages & lieux:",
+        err,
+      );
+      const scen =
+        project.scenarios.find((s) => s.id === project.selectedScenarioId) ||
+        project.scenarios[0] ||
+        DEMO_PROJECT.scenarios[0];
+      const fullData = generateFullStudioProject(
+        scen,
+        project.scratchConfig,
+        project.settings,
+      );
       onUpdateProject((prev) => ({
         ...prev,
         characters: fullData.characters,
@@ -98,15 +108,19 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
               Étape 3 / 7
             </span>
             <span className="text-zinc-500">•</span>
-            <span className="text-xs text-zinc-400">Verrouillage visuel & vocal permanent</span>
+            <span className="text-xs text-zinc-400">
+              Verrouillage visuel & vocal permanent
+            </span>
           </div>
           <h1 className="text-2xl font-extrabold text-white flex items-center gap-3">
             <Users className="w-6 h-6 text-rose-400" />
             Personnages & Lieux : Prompts de Référence
           </h1>
           <p className="mt-1 text-xs text-zinc-300 max-w-2xl">
-            Générez d'abord ces photos dans Gemini. Leurs descripteurs verrouillés (LOCKED_DESCRIPTOR) et
-            descriptions vocales (VOICE_DESCRIPTOR) sont ensuite recopiés mot pour mot dans chaque scène de Flow.
+            Générez d'abord ces photos dans Gemini. Leurs descripteurs
+            verrouillés (LOCKED_DESCRIPTOR) et descriptions vocales
+            (VOICE_DESCRIPTOR) sont ensuite recopiés mot pour mot dans chaque
+            scène de Flow.
           </p>
         </div>
 
@@ -116,7 +130,9 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
             disabled={isGenerating}
             className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`}
+            />
             <span>Régénérer avec l'IA</span>
           </button>
 
@@ -133,7 +149,10 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
       {error && (
         <div className="bg-rose-950/60 border border-rose-700/80 rounded-xl p-4 text-xs text-rose-200 flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={() => setError(null)} className="underline cursor-pointer">
+          <button
+            onClick={() => setError(null)}
+            className="underline cursor-pointer"
+          >
             Fermer
           </button>
         </div>
@@ -147,7 +166,8 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
             Fiches Personnages & Prompts 6A ({characters.length})
           </h2>
           <span className="text-xs text-zinc-400">
-            Copiez le prompt dans Gemini pour générer l'image de référence maîtresse
+            Copiez le prompt dans Gemini pour générer l'image de référence
+            maîtresse
           </span>
         </div>
 
@@ -162,7 +182,8 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
                 Aucun prompt de personnage généré pour ce projet
               </h3>
               <p className="text-xs text-zinc-400 max-w-md mx-auto mt-1">
-                Générez instantanément les prompts de référence plein-pied 6A, gros plan 6A-bis, et les plates décors 6B.
+                Générez instantanément les prompts de référence plein-pied 6A,
+                gros plan 6A-bis, et les plates décors 6B.
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -172,7 +193,9 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
                 className="flex items-center gap-2 bg-gradient-to-r from-rose-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-lg transition cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Générer automatiquement les Prompts Personnages & Lieux</span>
+                <span>
+                  Générer automatiquement les Prompts Personnages & Lieux
+                </span>
               </button>
               <button
                 onClick={handleLoadDemoCharacters}
@@ -219,7 +242,9 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
                         LOCKED_DESCRIPTOR (Recopié mot pour mot)
                       </span>
                       <button
-                        onClick={() => handleCopy(char.lockedDescriptor, lockedKey)}
+                        onClick={() =>
+                          handleCopy(char.lockedDescriptor, lockedKey)
+                        }
                         className="flex items-center gap-1 px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-medium transition cursor-pointer"
                       >
                         {copiedKey === lockedKey ? (
@@ -248,7 +273,9 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
                         VOICE_DESCRIPTOR (Voix Fixe)
                       </span>
                       <button
-                        onClick={() => handleCopy(char.voiceDescriptor, voiceKey)}
+                        onClick={() =>
+                          handleCopy(char.voiceDescriptor, voiceKey)
+                        }
                         className="flex items-center gap-1 px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-medium transition cursor-pointer"
                       >
                         {copiedKey === voiceKey ? (
@@ -283,7 +310,8 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
                         </span>
                       </div>
                       <span className="text-[11px] text-zinc-400 block mt-0.5">
-                        Fond gris uni, standing neutre, design permanent à réutiliser dans chaque scène
+                        Fond gris uni, standing neutre, design permanent à
+                        réutiliser dans chaque scène
                       </span>
                     </div>
 
@@ -317,19 +345,23 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                            PROMPT GROS PLAN BUSTE 6A-bis (LIP-SYNC & EXPRESSIONS)
+                            PROMPT GROS PLAN BUSTE 6A-bis (LIP-SYNC &
+                            EXPRESSIONS)
                           </span>
                           <span className="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">
                             Pour Flow (Scènes Gros Plan)
                           </span>
                         </div>
                         <span className="text-[11px] text-zinc-400 block mt-0.5">
-                          À attacher dans Google Flow uniquement si la scène est cadrée en gros plan
+                          À attacher dans Google Flow uniquement si la scène est
+                          cadrée en gros plan
                         </span>
                       </div>
 
                       <button
-                        onClick={() => handleCopy(char.closeUpPrompt!, closeUpKey)}
+                        onClick={() =>
+                          handleCopy(char.closeUpPrompt!, closeUpKey)
+                        }
                         className="flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer"
                       >
                         {copiedKey === closeUpKey ? (
@@ -393,7 +425,9 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
               >
                 <div className="flex items-start justify-between gap-2 border-b border-zinc-800 pb-3">
                   <div>
-                    <h3 className="font-extrabold text-white text-base">{loc.name}</h3>
+                    <h3 className="font-extrabold text-white text-base">
+                      {loc.name}
+                    </h3>
                     <div className="text-[11px] text-zinc-400 mt-0.5">
                       <span className="text-zinc-500">Éclairage : </span>
                       {loc.lighting}
@@ -435,7 +469,8 @@ export const Step3Characters: React.FC<Step3CharactersProps> = ({
 
                 <div>
                   <span className="text-[10px] font-black uppercase tracking-wider text-teal-400 block mb-1">
-                    PROMPT PLATE DÉCOR 6B (VERTICAL 9:16 VIDE SANS PERSONNAGE POUR GEMINI)
+                    PROMPT PLATE DÉCOR 6B (VERTICAL 9:16 VIDE SANS PERSONNAGE
+                    POUR GEMINI)
                   </span>
                   <pre className="text-xs text-zinc-100 bg-zinc-950 border border-teal-500/30 rounded-xl p-3.5 overflow-x-auto whitespace-pre-wrap font-mono leading-relaxed select-all">
                     {loc.masterPlatePrompt}

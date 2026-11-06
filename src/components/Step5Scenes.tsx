@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Film,
   Copy,
@@ -22,16 +22,16 @@ import {
   Camera,
   ChevronDown,
   ChevronUp,
-} from 'lucide-react';
-import { FruitProject, ScenePrompt } from '../types/fruitStudio';
-import { copyToClipboard } from '../utils/formatters';
-import { DEMO_PROJECT } from '../data/demoProject';
+} from "lucide-react";
+import { FruitProject, ScenePrompt } from "../types/fruitStudio";
+import { copyToClipboard } from "../utils/formatters";
+import { DEMO_PROJECT } from "../data/demoProject";
 import {
   generateFullStudioProject,
   formatFullFlowPackage,
   applyDirectorPreset,
   DirectorPreset,
-} from '../services/studioEngine';
+} from "../services/studioEngine";
 
 interface Step5ScenesProps {
   project: FruitProject;
@@ -41,14 +41,26 @@ interface Step5ScenesProps {
 }
 
 const STATUS_OPTIONS: Array<{
-  value: ScenePrompt['status'];
+  value: ScenePrompt["status"];
   labelFr: string;
   color: string;
 }> = [
-  { value: 'todo', labelFr: 'À faire', color: 'bg-zinc-800 text-zinc-300' },
-  { value: 'prompt_copied', labelFr: 'Prompt copié', color: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' },
-  { value: 'video_generated', labelFr: 'Vidéo générée', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' },
-  { value: 'redo', labelFr: 'À refaire', color: 'bg-rose-500/20 text-rose-300 border-rose-500/40' },
+  { value: "todo", labelFr: "À faire", color: "bg-zinc-800 text-zinc-300" },
+  {
+    value: "prompt_copied",
+    labelFr: "Prompt copié",
+    color: "bg-cyan-500/20 text-cyan-300 border-cyan-500/40",
+  },
+  {
+    value: "video_generated",
+    labelFr: "Vidéo générée",
+    color: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
+  },
+  {
+    value: "redo",
+    labelFr: "À refaire",
+    color: "bg-rose-500/20 text-rose-300 border-rose-500/40",
+  },
 ];
 
 export const Step5Scenes: React.FC<Step5ScenesProps> = ({
@@ -61,7 +73,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   // Filter
-  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterStatus, setFilterStatus] = useState<string>("all");
 
   // Active modal for short backup or first frame
   const [activeModalPrompt, setActiveModalPrompt] = useState<{
@@ -71,8 +83,9 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
   } | null>(null);
 
   // Regeneration modal
-  const [regeneratingScene, setRegeneratingScene] = useState<ScenePrompt | null>(null);
-  const [directorInstructionFr, setDirectorInstructionFr] = useState('');
+  const [regeneratingScene, setRegeneratingScene] =
+    useState<ScenePrompt | null>(null);
+  const [directorInstructionFr, setDirectorInstructionFr] = useState("");
   const [isRegenerating, setIsRegenerating] = useState(false);
 
   // Batch generation loading
@@ -80,7 +93,9 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   // Ingredient checked checkboxes state (sceneId -> ingredientKey -> boolean)
-  const [checkedIngredients, setCheckedIngredients] = useState<Record<string, boolean>>({});
+  const [checkedIngredients, setCheckedIngredients] = useState<
+    Record<string, boolean>
+  >({});
 
   const toggleIngredient = (sceneId: string, itemKey: string) => {
     const key = `${sceneId}-${itemKey}`;
@@ -95,17 +110,24 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
     }
   };
 
-  const updateSceneStatus = (sceneId: string, newStatus: ScenePrompt['status']) => {
+  const updateSceneStatus = (
+    sceneId: string,
+    newStatus: ScenePrompt["status"],
+  ) => {
     onUpdateProject((prev) => ({
       ...prev,
-      scenes: prev.scenes.map((s) => (s.id === sceneId ? { ...s, status: newStatus } : s)),
+      scenes: prev.scenes.map((s) =>
+        s.id === sceneId ? { ...s, status: newStatus } : s,
+      ),
     }));
   };
 
   const handlePresetChange = (sceneId: string, preset: DirectorPreset) => {
     onUpdateProject((prev) => ({
       ...prev,
-      scenes: prev.scenes.map((s) => (s.id === sceneId ? applyDirectorPreset(s, preset) : s)),
+      scenes: prev.scenes.map((s) =>
+        s.id === sceneId ? applyDirectorPreset(s, preset) : s,
+      ),
     }));
   };
 
@@ -114,15 +136,23 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
     setIsBatchGenerating(true);
     setError(null);
     try {
-      const scen = project.scenarios.find((s) => s.id === project.selectedScenarioId) || project.scenarios[0] || DEMO_PROJECT.scenarios[0];
-      const fullData = generateFullStudioProject(scen, project.scratchConfig, project.settings);
+      const scen =
+        project.scenarios.find((s) => s.id === project.selectedScenarioId) ||
+        project.scenarios[0] ||
+        DEMO_PROJECT.scenarios[0];
+      const fullData = generateFullStudioProject(
+        scen,
+        project.scratchConfig,
+        project.settings,
+      );
       onUpdateProject((prev) => ({
         ...prev,
         scenes: fullData.scenes,
-        beatSheet: prev.beatSheet.length > 0 ? prev.beatSheet : fullData.beatSheet,
+        beatSheet:
+          prev.beatSheet.length > 0 ? prev.beatSheet : fullData.beatSheet,
       }));
     } catch (err: any) {
-      console.warn('Fallback to demo scenes:', err);
+      console.warn("Fallback to demo scenes:", err);
       onUpdateProject((prev) => ({
         ...prev,
         scenes: DEMO_PROJECT.scenes,
@@ -144,18 +174,19 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
   const handleGenerateNextBatch = async () => {
     const startIndex = scenes.length;
     if (startIndex >= beatSheet.length) {
-      alert('Toutes les scènes du plan actuel ont déjà été générées !');
+      alert("Toutes les scènes du plan actuel ont déjà été générées !");
       return;
     }
 
     setIsBatchGenerating(true);
     setError(null);
     try {
-      const prevSceneState = scenes.length > 0 ? scenes[scenes.length - 1].lastFrameState : '';
+      const prevSceneState =
+        scenes.length > 0 ? scenes[scenes.length - 1].lastFrameState : "";
 
-      const res = await fetch('/api/gemini/generate-scenes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini/generate-scenes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bible,
           characters,
@@ -169,7 +200,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
       });
 
       if (!res.ok) {
-        throw new Error('Fallback to studio engine');
+        throw new Error("Fallback to studio engine");
       }
 
       const data = await res.json();
@@ -178,9 +209,19 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
         scenes: [...prev.scenes, ...data.scenes],
       }));
     } catch (err: any) {
-      console.warn('Utilisation du moteur studio pour les scènes suivantes:', err);
-      const scen = project.scenarios.find((s) => s.id === project.selectedScenarioId) || project.scenarios[0] || DEMO_PROJECT.scenarios[0];
-      const fullData = generateFullStudioProject(scen, project.scratchConfig, project.settings);
+      console.warn(
+        "Utilisation du moteur studio pour les scènes suivantes:",
+        err,
+      );
+      const scen =
+        project.scenarios.find((s) => s.id === project.selectedScenarioId) ||
+        project.scenarios[0] ||
+        DEMO_PROJECT.scenarios[0];
+      const fullData = generateFullStudioProject(
+        scen,
+        project.scratchConfig,
+        project.settings,
+      );
       const remainingScenes = fullData.scenes.slice(startIndex, startIndex + 4);
       onUpdateProject((prev) => ({
         ...prev,
@@ -199,11 +240,12 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
     try {
       const sceneIndex = scenes.findIndex((s) => s.id === regeneratingScene.id);
       const prevScene = sceneIndex > 0 ? scenes[sceneIndex - 1] : null;
-      const nextScene = sceneIndex < scenes.length - 1 ? scenes[sceneIndex + 1] : null;
+      const nextScene =
+        sceneIndex < scenes.length - 1 ? scenes[sceneIndex + 1] : null;
 
-      const res = await fetch('/api/gemini/regenerate-scene', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini/regenerate-scene", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bible,
           characters,
@@ -216,27 +258,29 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || 'Erreur lors de la régénération');
+        throw new Error(errData.error || "Erreur lors de la régénération");
       }
 
       const data = await res.json();
       onUpdateProject((prev) => ({
         ...prev,
-        scenes: prev.scenes.map((s) => (s.id === regeneratingScene.id ? data.scene : s)),
+        scenes: prev.scenes.map((s) =>
+          s.id === regeneratingScene.id ? data.scene : s,
+        ),
       }));
 
       setRegeneratingScene(null);
-      setDirectorInstructionFr('');
+      setDirectorInstructionFr("");
     } catch (err: any) {
       console.error(err);
-      setError(err.message || 'Erreur lors de la régénération');
+      setError(err.message || "Erreur lors de la régénération");
     } finally {
       setIsRegenerating(false);
     }
   };
 
   const filteredScenes =
-    filterStatus === 'all'
+    filterStatus === "all"
       ? scenes
       : scenes.filter((s) => s.status === filterStatus);
 
@@ -250,15 +294,19 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
               Étape 5 / 7
             </span>
             <span className="text-zinc-500">•</span>
-            <span className="text-xs text-zinc-400">Google Flow / Veo · 10 secondes pile</span>
+            <span className="text-xs text-zinc-400">
+              Google Flow / Veo · 10 secondes pile
+            </span>
           </div>
           <h1 className="text-2xl font-extrabold text-white flex items-center gap-3">
             <Film className="w-6 h-6 text-emerald-400" />
             Prompts des Scènes Vidéo (10s)
           </h1>
           <p className="mt-1 text-xs text-zinc-300 max-w-2xl">
-            Chaque scène contient sa checklist d'ingrédients, son prompt anglais rigoureusement cadencé (0-3s, 3-6s, 6-10s)
-            avec ses descripteurs verrouillés, son dialogue sous la barre stricte des 30 mots, et sa version courte de secours.
+            Chaque scène contient sa checklist d'ingrédients, son prompt anglais
+            rigoureusement cadencé (0-3s, 3-6s, 6-10s) avec ses descripteurs
+            verrouillés, son dialogue sous la barre stricte des 30 mots, et sa
+            version courte de secours.
           </p>
         </div>
 
@@ -269,7 +317,9 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
               disabled={isBatchGenerating}
               className="flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isBatchGenerating ? 'animate-spin' : ''}`} />
+              <RefreshCw
+                className={`w-3.5 h-3.5 ${isBatchGenerating ? "animate-spin" : ""}`}
+              />
               <span>Générer le lot suivant (+4)</span>
             </button>
           )}
@@ -287,7 +337,10 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
       {error && (
         <div className="bg-rose-950/60 border border-rose-700/80 rounded-xl p-4 text-xs text-rose-200 flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={() => setError(null)} className="underline cursor-pointer">
+          <button
+            onClick={() => setError(null)}
+            className="underline cursor-pointer"
+          >
             Fermer
           </button>
         </div>
@@ -298,19 +351,21 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
         {/* Horizontal Mini Timeline */}
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1">
           {scenes.map((s) => {
-            const isCompleted = s.status === 'video_generated';
+            const isCompleted = s.status === "video_generated";
             return (
               <button
                 key={s.id}
                 onClick={() => onOpenFlowAssistantWithScene(s.sceneNumber)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 border ${
                   isCompleted
-                    ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/20'
-                    : 'bg-zinc-800/80 text-zinc-300 border-zinc-700 hover:bg-zinc-800'
+                    ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/20"
+                    : "bg-zinc-800/80 text-zinc-300 border-zinc-700 hover:bg-zinc-800"
                 }`}
               >
                 <span>Scène {s.sceneNumber}</span>
-                <span className="text-[10px] text-zinc-500 font-normal">10s</span>
+                <span className="text-[10px] text-zinc-500 font-normal">
+                  10s
+                </span>
                 {isCompleted && <Check className="w-3 h-3 text-emerald-400" />}
               </button>
             );
@@ -320,19 +375,23 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
         {/* Filter status */}
         <div className="flex items-center gap-1.5 text-xs">
           <span className="text-zinc-500 font-semibold mr-1">Filtrer :</span>
-          {['all', 'todo', 'prompt_copied', 'video_generated', 'redo'].map((st) => (
-            <button
-              key={st}
-              onClick={() => setFilterStatus(st)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition cursor-pointer ${
-                filterStatus === st
-                  ? 'bg-rose-600 text-white'
-                  : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'
-              }`}
-            >
-              {st === 'all' ? 'Toutes' : STATUS_OPTIONS.find((o) => o.value === st)?.labelFr}
-            </button>
-          ))}
+          {["all", "todo", "prompt_copied", "video_generated", "redo"].map(
+            (st) => (
+              <button
+                key={st}
+                onClick={() => setFilterStatus(st)}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition cursor-pointer ${
+                  filterStatus === st
+                    ? "bg-rose-600 text-white"
+                    : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"
+                }`}
+              >
+                {st === "all"
+                  ? "Toutes"
+                  : STATUS_OPTIONS.find((o) => o.value === st)?.labelFr}
+              </button>
+            ),
+          )}
         </div>
       </div>
 
@@ -348,7 +407,9 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                 Aucun prompt de scène vidéo Google Flow (10s) dans ce projet
               </h3>
               <p className="text-xs text-zinc-400 max-w-md mx-auto mt-1">
-                Générez instantanément les 6 prompts cadencés 10s (6C), les versions courtes de secours (6D) et les prompts première image (6E).
+                Générez instantanément les 6 prompts cadencés 10s (6C), les
+                versions courtes de secours (6D) et les prompts première image
+                (6E).
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -395,7 +456,8 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                       </span>
                     </h3>
                     <div className="text-xs text-zinc-400 mt-0.5">
-                      {bible.seriesTitle} — Épisode {scene.episodeNumber || 1} • Lieu : {scene.location}
+                      {bible.seriesTitle} — Épisode {scene.episodeNumber || 1} •
+                      Lieu : {scene.location}
                     </div>
                   </div>
                 </div>
@@ -404,7 +466,9 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                 <div className="flex items-center gap-2">
                   <select
                     value={scene.status}
-                    onChange={(e) => updateSceneStatus(scene.id, e.target.value as any)}
+                    onChange={(e) =>
+                      updateSceneStatus(scene.id, e.target.value as any)
+                    }
                     className="bg-zinc-950 border border-zinc-700 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-zinc-200 focus:outline-none cursor-pointer"
                   >
                     {STATUS_OPTIONS.map((opt) => (
@@ -438,29 +502,33 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4" />
-                    Checklist : Ingrédients à attacher dans Flow avant de générer
+                    Checklist : Ingrédients à attacher dans Flow avant de
+                    générer
                   </span>
-                  <span className="text-[10px] text-zinc-500">Cochez pour préparer</span>
+                  <span className="text-[10px] text-zinc-500">
+                    Cochez pour préparer
+                  </span>
                 </div>
 
                 <div className="flex flex-wrap gap-2 pt-1">
                   {scene.ingredientChecklist.characters.map((charItem, i) => {
-                    const isChecked = !!checkedIngredients[`${scene.id}-char-${i}`];
+                    const isChecked =
+                      !!checkedIngredients[`${scene.id}-char-${i}`];
                     return (
                       <button
                         key={i}
                         onClick={() => toggleIngredient(scene.id, `char-${i}`)}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition cursor-pointer ${
                           isChecked
-                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 line-through opacity-75'
-                            : 'bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800'
+                            ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 line-through opacity-75"
+                            : "bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800"
                         }`}
                       >
                         <div
                           className={`w-3.5 h-3.5 rounded border flex items-center justify-center ${
                             isChecked
-                              ? 'bg-emerald-500 border-emerald-500 text-zinc-950'
-                              : 'border-zinc-500'
+                              ? "bg-emerald-500 border-emerald-500 text-zinc-950"
+                              : "border-zinc-500"
                           }`}
                         >
                           {isChecked && <Check className="w-2.5 h-2.5" />}
@@ -471,23 +539,27 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                   })}
 
                   <button
-                    onClick={() => toggleIngredient(scene.id, 'loc')}
+                    onClick={() => toggleIngredient(scene.id, "loc")}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition cursor-pointer ${
                       checkedIngredients[`${scene.id}-loc`]
-                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 line-through opacity-75'
-                        : 'bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800'
+                        ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 line-through opacity-75"
+                        : "bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800"
                     }`}
                   >
                     <div
                       className={`w-3.5 h-3.5 rounded border flex items-center justify-center ${
                         checkedIngredients[`${scene.id}-loc`]
-                          ? 'bg-emerald-500 border-emerald-500 text-zinc-950'
-                          : 'border-zinc-500'
+                          ? "bg-emerald-500 border-emerald-500 text-zinc-950"
+                          : "border-zinc-500"
                       }`}
                     >
-                      {checkedIngredients[`${scene.id}-loc`] && <Check className="w-2.5 h-2.5" />}
+                      {checkedIngredients[`${scene.id}-loc`] && (
+                        <Check className="w-2.5 h-2.5" />
+                      )}
                     </div>
-                    <span>Plate décor : {scene.ingredientChecklist.location}</span>
+                    <span>
+                      Plate décor : {scene.ingredientChecklist.location}
+                    </span>
                   </button>
                 </div>
 
@@ -495,7 +567,8 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                 <div className="bg-amber-950/20 border border-amber-500/20 rounded-lg p-2.5 text-[11px] text-amber-200 flex items-center gap-2">
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                   <span>
-                    <strong>Rappel capital :</strong> « {scene.ingredientChecklist.reminderFr} »
+                    <strong>Rappel capital :</strong> «{" "}
+                    {scene.ingredientChecklist.reminderFr} »
                   </span>
                 </div>
               </div>
@@ -512,17 +585,23 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                     <span
                       className={`text-xs font-extrabold px-2 py-0.5 rounded ${
                         isWordCountAlert
-                          ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                          : 'bg-zinc-800 text-zinc-300'
+                          ? "bg-rose-500/20 text-rose-300 border border-rose-500/40"
+                          : "bg-zinc-800 text-zinc-300"
                       }`}
                     >
-                      {scene.wordCount} mots anglais {isWordCountAlert ? '(> 30 mots : Alerte !)' : '(<= 30 mots : Conforme)'}
+                      {scene.wordCount} mots anglais{" "}
+                      {isWordCountAlert
+                        ? "(> 30 mots : Alerte !)"
+                        : "(<= 30 mots : Conforme)"}
                     </span>
                   </div>
 
                   <div className="space-y-2 pt-1">
                     {scene.dialogues.map((dlg, i) => (
-                      <div key={i} className="bg-zinc-900/60 p-2.5 rounded-lg border border-zinc-800/80">
+                      <div
+                        key={i}
+                        className="bg-zinc-900/60 p-2.5 rounded-lg border border-zinc-800/80"
+                      >
                         <div className="text-xs font-bold text-white flex items-center gap-2">
                           <span className="text-rose-400">{dlg.speaker}</span>
                           <span className="text-[10px] font-normal text-zinc-400 italic">
@@ -554,14 +633,20 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                       </span>
                     </div>
                     <span className="text-[11px] text-zinc-400 block mt-0.5">
-                      Descripteurs verrouillés, cadence stricte (0-3s, 3-6s, 6-10s) et réplique lip-sync
+                      Descripteurs verrouillés, cadence stricte (0-3s, 3-6s,
+                      6-10s) et réplique lip-sync
                     </span>
                   </div>
 
                   <div className="flex items-center gap-2 flex-wrap">
                     {/* Copy Full Flow Package Button */}
                     <button
-                      onClick={() => handleCopy(formatFullFlowPackage(scene, bible), `pack-${scene.id}`)}
+                      onClick={() =>
+                        handleCopy(
+                          formatFullFlowPackage(scene, bible),
+                          `pack-${scene.id}`,
+                        )
+                      }
                       className="flex items-center gap-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md transition cursor-pointer"
                       title="Copie le pack complet prêt pour Google Flow : Ingrédients + Prompt + Dialogues + Réglages"
                     >
@@ -606,25 +691,33 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                       Preset Réalisation :
                     </span>
                     <button
-                      onClick={() => handlePresetChange(scene.id, 'imax-cinematic')}
+                      onClick={() =>
+                        handlePresetChange(scene.id, "imax-cinematic")
+                      }
                       className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-medium border border-zinc-700 hover:border-emerald-500/50 transition cursor-pointer"
                     >
                       🎬 IMAX 8K
                     </button>
                     <button
-                      onClick={() => handlePresetChange(scene.id, 'soap-opera-noir')}
+                      onClick={() =>
+                        handlePresetChange(scene.id, "soap-opera-noir")
+                      }
                       className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-medium border border-zinc-700 hover:border-emerald-500/50 transition cursor-pointer"
                     >
                       🎭 Soap Noir
                     </button>
                     <button
-                      onClick={() => handlePresetChange(scene.id, 'tiktok-hook')}
+                      onClick={() =>
+                        handlePresetChange(scene.id, "tiktok-hook")
+                      }
                       className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-medium border border-zinc-700 hover:border-emerald-500/50 transition cursor-pointer"
                     >
                       ⚡ TikTok Hook
                     </button>
                     <button
-                      onClick={() => handlePresetChange(scene.id, 'macro-fruit')}
+                      onClick={() =>
+                        handlePresetChange(scene.id, "macro-fruit")
+                      }
                       className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-medium border border-zinc-700 hover:border-emerald-500/50 transition cursor-pointer"
                     >
                       🍓 Macro SSS
@@ -696,7 +789,9 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
 
                 {/* Flow Assistant shortcut */}
                 <button
-                  onClick={() => onOpenFlowAssistantWithScene(scene.sceneNumber)}
+                  onClick={() =>
+                    onOpenFlowAssistantWithScene(scene.sceneNumber)
+                  }
                   className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer"
                 >
                   <Play className="w-3.5 h-3.5" />
@@ -730,7 +825,9 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
 
             <div className="flex justify-end gap-2">
               <button
-                onClick={() => handleCopy(activeModalPrompt.text, activeModalPrompt.key)}
+                onClick={() =>
+                  handleCopy(activeModalPrompt.text, activeModalPrompt.key)
+                }
                 className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition cursor-pointer"
               >
                 {copiedKey === activeModalPrompt.key ? (
@@ -756,10 +853,12 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
           <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4">
             <div>
               <h3 className="font-extrabold text-base text-white">
-                Régénérer la Scène {regeneratingScene.sceneNumber} : "{regeneratingScene.title}"
+                Régénérer la Scène {regeneratingScene.sceneNumber} : "
+                {regeneratingScene.title}"
               </h3>
               <p className="text-xs text-zinc-400 mt-1">
-                La scène sera réécrite en conservant strictement la continuité avec les scènes précédente et suivante.
+                La scène sera réécrite en conservant strictement la continuité
+                avec les scènes précédente et suivante.
               </p>
             </div>
 
@@ -788,8 +887,14 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                 disabled={isRegenerating}
                 className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md transition cursor-pointer"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isRegenerating ? 'animate-spin' : ''}`} />
-                <span>{isRegenerating ? 'Régénération...' : 'Lancer la Régénération'}</span>
+                <RefreshCw
+                  className={`w-3.5 h-3.5 ${isRegenerating ? "animate-spin" : ""}`}
+                />
+                <span>
+                  {isRegenerating
+                    ? "Régénération..."
+                    : "Lancer la Régénération"}
+                </span>
               </button>
             </div>
           </div>

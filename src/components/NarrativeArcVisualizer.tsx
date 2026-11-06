@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   X,
   LineChart,
@@ -13,8 +13,8 @@ import {
   MapPin,
   Clock,
   Sparkles,
-} from 'lucide-react';
-import { FruitProject } from '../types/fruitStudio';
+} from "lucide-react";
+import { FruitProject } from "../types/fruitStudio";
 
 interface NarrativeArcVisualizerProps {
   project: FruitProject;
@@ -30,7 +30,8 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
   const { beatSheet, scenes, bible, characters } = project;
   const [selectedSceneNum, setSelectedSceneNum] = useState<number>(1);
 
-  const activeBeat = beatSheet.find((b) => b.sceneNumber === selectedSceneNum) || beatSheet[0];
+  const activeBeat =
+    beatSheet.find((b) => b.sceneNumber === selectedSceneNum) || beatSheet[0];
   const activeScene = scenes.find((s) => s.sceneNumber === selectedSceneNum);
 
   // SVG dimensions for curve
@@ -40,13 +41,15 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
   const paddingY = 35;
 
   const pointCount = beatSheet.length;
-  const stepX = pointCount > 1 ? (svgWidth - 2 * paddingX) / (pointCount - 1) : 0;
+  const stepX =
+    pointCount > 1 ? (svgWidth - 2 * paddingX) / (pointCount - 1) : 0;
 
   const points = beatSheet.map((b, i) => {
     const x = paddingX + i * stepX;
     const tension = Math.min(Math.max(b.tensionLevel || 5, 1), 10);
     // map tension 1-10 to y (10 is top, 1 is bottom)
-    const y = svgHeight - paddingY - ((tension - 1) / 9) * (svgHeight - 2 * paddingY);
+    const y =
+      svgHeight - paddingY - ((tension - 1) / 9) * (svgHeight - 2 * paddingY);
     return { x, y, tension, scene: b };
   });
 
@@ -59,7 +62,7 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
     const cpX2 = prev.x + (p.x - prev.x) / 2;
     const cpY2 = p.y;
     return `${acc} C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${p.x} ${p.y}`;
-  }, '');
+  }, "");
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in">
@@ -80,7 +83,8 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
                 </span>
               </div>
               <p className="text-xs text-zinc-400">
-                {bible.seriesTitle} — Analyse de tension, présence des personnages et propagation des secrets
+                {bible.seriesTitle} — Analyse de tension, présence des
+                personnages et propagation des secrets
               </p>
             </div>
           </div>
@@ -132,7 +136,10 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
               >
                 {/* Horizontal grid lines */}
                 {[2, 4, 6, 8, 10].map((level) => {
-                  const y = svgHeight - paddingY - ((level - 1) / 9) * (svgHeight - 2 * paddingY);
+                  const y =
+                    svgHeight -
+                    paddingY -
+                    ((level - 1) / 9) * (svgHeight - 2 * paddingY);
                   return (
                     <g key={level}>
                       <line
@@ -197,7 +204,7 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
                         cx={p.x}
                         cy={p.y}
                         r={isSelected ? 8 : 5}
-                        fill={isSelected ? '#f43f5e' : '#fbbf24'}
+                        fill={isSelected ? "#f43f5e" : "#fbbf24"}
                         stroke="#09090b"
                         strokeWidth="2.5"
                         className="transition-all duration-200"
@@ -205,9 +212,9 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
                       <text
                         x={p.x}
                         y={svgHeight - paddingY + 18}
-                        fill={isSelected ? '#ffffff' : '#a1a1aa'}
+                        fill={isSelected ? "#ffffff" : "#a1a1aa"}
                         fontSize="11"
-                        fontWeight={isSelected ? 'bold' : 'normal'}
+                        fontWeight={isSelected ? "bold" : "normal"}
                         textAnchor="middle"
                       >
                         S{p.scene.sceneNumber}
@@ -224,7 +231,8 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                  Détail de la Scène {activeBeat.sceneNumber} : "{activeBeat.title}"
+                  Détail de la Scène {activeBeat.sceneNumber} : "
+                  {activeBeat.title}"
                 </span>
                 <span className="text-xs font-extrabold px-2.5 py-0.5 rounded bg-zinc-800 text-white">
                   Tension : {activeBeat.tensionLevel}/10
@@ -242,13 +250,17 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
                   <span className="text-[10px] uppercase font-bold text-amber-400 block">
                     Twist / Fin de Scène
                   </span>
-                  <p className="text-amber-200 mt-0.5">{activeBeat.twistOrCliffhanger}</p>
+                  <p className="text-amber-200 mt-0.5">
+                    {activeBeat.twistOrCliffhanger}
+                  </p>
                 </div>
                 <div className="bg-zinc-950 p-3 rounded-xl border border-zinc-800">
                   <span className="text-[10px] uppercase font-bold text-zinc-500 block">
                     Émotion dominante
                   </span>
-                  <p className="text-zinc-200 mt-0.5">{activeBeat.emotionalShift}</p>
+                  <p className="text-zinc-200 mt-0.5">
+                    {activeBeat.emotionalShift}
+                  </p>
                 </div>
               </div>
             </div>
@@ -267,7 +279,10 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
                   <tr className="border-b border-zinc-800 text-zinc-500 text-[11px]">
                     <th className="py-2 pr-4 font-bold">Personnage</th>
                     {beatSheet.map((b) => (
-                      <th key={b.sceneNumber} className="py-2 px-3 text-center font-bold">
+                      <th
+                        key={b.sceneNumber}
+                        className="py-2 px-3 text-center font-bold"
+                      >
                         S{b.sceneNumber}
                       </th>
                     ))}
@@ -277,14 +292,20 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
                   {characters.map((c) => (
                     <tr key={c.id}>
                       <td className="py-2.5 pr-4 font-semibold text-white">
-                        {c.name} <span className="text-[10px] text-zinc-500">({c.species})</span>
+                        {c.name}{" "}
+                        <span className="text-[10px] text-zinc-500">
+                          ({c.species})
+                        </span>
                       </td>
                       {beatSheet.map((b) => {
                         const isPresent = b.charactersPresent.some((cp) =>
-                          cp.toLowerCase().includes(c.name.toLowerCase())
+                          cp.toLowerCase().includes(c.name.toLowerCase()),
                         );
                         return (
-                          <td key={b.sceneNumber} className="py-2.5 px-3 text-center">
+                          <td
+                            key={b.sceneNumber}
+                            className="py-2.5 px-3 text-center"
+                          >
                             {isPresent ? (
                               <span className="inline-flex w-5 h-5 rounded-md bg-emerald-500/20 text-emerald-400 items-center justify-center font-bold text-[10px] border border-emerald-500/30">
                                 ✓
@@ -316,7 +337,9 @@ export const NarrativeArcVisualizer: React.FC<NarrativeArcVisualizerProps> = ({
                   className="bg-zinc-950 p-3 rounded-xl border border-zinc-800 text-xs flex flex-wrap items-center justify-between gap-3"
                 >
                   <div>
-                    <span className="font-bold text-white block">{s.description}</span>
+                    <span className="font-bold text-white block">
+                      {s.description}
+                    </span>
                     <span className="text-[11px] text-zinc-400">
                       Introduit : {s.introducedAt} ➔ Révélé : {s.revealedAt}
                     </span>

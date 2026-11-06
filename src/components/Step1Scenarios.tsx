@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Sparkles,
   Flame,
@@ -19,20 +19,20 @@ import {
   Zap,
   Repeat,
   Tv,
-} from 'lucide-react';
-import { FruitProject, Scenario, ViralDna } from '../types/fruitStudio';
+} from "lucide-react";
+import { FruitProject, Scenario, ViralDna } from "../types/fruitStudio";
 import {
   generateStudioScenarios,
   analyzeStudioVideoDna,
   mergeStudioScenarios,
-} from '../services/studioEngine';
+} from "../services/studioEngine";
 import {
   PRESET_VIRAL_STORIES,
   VIRAL_TROPES_LIST,
   generateSmartViralStory,
   convertViralStoryToStudioProject,
   ViralStoryIdea,
-} from '../services/viralDramaEngine';
+} from "../services/viralDramaEngine";
 
 interface Step1ScenariosProps {
   project: FruitProject;
@@ -41,56 +41,66 @@ interface Step1ScenariosProps {
 }
 
 const GENRES = [
-  'Drama soap-opera',
-  'Comédie burlesque',
-  'Thriller-mystère',
-  'Romance',
-  'Horreur légère',
-  'Autre',
+  "Drama soap-opera",
+  "Comédie burlesque",
+  "Thriller-mystère",
+  "Romance",
+  "Horreur légère",
+  "Autre",
 ];
 
-const CHARACTER_TYPES = [
-  'Fruits',
-  'Légumes',
-  'Animaux',
-  'Objets',
-  'Mélange',
-];
+const CHARACTER_TYPES = ["Fruits", "Légumes", "Animaux", "Objets", "Mélange"];
 
 export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
   project,
   onUpdateProject,
   onSelectScenarioAndProceed,
 }) => {
-  const [activeTab, setActiveTab] = useState<'scratch' | 'video_analysis' | 'moqi_viral'>(
-    'moqi_viral'
-  );
+  const [activeTab, setActiveTab] = useState<
+    "scratch" | "video_analysis" | "moqi_viral"
+  >("moqi_viral");
 
   // Moqi Viral state
-  const [moqiStories, setMoqiStories] = useState<ViralStoryIdea[]>(PRESET_VIRAL_STORIES);
-  const [selectedMoqiStoryId, setSelectedMoqiStoryId] = useState<string>(PRESET_VIRAL_STORIES[0].id);
-  const [moqiCustomTrope, setMoqiCustomTrope] = useState<string>('Trahison & Vengeance');
-  const [moqiCustomPitch, setMoqiCustomPitch] = useState<string>('');
+  const [moqiStories, setMoqiStories] =
+    useState<ViralStoryIdea[]>(PRESET_VIRAL_STORIES);
+  const [selectedMoqiStoryId, setSelectedMoqiStoryId] = useState<string>(
+    PRESET_VIRAL_STORIES[0].id,
+  );
+  const [moqiCustomTrope, setMoqiCustomTrope] = useState<string>(
+    "Trahison & Vengeance",
+  );
+  const [moqiCustomPitch, setMoqiCustomPitch] = useState<string>("");
   const [isMoqiGenerating, setIsMoqiGenerating] = useState<boolean>(false);
 
   // Scratch state
-  const [genre, setGenre] = useState(project.scratchConfig.genre || 'Drama soap-opera');
+  const [genre, setGenre] = useState(
+    project.scratchConfig.genre || "Drama soap-opera",
+  );
   const [characterTypes, setCharacterTypes] = useState(
-    project.scratchConfig.characterTypes || 'Fruits'
+    project.scratchConfig.characterTypes || "Fruits",
   );
   const [tone, setTone] = useState(
-    project.scratchConfig.tone || 'Dramatique, intense, soap-opera haute couture'
+    project.scratchConfig.tone ||
+      "Dramatique, intense, soap-opera haute couture",
   );
-  const [targetScenes, setTargetScenes] = useState(project.scratchConfig.targetScenes || 6);
-  const [customPrompt, setCustomPrompt] = useState(project.scratchConfig.customPrompt || '');
+  const [targetScenes, setTargetScenes] = useState(
+    project.scratchConfig.targetScenes || 6,
+  );
+  const [customPrompt, setCustomPrompt] = useState(
+    project.scratchConfig.customPrompt || "",
+  );
 
   // Video analysis state
-  const [videoNotes, setVideoNotes] = useState(project.videoAnalysisConfig.videoNotes || '');
-  const [fidelity, setFidelity] = useState(project.videoAnalysisConfig.fidelity || 50);
+  const [videoNotes, setVideoNotes] = useState(
+    project.videoAnalysisConfig.videoNotes || "",
+  );
+  const [fidelity, setFidelity] = useState(
+    project.videoAnalysisConfig.fidelity || 50,
+  );
 
   // Loading states
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingText, setLoadingText] = useState('');
+  const [loadingText, setLoadingText] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   // Merge selection state
@@ -99,7 +109,9 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
   // Generate Mode A (From scratch)
   const handleGenerateFromScratch = async () => {
     setIsLoading(true);
-    setLoadingText('Connexion au studio IA & création de 4 scénarios originaux...');
+    setLoadingText(
+      "Connexion au studio IA & création de 4 scénarios originaux...",
+    );
     setError(null);
 
     const scratchConfig = {
@@ -114,9 +126,9 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
     try {
-      const res = await fetch('/api/gemini/generate-scenarios', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini/generate-scenarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ scratchConfig }),
         signal: controller.signal,
       });
@@ -124,28 +136,31 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
       clearTimeout(timeoutId);
 
       if (!res.ok) {
-        throw new Error('Erreur API, bascule sur le moteur studio');
+        throw new Error("Erreur API, bascule sur le moteur studio");
       }
 
       const data = await res.json();
       if (!data.scenarios || data.scenarios.length === 0) {
-        throw new Error('Aucun scénario retourné');
+        throw new Error("Aucun scénario retourné");
       }
 
       onUpdateProject((prev) => ({
         ...prev,
-        inputMode: 'scratch',
+        inputMode: "scratch",
         scratchConfig,
         scenarios: data.scenarios,
         selectedScenarioId: data.scenarios[0]?.id,
       }));
     } catch (err: any) {
       clearTimeout(timeoutId);
-      console.warn('Utilisation du moteur interne Studio pour les 4 scénarios:', err);
+      console.warn(
+        "Utilisation du moteur interne Studio pour les 4 scénarios:",
+        err,
+      );
       const fallbackScenarios = generateStudioScenarios(scratchConfig);
       onUpdateProject((prev) => ({
         ...prev,
-        inputMode: 'scratch',
+        inputMode: "scratch",
         scratchConfig,
         scenarios: fallbackScenarios,
         selectedScenarioId: fallbackScenarios[0]?.id,
@@ -158,21 +173,23 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
   // Generate Mode B (Video analysis & DNA extraction)
   const handleAnalyzeVideo = async () => {
     if (!videoNotes.trim()) {
-      setError('Veuillez coller le résumé ou l’analyse d’une vidéo virale.');
+      setError("Veuillez coller le résumé ou l’analyse d’une vidéo virale.");
       return;
     }
 
     setIsLoading(true);
-    setLoadingText('Extraction de l’ADN Viral & création de 4 scénarios originaux...');
+    setLoadingText(
+      "Extraction de l’ADN Viral & création de 4 scénarios originaux...",
+    );
     setError(null);
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 6000);
 
     try {
-      const res = await fetch('/api/gemini/analyze-video', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini/analyze-video", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ videoNotes, fidelity }),
         signal: controller.signal,
       });
@@ -180,13 +197,13 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
       clearTimeout(timeoutId);
 
       if (!res.ok) {
-        throw new Error('Erreur API');
+        throw new Error("Erreur API");
       }
 
       const data = await res.json();
       onUpdateProject((prev) => ({
         ...prev,
-        inputMode: 'video_analysis',
+        inputMode: "video_analysis",
         videoAnalysisConfig: {
           videoNotes,
           fidelity,
@@ -197,11 +214,14 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
       }));
     } catch (err: any) {
       clearTimeout(timeoutId);
-      console.warn('Utilisation du moteur interne Studio pour l ADN viral:', err);
+      console.warn(
+        "Utilisation du moteur interne Studio pour l ADN viral:",
+        err,
+      );
       const fallbackData = analyzeStudioVideoDna(videoNotes, fidelity);
       onUpdateProject((prev) => ({
         ...prev,
-        inputMode: 'video_analysis',
+        inputMode: "video_analysis",
         videoAnalysisConfig: {
           videoNotes,
           fidelity,
@@ -223,17 +243,17 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
     if (!scenA || !scenB) return;
 
     setIsLoading(true);
-    setLoadingText('Fusion narrative des deux scénarios sélectionnés...');
+    setLoadingText("Fusion narrative des deux scénarios sélectionnés...");
     setError(null);
     try {
-      const res = await fetch('/api/gemini/merge-scenarios', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini/merge-scenarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ scenarioA: scenA, scenarioB: scenB }),
       });
 
       if (!res.ok) {
-        throw new Error('Erreur API');
+        throw new Error("Erreur API");
       }
 
       const data = await res.json();
@@ -244,7 +264,7 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
       }));
       setMergeSelectedIds([]);
     } catch (err: any) {
-      console.warn('Utilisation du moteur interne Studio pour la fusion:', err);
+      console.warn("Utilisation du moteur interne Studio pour la fusion:", err);
       const mergedScen = mergeStudioScenarios(scenA, scenB);
       onUpdateProject((prev) => ({
         ...prev,
@@ -285,41 +305,43 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
             Création de Série Fruit Drama 3D
           </h1>
           <p className="mt-2 text-sm text-zinc-300 leading-relaxed">
-            Fruit Studio conçoit l'histoire complète, verrouille la continuité et rédige tous les prompts
-            prêts à copier pour vos outils de génération : Gemini (photos de référence) et Google Flow / Veo (vidéos de 10 secondes).
+            Fruit Studio conçoit l'histoire complète, verrouille la continuité
+            et rédige tous les prompts prêts à copier pour vos outils de
+            génération : Gemini (photos de référence) et Google Flow / Veo
+            (vidéos de 10 secondes).
           </p>
         </div>
 
         {/* Tab switch */}
         <div className="mt-6 flex flex-wrap gap-2 border-b border-zinc-800/80 pb-3">
           <button
-            onClick={() => setActiveTab('moqi_viral')}
+            onClick={() => setActiveTab("moqi_viral")}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
-              activeTab === 'moqi_viral'
-                ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow-lg shadow-rose-950/50 ring-1 ring-white/20'
-                : 'bg-zinc-800/80 text-amber-300 hover:text-white hover:bg-zinc-800 border border-amber-500/30'
+              activeTab === "moqi_viral"
+                ? "bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow-lg shadow-rose-950/50 ring-1 ring-white/20"
+                : "bg-zinc-800/80 text-amber-300 hover:text-white hover:bg-zinc-800 border border-amber-500/30"
             }`}
           >
             <Flame className="w-4 h-4 text-amber-300 fill-amber-300" />
             MODE C — 🔥 TrendStory & Moqi (Sagas Virales Complètes)
           </button>
           <button
-            onClick={() => setActiveTab('scratch')}
+            onClick={() => setActiveTab("scratch")}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
-              activeTab === 'scratch'
-                ? 'bg-rose-600 text-white shadow-lg shadow-rose-950/50'
-                : 'bg-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
+              activeTab === "scratch"
+                ? "bg-rose-600 text-white shadow-lg shadow-rose-950/50"
+                : "bg-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
             }`}
           >
             <Sparkles className="w-4 h-4" />
             MODE A — Partir de zéro
           </button>
           <button
-            onClick={() => setActiveTab('video_analysis')}
+            onClick={() => setActiveTab("video_analysis")}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
-              activeTab === 'video_analysis'
-                ? 'bg-rose-600 text-white shadow-lg shadow-rose-950/50'
-                : 'bg-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
+              activeTab === "video_analysis"
+                ? "bg-rose-600 text-white shadow-lg shadow-rose-950/50"
+                : "bg-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
             }`}
           >
             <Eye className="w-4 h-4" />
@@ -329,7 +351,7 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
       </div>
 
       {/* MODE C: TrendStory & Moqi Viral Engine */}
-      {activeTab === 'moqi_viral' && (
+      {activeTab === "moqi_viral" && (
         <div className="bg-zinc-900/90 border border-rose-500/30 rounded-2xl p-6 space-y-6 shadow-2xl shadow-rose-950/20">
           {/* Header Banner */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-gradient-to-r from-rose-950/40 via-purple-950/20 to-zinc-900 border border-rose-500/30">
@@ -346,7 +368,9 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                 Sagas Dramatiques Conçues du Début à la Fin
               </h2>
               <p className="text-xs text-zinc-400">
-                Chaque histoire inclut l'accroche 0-2s, 6 scènes à forte tension, le twist cathartique et l'astuce de boucle infinie TikTok.
+                Chaque histoire inclut l'accroche 0-2s, 6 scènes à forte
+                tension, le twist cathartique et l'astuce de boucle infinie
+                TikTok.
               </p>
             </div>
 
@@ -356,7 +380,7 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                 setTimeout(() => {
                   const newStory = generateSmartViralStory({
                     tropeCategory: moqiCustomTrope,
-                    characterType: 'Fruits 3D stylisés',
+                    characterType: "Fruits 3D stylisés",
                     customIdea: moqiCustomPitch,
                   });
                   setMoqiStories((prev) => [newStory, ...prev]);
@@ -392,8 +416,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                 onClick={() => setMoqiCustomTrope(t.category)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
                   moqiCustomTrope === t.category
-                    ? 'bg-rose-600 text-white shadow-md shadow-rose-950/50'
-                    : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+                    ? "bg-rose-600 text-white shadow-md shadow-rose-950/50"
+                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white"
                 }`}
               >
                 {t.emoji} {t.category}
@@ -411,8 +435,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                   onClick={() => setSelectedMoqiStoryId(story.id)}
                   className={`p-5 rounded-xl border text-left transition-all cursor-pointer space-y-4 ${
                     isSelected
-                      ? 'bg-gradient-to-br from-rose-950/40 via-zinc-950 to-zinc-950 border-rose-500 shadow-xl shadow-rose-950/40 ring-1 ring-rose-500/50'
-                      : 'bg-zinc-950/80 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-950'
+                      ? "bg-gradient-to-br from-rose-950/40 via-zinc-950 to-zinc-950 border-rose-500 shadow-xl shadow-rose-950/40 ring-1 ring-rose-500/50"
+                      : "bg-zinc-950/80 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-950"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
@@ -432,7 +456,9 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                   <div>
                     <h3 className="text-base font-bold text-white flex items-center justify-between">
                       <span>{story.title}</span>
-                      <span className="text-xs text-zinc-400 font-normal italic">({story.titleEn})</span>
+                      <span className="text-xs text-zinc-400 font-normal italic">
+                        ({story.titleEn})
+                      </span>
                     </h3>
                     <p className="text-xs text-zinc-300 mt-1.5 leading-relaxed">
                       {story.logline}
@@ -443,7 +469,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                   <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800/80 text-xs space-y-1">
                     <div className="flex items-center justify-between text-rose-400 font-bold text-[11px]">
                       <span className="flex items-center gap-1">
-                        <Zap className="w-3 h-3 text-amber-400" /> ACCROCHE 0-2s (Scroll-Stopper)
+                        <Zap className="w-3 h-3 text-amber-400" /> ACCROCHE 0-2s
+                        (Scroll-Stopper)
                       </span>
                       <span className="text-zinc-400 font-mono text-[10px]">
                         Overlay : {story.hook0to2s.textSticker}
@@ -475,7 +502,10 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        const projectPartial = convertViralStoryToStudioProject(story, project.settings);
+                        const projectPartial = convertViralStoryToStudioProject(
+                          story,
+                          project.settings,
+                        );
                         onUpdateProject((prev) => ({
                           ...prev,
                           ...projectPartial,
@@ -497,9 +527,15 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                           id: `sc-moqi-${story.id}-${Date.now()}`,
                           title: story.title,
                           logline: story.logline,
-                          mainCharacters: story.characters.map((c) => `${c.name} (${c.species})`),
-                          centralSecret: story.characters[0]?.secret || 'Complot secret caché.',
-                          ending: story.scenes[story.scenes.length - 1]?.visualAction || 'Victoire éclatante.',
+                          mainCharacters: story.characters.map(
+                            (c) => `${c.name} (${c.species})`,
+                          ),
+                          centralSecret:
+                            story.characters[0]?.secret ||
+                            "Complot secret caché.",
+                          ending:
+                            story.scenes[story.scenes.length - 1]
+                              ?.visualAction || "Victoire éclatante.",
                           estimatedScenes: story.scenes.length,
                           estimatedEpisodes: 1,
                           whyViral: `Score viral certifié ${story.viralScore}/100. Accroche 0-2s : "${story.hook0to2s.spokenLineEn}". Astuce de boucle : ${story.loopTrick}`,
@@ -520,7 +556,7 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
       )}
 
       {/* MODE A: Scratch */}
-      {activeTab === 'scratch' && (
+      {activeTab === "scratch" && (
         <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Genre */}
@@ -535,8 +571,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                     onClick={() => setGenre(g)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
                       genre === g
-                        ? 'bg-rose-500 text-white shadow-md shadow-rose-950/40'
-                        : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+                        ? "bg-rose-500 text-white shadow-md shadow-rose-950/40"
+                        : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
                     }`}
                   >
                     {g}
@@ -557,8 +593,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                     onClick={() => setCharacterTypes(c)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
                       characterTypes === c
-                        ? 'bg-amber-500 text-zinc-950 font-bold shadow-md shadow-amber-950/40'
-                        : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+                        ? "bg-amber-500 text-zinc-950 font-bold shadow-md shadow-amber-950/40"
+                        : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
                     }`}
                   >
                     {c}
@@ -600,7 +636,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                 className="w-full accent-rose-500 cursor-pointer"
               />
               <span className="text-[11px] text-zinc-500 block mt-1">
-                4 scènes = 40s (Shorts/TikTok court) · 6 scènes = 60s (Idéal) · 12 à 16 scènes = 2min+ (Mini-film)
+                4 scènes = 40s (Shorts/TikTok court) · 6 scènes = 60s (Idéal) ·
+                12 à 16 scènes = 2min+ (Mini-film)
               </span>
             </div>
           </div>
@@ -642,15 +679,17 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
       )}
 
       {/* MODE B: Video Analysis */}
-      {activeTab === 'video_analysis' && (
+      {activeTab === "video_analysis" && (
         <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 space-y-6">
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                Analyse ou transcription d'une vidéo virale (texte produit par Gemini)
+                Analyse ou transcription d'une vidéo virale (texte produit par
+                Gemini)
               </label>
               <span className="text-[11px] text-zinc-500">
-                Copiez le texte descriptif d'une vidéo TikTok/Reels qui a cartonné
+                Copiez le texte descriptif d'une vidéo TikTok/Reels qui a
+                cartonné
               </span>
             </div>
             <textarea
@@ -673,10 +712,10 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
               </div>
               <span className="text-xs font-extrabold text-rose-400">
                 {fidelity < 35
-                  ? 'Inspiré (Même ADN, histoire différente)'
+                  ? "Inspiré (Même ADN, histoire différente)"
                   : fidelity > 70
-                  ? 'Adaptation fidèle (Même structure beat-by-beat, personnages 100% originaux)'
-                  : 'Équilibré (Mêmes mécaniques virales, variation captivante)'}
+                    ? "Adaptation fidèle (Même structure beat-by-beat, personnages 100% originaux)"
+                    : "Équilibré (Mêmes mécaniques virales, variation captivante)"}
               </span>
             </div>
             <input
@@ -698,7 +737,12 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
           <div className="bg-zinc-950/80 border border-amber-500/20 rounded-xl p-3.5 flex items-start gap-3 text-xs text-amber-200/90">
             <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
             <div>
-              <span className="font-semibold text-amber-300">Règle de propriété intellectuelle :</span> L'application applique la formule narrative sans jamais copier de marques ou personnages existants (pas de Disney, Pixar, Nintendo...).
+              <span className="font-semibold text-amber-300">
+                Règle de propriété intellectuelle :
+              </span>{" "}
+              L'application applique la formule narrative sans jamais copier de
+              marques ou personnages existants (pas de Disney, Pixar,
+              Nintendo...).
             </div>
           </div>
 
@@ -730,7 +774,9 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                   <Flame className="w-4 h-4 text-rose-400" />
                   ADN Viral Extrait de la Vidéo
                 </h3>
-                <span className="text-[11px] text-zinc-400">8 leviers psychologiques identifiés</span>
+                <span className="text-[11px] text-zinc-400">
+                  8 leviers psychologiques identifiés
+                </span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -738,49 +784,65 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                   <div className="text-[10px] font-bold uppercase tracking-wider text-rose-400">
                     Accroche (0–3s)
                   </div>
-                  <p className="mt-1 text-xs text-zinc-300">{viralDna.hook3s}</p>
+                  <p className="mt-1 text-xs text-zinc-300">
+                    {viralDna.hook3s}
+                  </p>
                 </div>
                 <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-3.5">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
                     Structure en Actes
                   </div>
-                  <p className="mt-1 text-xs text-zinc-300">{viralDna.actStructure}</p>
+                  <p className="mt-1 text-xs text-zinc-300">
+                    {viralDna.actStructure}
+                  </p>
                 </div>
                 <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-3.5">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-purple-400">
                     Type d'Humour / Drame
                   </div>
-                  <p className="mt-1 text-xs text-zinc-300">{viralDna.humorDramaType}</p>
+                  <p className="mt-1 text-xs text-zinc-300">
+                    {viralDna.humorDramaType}
+                  </p>
                 </div>
                 <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-3.5">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">
                     Rythme de Montage
                   </div>
-                  <p className="mt-1 text-xs text-zinc-300">{viralDna.editingPacing}</p>
+                  <p className="mt-1 text-xs text-zinc-300">
+                    {viralDna.editingPacing}
+                  </p>
                 </div>
                 <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-3.5">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">
                     Esthétique Visuelle
                   </div>
-                  <p className="mt-1 text-xs text-zinc-300">{viralDna.visualAesthetic}</p>
+                  <p className="mt-1 text-xs text-zinc-300">
+                    {viralDna.visualAesthetic}
+                  </p>
                 </div>
                 <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-3.5">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-400">
                     Tendance Exploitée
                   </div>
-                  <p className="mt-1 text-xs text-zinc-300">{viralDna.culturalTrend}</p>
+                  <p className="mt-1 text-xs text-zinc-300">
+                    {viralDna.culturalTrend}
+                  </p>
                 </div>
                 <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-3.5">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-pink-400">
                     Type de Chute Finale
                   </div>
-                  <p className="mt-1 text-xs text-zinc-300">{viralDna.endingType}</p>
+                  <p className="mt-1 text-xs text-zinc-300">
+                    {viralDna.endingType}
+                  </p>
                 </div>
                 <div className="bg-zinc-950 border border-rose-500/30 bg-rose-950/10 rounded-xl p-3.5">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-rose-300">
                     Pourquoi Ça Marche
                   </div>
-                  <p className="mt-1 text-xs text-zinc-200">{viralDna.whyItWorks}</p>
+                  <p className="mt-1 text-xs text-zinc-200">
+                    {viralDna.whyItWorks}
+                  </p>
                 </div>
               </div>
             </div>
@@ -814,7 +876,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                 Scénarios Proposés ({project.scenarios.length})
               </h2>
               <p className="text-xs text-zinc-400">
-                Sélectionnez un scénario pour passer à la Bible d'histoire, ou cochez-en 2 pour les fusionner.
+                Sélectionnez un scénario pour passer à la Bible d'histoire, ou
+                cochez-en 2 pour les fusionner.
               </p>
             </div>
 
@@ -841,8 +904,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                   key={scen.id}
                   className={`relative flex flex-col justify-between rounded-2xl p-5 border transition-all duration-200 ${
                     isSelected
-                      ? 'bg-zinc-900 border-rose-500/80 ring-2 ring-rose-500/20 shadow-xl shadow-rose-950/40'
-                      : 'bg-zinc-900/60 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900'
+                      ? "bg-zinc-900 border-rose-500/80 ring-2 ring-rose-500/20 shadow-xl shadow-rose-950/40"
+                      : "bg-zinc-900/60 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900"
                   }`}
                 >
                   <div>
@@ -863,12 +926,12 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                         title="Sélectionner pour fusionner"
                         className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold border transition cursor-pointer ${
                           isMergeChecked
-                            ? 'bg-purple-600/30 text-purple-300 border-purple-500'
-                            : 'bg-zinc-800/80 text-zinc-400 border-zinc-700 hover:text-zinc-200'
+                            ? "bg-purple-600/30 text-purple-300 border-purple-500"
+                            : "bg-zinc-800/80 text-zinc-400 border-zinc-700 hover:text-zinc-200"
                         }`}
                       >
                         <GitMerge className="w-3 h-3" />
-                        {isMergeChecked ? 'Sélectionné' : 'Fusionner'}
+                        {isMergeChecked ? "Sélectionné" : "Fusionner"}
                       </button>
                     </div>
 
@@ -880,21 +943,31 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                     {/* Meta bullets */}
                     <div className="space-y-2 text-xs mb-4">
                       <div>
-                        <span className="font-bold text-zinc-400">Personnages : </span>
+                        <span className="font-bold text-zinc-400">
+                          Personnages :{" "}
+                        </span>
                         <span className="text-zinc-200">
-                          {(scen.mainCharacters || []).join(', ')}
+                          {(scen.mainCharacters || []).join(", ")}
                         </span>
                       </div>
                       <div>
-                        <span className="font-bold text-amber-400">Secret / Twist : </span>
-                        <span className="text-zinc-300">{scen.centralSecret}</span>
+                        <span className="font-bold text-amber-400">
+                          Secret / Twist :{" "}
+                        </span>
+                        <span className="text-zinc-300">
+                          {scen.centralSecret}
+                        </span>
                       </div>
                       <div>
-                        <span className="font-bold text-purple-400">Fin complète : </span>
+                        <span className="font-bold text-purple-400">
+                          Fin complète :{" "}
+                        </span>
                         <span className="text-zinc-300">{scen.ending}</span>
                       </div>
                       <div className="bg-rose-950/20 border border-rose-500/20 rounded-lg p-2.5 text-[11px] text-rose-200">
-                        <span className="font-bold text-rose-300">Moteur viral : </span>
+                        <span className="font-bold text-rose-300">
+                          Moteur viral :{" "}
+                        </span>
                         {scen.whyViral}
                       </div>
                     </div>
@@ -903,7 +976,8 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
                   {/* Actions footer */}
                   <div className="pt-3 border-t border-zinc-800 flex items-center justify-between gap-2">
                     <div className="text-[11px] text-zinc-500 font-medium">
-                      ~{scen.estimatedScenes || 6} scènes ({scen.estimatedEpisodes || 1} ép.)
+                      ~{scen.estimatedScenes || 6} scènes (
+                      {scen.estimatedEpisodes || 1} ép.)
                     </div>
 
                     <button
@@ -922,7 +996,9 @@ export const Step1Scenarios: React.FC<Step1ScenariosProps> = ({
           <div className="flex justify-center pt-2">
             <button
               onClick={
-                activeTab === 'scratch' ? handleGenerateFromScratch : handleAnalyzeVideo
+                activeTab === "scratch"
+                  ? handleGenerateFromScratch
+                  : handleAnalyzeVideo
               }
               disabled={isLoading}
               className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-4 py-2 rounded-xl text-xs font-semibold border border-zinc-700 transition cursor-pointer"

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React from "react";
 import {
   Sparkles,
   BookOpen,
@@ -13,8 +13,8 @@ import {
   Share2,
   ShieldCheck,
   Lock,
-} from 'lucide-react';
-import { FruitProject } from '../types/fruitStudio';
+} from "lucide-react";
+import { FruitProject } from "../types/fruitStudio";
 
 interface StepProgressBarProps {
   currentStep: number;
@@ -24,13 +24,34 @@ interface StepProgressBarProps {
 }
 
 const STEPS = [
-  { step: 1, label: 'Scénario', icon: Sparkles, desc: 'Concept & ADN' },
-  { step: 2, label: 'Bible d’Histoire', icon: BookOpen, desc: 'Verrouillée', hasLock: true },
-  { step: 3, label: 'Personnages & Lieux', icon: Users, desc: 'Photos de réf.' },
-  { step: 4, label: 'Plan Scènes', icon: ListOrdered, desc: 'Beat sheet' },
-  { step: 5, label: 'Scènes Flow', icon: Film, desc: 'Prompts 10s' },
-  { step: 6, label: 'Pack Publication', icon: Share2, desc: 'Couvertures & Titres' },
-  { step: 7, label: 'Audit & Export', icon: ShieldCheck, desc: 'Continuité IA' },
+  { step: 1, label: "Scénario", icon: Sparkles, desc: "Concept & ADN" },
+  {
+    step: 2,
+    label: "Bible d’Histoire",
+    icon: BookOpen,
+    desc: "Verrouillée",
+    hasLock: true,
+  },
+  {
+    step: 3,
+    label: "Personnages & Lieux",
+    icon: Users,
+    desc: "Photos de réf.",
+  },
+  { step: 4, label: "Plan Scènes", icon: ListOrdered, desc: "Beat sheet" },
+  { step: 5, label: "Scènes Flow", icon: Film, desc: "Prompts 10s" },
+  {
+    step: 6,
+    label: "Pack Publication",
+    icon: Share2,
+    desc: "Couvertures & Titres",
+  },
+  {
+    step: 7,
+    label: "Audit & Export",
+    icon: ShieldCheck,
+    desc: "Continuité IA",
+  },
 ];
 
 export const StepProgressBar: React.FC<StepProgressBarProps> = ({
@@ -44,7 +65,7 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
       <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
         <div className="flex items-center min-w-[760px] justify-between relative">
           {/* Connecting line */}
-          <div className="absolute left-6 right-6 top-5 h-0.5 bg-zinc-800 -z-0" />
+          <div className="absolute left-6 right-6 top-5 h-0.5 bg-gradient-to-r from-zinc-800 via-rose-500/50 to-zinc-800 shadow-[0_0_8px_rgba(244,63,94,0.3)] -z-0" />
 
           {STEPS.map((s) => {
             const Icon = s.icon;
@@ -61,10 +82,10 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                 <div
                   className={`flex items-center justify-center w-10 h-10 rounded-xl font-bold text-xs transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/20 shadow-lg shadow-rose-950/50 scale-110'
+                      ? "bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/40 shadow-[0_0_15px_rgba(244,63,94,0.6)] shadow-rose-950/50 scale-110"
                       : isCompleted
-                      ? 'bg-zinc-800 text-rose-300 border border-rose-500/40 hover:bg-zinc-700'
-                      : 'bg-zinc-900 text-zinc-500 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-400'
+                        ? "bg-zinc-800 text-rose-300 border border-rose-500/40 hover:bg-zinc-700"
+                        : "bg-zinc-900 text-zinc-500 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-400"
                   }`}
                 >
                   {isStep2Locked ? (
@@ -79,10 +100,10 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                     <span
                       className={`text-xs font-semibold tracking-tight transition ${
                         isActive
-                          ? 'text-white'
+                          ? "text-white"
                           : isCompleted
-                          ? 'text-zinc-300'
-                          : 'text-zinc-500 group-hover:text-zinc-400'
+                            ? "text-zinc-300"
+                            : "text-zinc-500 group-hover:text-zinc-400"
                       }`}
                     >
                       {s.step}. {s.label}
@@ -92,7 +113,7 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                     )}
                   </div>
                   <span className="text-[10px] text-zinc-500 block leading-tight">
-                    {s.step === 2 && isBibleLocked ? 'Verrouillée' : s.desc}
+                    {s.step === 2 && isBibleLocked ? "Verrouillée" : s.desc}
                   </span>
                 </div>
               </button>

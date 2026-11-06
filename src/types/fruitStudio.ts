@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type InputMode = 'scratch' | 'video_analysis';
+export type InputMode = "scratch" | "video_analysis";
 
 export interface ViralDna {
   hook3s: string;
@@ -49,7 +49,7 @@ export interface SecretItem {
   knownBy: string[];
   revealedAt: string;
   resolution: string;
-  status: 'caché' | 'révélé';
+  status: "caché" | "révélé";
 }
 
 export interface StoryBible {
@@ -71,7 +71,7 @@ export interface StoryBible {
     climax: string;
     fallout: string;
   };
-  dialogueMode: 'dialogue' | 'silent_cartoon';
+  dialogueMode: "dialogue" | "silent_cartoon";
 }
 
 export interface ContinuityRegister {
@@ -134,7 +134,7 @@ export interface ScenePrompt {
   durationSeconds: 10;
   charactersPresent: string[];
   location: string;
-  status: 'todo' | 'prompt_copied' | 'video_generated' | 'redo';
+  status: "todo" | "prompt_copied" | "video_generated" | "redo";
   ingredientChecklist: {
     characters: string[];
     location: string;
@@ -159,7 +159,7 @@ export interface ScenePrompt {
 }
 
 export interface ThumbnailVariant {
-  type: 'shock' | 'confrontation' | 'mystery';
+  type: "shock" | "confrontation" | "mystery";
   nameFr: string;
   descriptionFr: string;
   geminiPrompt: string; // 6F format
@@ -174,7 +174,7 @@ export interface ShortsTitle {
 }
 
 export interface DescriptionVariant {
-  tone: 'mystery' | 'drama' | 'humor';
+  tone: "mystery" | "drama" | "humor";
   toneLabelFr: string;
   captionEn: string;
   translationFr: string;
@@ -220,18 +220,18 @@ export interface PublicationPack {
 export interface AuditIssue {
   id: string;
   type:
-    | 'contradiction'
-    | 'unresolved_secret'
-    | 'word_count_exceeded'
-    | 'character_overflow'
-    | 'descriptor_mismatch'
-    | 'spoiler'
-    | 'hashtag_mismatch'
-    | 'info';
-  severity: 'error' | 'warning' | 'info';
+    | "contradiction"
+    | "unresolved_secret"
+    | "word_count_exceeded"
+    | "character_overflow"
+    | "descriptor_mismatch"
+    | "spoiler"
+    | "hashtag_mismatch"
+    | "info";
+  severity: "error" | "warning" | "info";
   titleFr: string;
   descriptionFr: string;
-  targetEntity: 'bible' | 'scene' | 'character' | 'publication';
+  targetEntity: "bible" | "scene" | "character" | "publication";
   targetIndex?: number;
   canAutoFix: boolean;
   suggestedFixFr: string;
