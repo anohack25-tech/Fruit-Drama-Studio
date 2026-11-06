@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Clapperboard,
   Sparkles,
@@ -19,9 +19,9 @@ import {
   Check,
   FolderOpen,
   Flame,
-} from 'lucide-react';
-import { FruitProject } from '../types/fruitStudio';
-import { downloadFile } from '../utils/formatters';
+} from "lucide-react";
+import { FruitProject } from "../types/fruitStudio";
+import { downloadFile } from "../utils/formatters";
 
 interface HeaderProps {
   project: FruitProject;
@@ -57,10 +57,18 @@ export const Header: React.FC<HeaderProps> = ({
   const [copiedNotification, setCopiedNotification] = useState(false);
 
   const handleExportJson = () => {
-    const filename = `${(project.bible?.seriesTitle || project.title || 'fruit-studio-project')
+    const filename = `${(
+      project.bible?.seriesTitle ||
+      project.title ||
+      "fruit-studio-project"
+    )
       .toLowerCase()
-      .replace(/[^a-z0-9]/g, '-')}.json`;
-    downloadFile(filename, JSON.stringify(project, null, 2), 'application/json');
+      .replace(/[^a-z0-9]/g, "-")}.json`;
+    downloadFile(
+      filename,
+      JSON.stringify(project, null, 2),
+      "application/json",
+    );
     setCopiedNotification(true);
     setTimeout(() => setCopiedNotification(false), 2500);
   };
@@ -76,15 +84,15 @@ export const Header: React.FC<HeaderProps> = ({
           onImportProject(imported);
         }
       } catch (err) {
-        alert('Fichier JSON invalide pour le projet Fruit Studio.');
+        alert("Fichier JSON invalide pour le projet Fruit Studio.");
       }
     };
     reader.readAsText(file);
-    e.target.value = '';
+    e.target.value = "";
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 px-4 py-2.5 shadow-xl">
+    <header className="sticky top-0 z-40 bg-zinc-950/70 backdrop-blur-2xl border-b border-zinc-800/50 px-4 py-2.5 shadow-xl">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
         {/* Brand */}
         <div className="flex items-center gap-3">
@@ -101,7 +109,7 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             </div>
             <p className="text-[11px] text-zinc-400 line-clamp-1 max-w-[280px] sm:max-w-sm">
-              {project.bible?.seriesTitle || project.title || 'Nouveau Projet'}
+              {project.bible?.seriesTitle || project.title || "Nouveau Projet"}
             </p>
           </div>
         </div>
@@ -116,7 +124,11 @@ export const Header: React.FC<HeaderProps> = ({
               className="bg-transparent border-none text-zinc-200 focus:outline-none cursor-pointer pr-4 text-xs font-medium"
             >
               {projectsList.map((p) => (
-                <option key={p.id} value={p.id} className="bg-zinc-900 text-zinc-200">
+                <option
+                  key={p.id}
+                  value={p.id}
+                  className="bg-zinc-900 text-zinc-200"
+                >
                   {p.title}
                 </option>
               ))}
@@ -215,7 +227,12 @@ export const Header: React.FC<HeaderProps> = ({
             className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800 transition cursor-pointer"
           >
             <Upload className="w-4 h-4" />
-            <input type="file" accept=".json" onChange={handleImportFile} className="hidden" />
+            <input
+              type="file"
+              accept=".json"
+              onChange={handleImportFile}
+              className="hidden"
+            />
           </label>
 
           {/* Settings */}

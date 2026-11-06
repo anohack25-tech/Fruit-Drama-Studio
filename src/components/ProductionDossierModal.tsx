@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   X,
   FileText,
@@ -14,14 +14,14 @@ import {
   Sparkles,
   Layers,
   BookOpen,
-} from 'lucide-react';
-import { FruitProject } from '../types/fruitStudio';
+} from "lucide-react";
+import { FruitProject } from "../types/fruitStudio";
 import {
   generateMarkdownDossier,
   generatePlainTextDossier,
   downloadFile,
   copyToClipboard,
-} from '../utils/formatters';
+} from "../utils/formatters";
 
 interface ProductionDossierModalProps {
   project: FruitProject;
@@ -32,28 +32,29 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
   project,
   onClose,
 }) => {
-  const { bible, characters, locations, scenes, beatSheet, publicationPack } = project;
-  const [activeTab, setActiveTab] = useState<'script' | 'markdown' | 'flow_sheet' | 'json'>(
-    'script'
-  );
+  const { bible, characters, locations, scenes, beatSheet, publicationPack } =
+    project;
+  const [activeTab, setActiveTab] = useState<
+    "script" | "markdown" | "flow_sheet" | "json"
+  >("script");
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopyCurrent = async () => {
-    let content = '';
-    if (activeTab === 'script') {
+    let content = "";
+    if (activeTab === "script") {
       content = generatePlainTextDossier(project);
-    } else if (activeTab === 'markdown') {
+    } else if (activeTab === "markdown") {
       content = generateMarkdownDossier(project);
-    } else if (activeTab === 'flow_sheet') {
+    } else if (activeTab === "flow_sheet") {
       content = scenes
         .map(
           (s) =>
             `=== SCÈNE ${s.sceneNumber} : "${s.title}" (10s) ===\nINGRÉDIENTS : ${s.ingredientChecklist.characters.join(
-              ', '
-            )} + ${s.ingredientChecklist.location}\n\nPROMPT FLOW :\n${s.flowPrompt}\n\nVERSION COURTE :\n${s.shortBackupPrompt}\n`
+              ", ",
+            )} + ${s.ingredientChecklist.location}\n\nPROMPT FLOW :\n${s.flowPrompt}\n\nVERSION COURTE :\n${s.shortBackupPrompt}\n`,
         )
-        .join('\n----------------------------------------\n\n');
-    } else if (activeTab === 'json') {
+        .join("\n----------------------------------------\n\n");
+    } else if (activeTab === "json") {
       content = JSON.stringify(project, null, 2);
     }
 
@@ -65,16 +66,32 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
   };
 
   const handleDownload = () => {
-    const slug = (bible.seriesTitle || project.title || 'fruit-studio-production')
+    const slug = (
+      bible.seriesTitle ||
+      project.title ||
+      "fruit-studio-production"
+    )
       .toLowerCase()
-      .replace(/[^a-z0-9]/g, '-');
+      .replace(/[^a-z0-9]/g, "-");
 
-    if (activeTab === 'markdown') {
-      downloadFile(`${slug}-dossier.md`, generateMarkdownDossier(project), 'text/markdown');
-    } else if (activeTab === 'flow_sheet' || activeTab === 'script') {
-      downloadFile(`${slug}-script.txt`, generatePlainTextDossier(project), 'text/plain');
-    } else if (activeTab === 'json') {
-      downloadFile(`${slug}-project.json`, JSON.stringify(project, null, 2), 'application/json');
+    if (activeTab === "markdown") {
+      downloadFile(
+        `${slug}-dossier.md`,
+        generateMarkdownDossier(project),
+        "text/markdown",
+      );
+    } else if (activeTab === "flow_sheet" || activeTab === "script") {
+      downloadFile(
+        `${slug}-script.txt`,
+        generatePlainTextDossier(project),
+        "text/plain",
+      );
+    } else if (activeTab === "json") {
+      downloadFile(
+        `${slug}-project.json`,
+        JSON.stringify(project, null, 2),
+        "application/json",
+      );
     }
   };
 
@@ -101,7 +118,8 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
                 </span>
               </div>
               <p className="text-xs text-zinc-400">
-                {bible.seriesTitle} — Mise en page scénario standard, Markdown, Fiche tournage et JSON
+                {bible.seriesTitle} — Mise en page scénario standard, Markdown,
+                Fiche tournage et JSON
               </p>
             </div>
           </div>
@@ -129,41 +147,41 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
         <div className="px-6 py-3 border-b border-zinc-800/80 bg-zinc-900/40 flex items-center justify-between gap-2 overflow-x-auto print:hidden">
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setActiveTab('script')}
+              onClick={() => setActiveTab("script")}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
-                activeTab === 'script'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-zinc-200'
+                activeTab === "script"
+                  ? "bg-purple-600 text-white"
+                  : "bg-zinc-900 text-zinc-400 hover:text-zinc-200"
               }`}
             >
               Format Script Hollywood (Standard 10s)
             </button>
             <button
-              onClick={() => setActiveTab('markdown')}
+              onClick={() => setActiveTab("markdown")}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
-                activeTab === 'markdown'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-zinc-200'
+                activeTab === "markdown"
+                  ? "bg-purple-600 text-white"
+                  : "bg-zinc-900 text-zinc-400 hover:text-zinc-200"
               }`}
             >
               Dossier Complet (.MD)
             </button>
             <button
-              onClick={() => setActiveTab('flow_sheet')}
+              onClick={() => setActiveTab("flow_sheet")}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
-                activeTab === 'flow_sheet'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-zinc-200'
+                activeTab === "flow_sheet"
+                  ? "bg-purple-600 text-white"
+                  : "bg-zinc-900 text-zinc-400 hover:text-zinc-200"
               }`}
             >
               Fiche Tournage Flow (.TXT)
             </button>
             <button
-              onClick={() => setActiveTab('json')}
+              onClick={() => setActiveTab("json")}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
-                activeTab === 'json'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-zinc-200'
+                activeTab === "json"
+                  ? "bg-purple-600 text-white"
+                  : "bg-zinc-900 text-zinc-400 hover:text-zinc-200"
               }`}
             >
               Archive Projet (.JSON)
@@ -175,8 +193,12 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
               onClick={handleCopyCurrent}
               className="flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold px-3 py-1.5 rounded-xl text-xs transition cursor-pointer border border-zinc-700"
             >
-              {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{isCopied ? 'Copié !' : 'Tout Copier'}</span>
+              {isCopied ? (
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
+              ) : (
+                <Copy className="w-3.5 h-3.5" />
+              )}
+              <span>{isCopied ? "Copié !" : "Tout Copier"}</span>
             </button>
 
             <button
@@ -192,18 +214,19 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
         {/* Content body */}
         <div className="flex-1 overflow-y-auto p-6 font-mono text-xs">
           {/* TAB 1: Hollywood Vertical Script Layout */}
-          {activeTab === 'script' && (
+          {activeTab === "script" && (
             <div className="max-w-3xl mx-auto bg-zinc-900 text-zinc-100 p-8 sm:p-12 rounded-2xl shadow-2xl border border-zinc-800 space-y-6 leading-relaxed print:bg-white print:text-black print:p-0 print:border-none print:shadow-none">
               {/* Title Page Block */}
               <div className="text-center border-b border-zinc-800 pb-8 space-y-2 print:border-black">
                 <h1 className="text-2xl font-black tracking-widest uppercase">
-                  {bible.seriesTitle || 'FRUIT DRAMA SERIES'}
+                  {bible.seriesTitle || "FRUIT DRAMA SERIES"}
                 </h1>
                 <h2 className="text-sm font-bold text-zinc-400 print:text-black">
-                  {bible.episodeName || 'Episode 1'}
+                  {bible.episodeName || "Episode 1"}
                 </h2>
                 <div className="text-[11px] text-zinc-500 print:text-black mt-2">
-                  Format : Micro-Série Animée 3D Verticale 9:16 (Google Flow / Veo) • Durée : {scenes.length * 10}s
+                  Format : Micro-Série Animée 3D Verticale 9:16 (Google Flow /
+                  Veo) • Durée : {scenes.length * 10}s
                 </div>
                 <div className="text-[11px] text-zinc-500 print:text-black">
                   Bible d'Histoire Verrouillée • Studio Fruit Studio
@@ -215,7 +238,9 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
                 <span className="font-bold text-zinc-400 print:text-black uppercase text-[10px] tracking-wider block">
                   LOGLINE
                 </span>
-                <p className="text-zinc-300 print:text-black italic">"{bible.logline}"</p>
+                <p className="text-zinc-300 print:text-black italic">
+                  "{bible.logline}"
+                </p>
               </div>
 
               {/* Characters Master Cast */}
@@ -225,9 +250,14 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
                 </span>
                 {characters.map((c) => (
                   <div key={c.id} className="text-xs space-y-0.5">
-                    <strong>{c.name.toUpperCase()}</strong> ({c.species} - {c.role}) :
-                    <p className="text-zinc-400 print:text-black pl-4">Look : "{c.lockedDescriptor}"</p>
-                    <p className="text-zinc-500 print:text-black pl-4">Voix : "{c.voiceDescriptor}"</p>
+                    <strong>{c.name.toUpperCase()}</strong> ({c.species} -{" "}
+                    {c.role}) :
+                    <p className="text-zinc-400 print:text-black pl-4">
+                      Look : "{c.lockedDescriptor}"
+                    </p>
+                    <p className="text-zinc-500 print:text-black pl-4">
+                      Voix : "{c.voiceDescriptor}"
+                    </p>
                   </div>
                 ))}
               </div>
@@ -238,18 +268,27 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
                   <div key={s.id} className="space-y-3">
                     {/* Scene Slugline */}
                     <div className="font-bold uppercase tracking-wider text-amber-400 print:text-black">
-                      SCÈNE {s.sceneNumber} — INT. {s.location.toUpperCase()} — JOUR (10 SECONDES)
+                      SCÈNE {s.sceneNumber} — INT. {s.location.toUpperCase()} —
+                      JOUR (10 SECONDES)
                     </div>
 
                     <div className="text-[11px] text-zinc-400 print:text-black italic pl-4">
-                      [Ingrédients : {s.ingredientChecklist.characters.join(', ')} + {s.ingredientChecklist.location}]
+                      [Ingrédients :{" "}
+                      {s.ingredientChecklist.characters.join(", ")} +{" "}
+                      {s.ingredientChecklist.location}]
                     </div>
 
                     {/* Timed Beats Action */}
                     <div className="space-y-1 text-zinc-300 print:text-black pl-4">
-                      <p><strong>0–3s :</strong> {s.timedBeats?.beat0to3}</p>
-                      <p><strong>3–6s :</strong> {s.timedBeats?.beat3to6}</p>
-                      <p><strong>6–10s :</strong> {s.timedBeats?.beat6to10}</p>
+                      <p>
+                        <strong>0–3s :</strong> {s.timedBeats?.beat0to3}
+                      </p>
+                      <p>
+                        <strong>3–6s :</strong> {s.timedBeats?.beat3to6}
+                      </p>
+                      <p>
+                        <strong>6–10s :</strong> {s.timedBeats?.beat6to10}
+                      </p>
                     </div>
 
                     {/* Dialogue Cues */}
@@ -290,19 +329,24 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
           )}
 
           {/* TAB 2: Markdown */}
-          {activeTab === 'markdown' && (
+          {activeTab === "markdown" && (
             <pre className="text-zinc-300 bg-zinc-900 border border-zinc-800 rounded-xl p-5 overflow-x-auto whitespace-pre-wrap leading-relaxed">
               {generateMarkdownDossier(project)}
             </pre>
           )}
 
           {/* TAB 3: Flow Sheet */}
-          {activeTab === 'flow_sheet' && (
+          {activeTab === "flow_sheet" && (
             <div className="space-y-6">
               {scenes.map((s) => (
-                <div key={s.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-2">
+                <div
+                  key={s.id}
+                  className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-2"
+                >
                   <div className="flex items-center justify-between font-bold text-emerald-400">
-                    <span>SCÈNE {s.sceneNumber} : "{s.title}" (10 SECONDES)</span>
+                    <span>
+                      SCÈNE {s.sceneNumber} : "{s.title}" (10 SECONDES)
+                    </span>
                     <button
                       onClick={() => copyToClipboard(s.flowPrompt)}
                       className="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-2.5 py-1 rounded cursor-pointer"
@@ -319,7 +363,7 @@ export const ProductionDossierModal: React.FC<ProductionDossierModalProps> = ({
           )}
 
           {/* TAB 4: JSON */}
-          {activeTab === 'json' && (
+          {activeTab === "json" && (
             <pre className="text-zinc-300 bg-zinc-900 border border-zinc-800 rounded-xl p-5 overflow-x-auto whitespace-pre-wrap leading-relaxed">
               {JSON.stringify(project, null, 2)}
             </pre>

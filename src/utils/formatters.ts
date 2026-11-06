@@ -3,36 +3,40 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { FruitProject } from '../types/fruitStudio';
+import { FruitProject } from "../types/fruitStudio";
 
 export function copyToClipboard(text: string): Promise<boolean> {
   if (navigator?.clipboard?.writeText) {
-    return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
+    return navigator.clipboard
+      .writeText(text)
+      .then(() => true)
+      .catch(() => false);
   }
   try {
-    const textArea = document.createElement('textarea');
+    const textArea = document.createElement("textarea");
     textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.opacity = '0';
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    const success = document.execCommand('copy');
+    const success = document.execCommand("copy");
     document.body.removeChild(textArea);
     return Promise.resolve(success);
   } catch (e) {
-    console.error('Copy failed:', e);
+    console.error("Copy failed:", e);
     return Promise.resolve(false);
   }
 }
 
 export function generateMarkdownDossier(project: FruitProject): string {
-  const { bible, characters, locations, beatSheet, scenes, publicationPack } = project;
+  const { bible, characters, locations, beatSheet, scenes, publicationPack } =
+    project;
 
   return `# ${bible.seriesTitle || project.title} — DOSSIER DE PRODUCTION FRUIT STUDIO
 **Format :** Série 3D Animée Virale (TikTok, Reels, Shorts)
 **Genre :** ${bible.genre} | **Ton :** ${bible.tone}
-**Date :** ${new Date(project.updatedAt).toLocaleDateString('fr-FR')}
+**Date :** ${new Date(project.updatedAt).toLocaleDateString("fr-FR")}
 
 ---
 
@@ -45,20 +49,20 @@ export function generateMarkdownDossier(project: FruitProject): string {
 ${bible.characters
   .map(
     (c) =>
-      `* **${c.name}** (${c.species} - ${c.role}) : ${c.personality}\n  * Objectif : ${c.goal}\n  * Secret : ${c.secret}`
+      `* **${c.name}** (${c.species} - ${c.role}) : ${c.personality}\n  * Objectif : ${c.goal}\n  * Secret : ${c.secret}`,
   )
-  .join('\n\n')}
+  .join("\n\n")}
 
 ### Lieux
-${bible.locations.map((l) => `* **${l.name}** : ${l.description}`).join('\n')}
+${bible.locations.map((l) => `* **${l.name}** : ${l.description}`).join("\n")}
 
 ### Carte des Secrets
 ${bible.secretsMap
   .map(
     (s) =>
-      `* **${s.description}**\n  * Introduit : ${s.introducedAt} | Connu par : ${s.knownBy.join(', ')}\n  * Révélé : ${s.revealedAt} | Résolution : ${s.resolution}`
+      `* **${s.description}**\n  * Introduit : ${s.introducedAt} | Connu par : ${s.knownBy.join(", ")}\n  * Révélé : ${s.revealedAt} | Résolution : ${s.resolution}`,
   )
-  .join('\n\n')}
+  .join("\n\n")}
 
 ### Fin Complète
 ${bible.fullEnding}
@@ -86,11 +90,11 @@ ${
 \`\`\`text
 ${c.closeUpPrompt}
 \`\`\``
-    : ''
+    : ""
 }
-`
+`,
   )
-  .join('\n---\n')}
+  .join("\n---\n")}
 
 ---
 
@@ -104,9 +108,9 @@ ${locations
 \`\`\`text
 ${l.masterPlatePrompt}
 \`\`\`
-`
+`,
   )
-  .join('\n')}
+  .join("\n")}
 
 ---
 
@@ -117,9 +121,9 @@ ${l.masterPlatePrompt}
 ${beatSheet
   .map(
     (b) =>
-      `| ${b.sceneNumber} | 10s | ${b.location} | ${b.charactersPresent.join(', ')} | ${b.conflict} | ${b.twistOrCliffhanger} (Tension: ${b.tensionLevel}/10) |`
+      `| ${b.sceneNumber} | 10s | ${b.location} | ${b.charactersPresent.join(", ")} | ${b.conflict} | ${b.twistOrCliffhanger} (Tension: ${b.tensionLevel}/10) |`,
   )
-  .join('\n')}
+  .join("\n")}
 
 ---
 
@@ -129,11 +133,11 @@ ${scenes
   .map(
     (s) => `### Scène ${s.sceneNumber} : "${s.title}" (10s)
 * **Lieu :** ${s.location}
-* **Personnages présents :** ${s.charactersPresent.join(', ')}
+* **Personnages présents :** ${s.charactersPresent.join(", ")}
 * **Mots de dialogue anglais :** ${s.wordCount} (max 30 mots)
 
 **CHECKLIST INGRÉDIENTS FLOW :**
-* Images de référence : ${s.ingredientChecklist.characters.join(', ')}
+* Images de référence : ${s.ingredientChecklist.characters.join(", ")}
 * Plate décor : ${s.ingredientChecklist.location}
 * *Rappel : ${s.ingredientChecklist.reminderFr}*
 
@@ -154,11 +158,11 @@ ${
 ${s.firstFramePrompt}
 \`\`\`
 `
-    : ''
+    : ""
 }
-`
+`,
   )
-  .join('\n---\n')}
+  .join("\n---\n")}
 
 ---
 
@@ -171,21 +175,21 @@ ${s.firstFramePrompt}
 ### Titres YouTube Shorts
 ${publicationPack.shortsTitles
   .map((t) => `* **${t.titleEn}** (${t.charCount} car.) — *${t.translationFr}*`)
-  .join('\n')}
+  .join("\n")}
 
 ### Descriptions
 ${publicationPack.descriptions
   .map(
     (d) => `* **[${d.toneLabelFr}]**
   ${d.captionEn}
-  *(Traduction : ${d.translationFr})*`
+  *(Traduction : ${d.translationFr})*`,
   )
-  .join('\n\n')}
+  .join("\n\n")}
 
 ### Hashtags
-* **TikTok :** ${publicationPack.hashtags.tiktok.join(' ')}
-* **Instagram Reels :** ${publicationPack.hashtags.reels.join(' ')}
-* **YouTube Shorts :** ${publicationPack.hashtags.shorts.join(' ')}
+* **TikTok :** ${publicationPack.hashtags.tiktok.join(" ")}
+* **Instagram Reels :** ${publicationPack.hashtags.reels.join(" ")}
+* **YouTube Shorts :** ${publicationPack.hashtags.shorts.join(" ")}
 
 ### Commentaires
 * **Épinglé :** "${publicationPack.pinnedComment.textEn}"
@@ -199,13 +203,20 @@ ${publicationPack.descriptions
 }
 
 export function generatePlainTextDossier(project: FruitProject): string {
-  return generateMarkdownDossier(project).replace(/```text/g, '').replace(/```/g, '').replace(/#/g, '');
+  return generateMarkdownDossier(project)
+    .replace(/```text/g, "")
+    .replace(/```/g, "")
+    .replace(/#/g, "");
 }
 
-export function downloadFile(filename: string, content: string, contentType: string) {
+export function downloadFile(
+  filename: string,
+  content: string,
+  contentType: string,
+) {
   const blob = new Blob([content], { type: contentType });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = filename;
   document.body.appendChild(a);

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Share2,
   Copy,
@@ -20,11 +20,11 @@ import {
   Youtube,
   Tv,
   HelpCircle,
-} from 'lucide-react';
-import { FruitProject, PublicationPack } from '../types/fruitStudio';
-import { copyToClipboard } from '../utils/formatters';
-import { DEMO_PROJECT } from '../data/demoProject';
-import { generateFullStudioProject } from '../services/studioEngine';
+} from "lucide-react";
+import { FruitProject, PublicationPack } from "../types/fruitStudio";
+import { copyToClipboard } from "../utils/formatters";
+import { DEMO_PROJECT } from "../data/demoProject";
+import { generateFullStudioProject } from "../services/studioEngine";
 
 interface Step6PublicationProps {
   project: FruitProject;
@@ -54,9 +54,9 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
     setIsGenerating(true);
     setError(null);
     try {
-      const res = await fetch('/api/gemini/generate-publication-pack', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini/generate-publication-pack", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bible,
           characters,
@@ -66,7 +66,7 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
       });
 
       if (!res.ok) {
-        throw new Error('Fallback to studio engine');
+        throw new Error("Fallback to studio engine");
       }
 
       const data = await res.json();
@@ -75,9 +75,19 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
         publicationPack: data.publicationPack,
       }));
     } catch (err: any) {
-      console.warn('Utilisation du moteur studio pour le pack publication:', err);
-      const scen = project.scenarios.find((s) => s.id === project.selectedScenarioId) || project.scenarios[0] || DEMO_PROJECT.scenarios[0];
-      const fullData = generateFullStudioProject(scen, project.scratchConfig, project.settings);
+      console.warn(
+        "Utilisation du moteur studio pour le pack publication:",
+        err,
+      );
+      const scen =
+        project.scenarios.find((s) => s.id === project.selectedScenarioId) ||
+        project.scenarios[0] ||
+        DEMO_PROJECT.scenarios[0];
+      const fullData = generateFullStudioProject(
+        scen,
+        project.scratchConfig,
+        project.settings,
+      );
       onUpdateProject((prev) => ({
         ...prev,
         publicationPack: fullData.publicationPack,
@@ -104,31 +114,38 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               Étape 6 / 7
             </span>
             <span className="text-zinc-500">•</span>
-            <span className="text-xs text-zinc-400">Kit Prêt à Publier pour TikTok, Reels et Shorts</span>
+            <span className="text-xs text-zinc-400">
+              Kit Prêt à Publier pour TikTok, Reels et Shorts
+            </span>
           </div>
           <h1 className="text-2xl font-extrabold text-white flex items-center gap-3">
             <Share2 className="w-6 h-6 text-pink-400" />
             Pack de Publication Viral
           </h1>
           <p className="mt-1 text-xs text-zinc-300 max-w-2xl">
-            Tous les textes et prompts de couverture sont rédigés en anglais pour le public américain,
-            avec leurs traductions en français en petit gris (non copiées).
+            Tous les textes et prompts de couverture sont rédigés en anglais
+            pour le public américain, avec leurs traductions en français en
+            petit gris (non copiées).
           </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => {
-              const title = publicationPack.shortsTitles?.[0]?.titleEn || 'Fruit Drama Episode 1';
-              const desc = publicationPack.descriptions?.[0]?.captionEn || '';
-              const hashtags = (publicationPack.hashtags?.tiktok || []).join(' ');
-              const pinned = publicationPack.pinnedComment?.textEn || '';
+              const title =
+                publicationPack.shortsTitles?.[0]?.titleEn ||
+                "Fruit Drama Episode 1";
+              const desc = publicationPack.descriptions?.[0]?.captionEn || "";
+              const hashtags = (publicationPack.hashtags?.tiktok || []).join(
+                " ",
+              );
+              const pinned = publicationPack.pinnedComment?.textEn || "";
               const bundle = `${title}\n\n${desc}\n\n${hashtags}\n\nPinned comment:\n${pinned}`;
-              handleCopy(bundle, 'full-publication-bundle');
+              handleCopy(bundle, "full-publication-bundle");
             }}
             className="flex items-center gap-1.5 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-black px-4 py-2 rounded-xl text-xs shadow-lg transition cursor-pointer"
           >
-            {copiedKey === 'full-publication-bundle' ? (
+            {copiedKey === "full-publication-bundle" ? (
               <>
                 <Check className="w-4 h-4" />
                 <span>PACK PUBLICATION COPIÉ !</span>
@@ -146,7 +163,9 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
             disabled={isGenerating}
             className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`}
+            />
             <span>Régénérer</span>
           </button>
 
@@ -163,7 +182,10 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
       {error && (
         <div className="bg-rose-950/60 border border-rose-700/80 rounded-xl p-4 text-xs text-rose-200 flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={() => setError(null)} className="underline cursor-pointer">
+          <button
+            onClick={() => setError(null)}
+            className="underline cursor-pointer"
+          >
             Fermer
           </button>
         </div>
@@ -173,7 +195,9 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
       <div className="bg-zinc-950 border border-amber-500/40 rounded-2xl p-4 flex items-start gap-3 text-xs text-amber-200">
         <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
         <div>
-          <span className="font-extrabold text-amber-300">RAPPEL RÉGLEMENTAIRE IMPORTANT : </span>
+          <span className="font-extrabold text-amber-300">
+            RAPPEL RÉGLEMENTAIRE IMPORTANT :{" "}
+          </span>
           {publicationPack.aiDisclosureNoticeFr ||
             'Pensez à activer le label "Contenu généré par IA" lors de la mise en ligne sur TikTok, Instagram et YouTube Shorts conformément aux règles des plateformes.'}
         </div>
@@ -188,12 +212,14 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               1. Les 3 Prompts d'Image de Couverture (Modèle 6F pour Gemini)
             </h2>
             <p className="text-xs text-zinc-400 mt-0.5">
-              Format vertical 9:16 avec safe area centrale. Le texte n'est pas dans le prompt d'image (ajoutez-le dans CapCut/TikTok).
+              Format vertical 9:16 avec safe area centrale. Le texte n'est pas
+              dans le prompt d'image (ajoutez-le dans CapCut/TikTok).
             </p>
           </div>
         </div>
 
-        {(!publicationPack.thumbnails || publicationPack.thumbnails.length === 0) && (
+        {(!publicationPack.thumbnails ||
+          publicationPack.thumbnails.length === 0) && (
           <div className="bg-zinc-950 border-2 border-dashed border-pink-500/40 rounded-2xl p-6 text-center space-y-3">
             <ImageIcon className="w-8 h-8 text-pink-400 mx-auto" />
             <h3 className="text-sm font-extrabold text-white">
@@ -237,7 +263,9 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
                     </span>
                   </div>
 
-                  <p className="text-xs text-zinc-300 leading-snug">{thumb.descriptionFr}</p>
+                  <p className="text-xs text-zinc-300 leading-snug">
+                    {thumb.descriptionFr}
+                  </p>
 
                   {/* Text Overlay Box */}
                   <div className="bg-zinc-900 border border-rose-500/30 rounded-lg p-3 space-y-1">
@@ -249,7 +277,11 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
                         onClick={() => handleCopy(thumb.coverText, textKey)}
                         className="text-[10px] text-zinc-300 hover:text-white flex items-center gap-1 cursor-pointer"
                       >
-                        {copiedKey === textKey ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                        {copiedKey === textKey ? (
+                          <Check className="w-3 h-3 text-emerald-400" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
                         Copier
                       </button>
                     </div>
@@ -267,7 +299,9 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
                       <span className="text-[10px] font-black uppercase tracking-wider text-pink-400">
                         PROMPT GEMINI IMAGE 6F
                       </span>
-                      <span className="text-[10px] text-zinc-500">9:16 vertical</span>
+                      <span className="text-[10px] text-zinc-500">
+                        9:16 vertical
+                      </span>
                     </div>
                     <pre className="text-xs text-zinc-100 bg-zinc-900/90 border border-zinc-800 rounded-lg p-3 overflow-x-auto whitespace-pre-wrap font-mono leading-relaxed select-all">
                       {thumb.geminiPrompt}
@@ -309,15 +343,22 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               2. Texte d'Accroche Vidéo (0–3s)
             </h2>
             <button
-              onClick={() => handleCopy(publicationPack.first3sHookText.textEn, 'hook3s')}
+              onClick={() =>
+                handleCopy(publicationPack.first3sHookText.textEn, "hook3s")
+              }
               className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold cursor-pointer"
             >
-              {copiedKey === 'hook3s' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              {copiedKey === "hook3s" ? (
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
+              ) : (
+                <Copy className="w-3.5 h-3.5" />
+              )}
               Copier
             </button>
           </div>
           <p className="text-xs text-zinc-400">
-            Texte à incruster au montage dans les 3 premières secondes pour fixer l'attention.
+            Texte à incruster au montage dans les 3 premières secondes pour
+            fixer l'attention.
           </p>
           <div className="bg-zinc-950 border border-amber-500/30 rounded-xl p-4">
             <div className="text-base font-black text-amber-300 font-mono tracking-wide">
@@ -339,20 +380,33 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
             {publicationPack.shortsTitles.map((st, i) => {
               const stKey = `shorts-title-${i}`;
               return (
-                <div key={i} className="bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 space-y-1.5">
+                <div
+                  key={i}
+                  className="bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 space-y-1.5"
+                >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">{st.titleEn}</span>
+                    <span className="text-xs font-bold text-white">
+                      {st.titleEn}
+                    </span>
                     <button
                       onClick={() => handleCopy(st.titleEn, stKey)}
                       className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer shrink-0 ml-2"
                     >
-                      {copiedKey === stKey ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      {copiedKey === stKey ? (
+                        <Check className="w-3 h-3 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-3 h-3" />
+                      )}
                       Copier
                     </button>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-zinc-500 italic">{st.translationFr}</span>
-                    <span className="text-zinc-400 font-mono">{st.charCount || st.titleEn.length}/70 car.</span>
+                    <span className="text-zinc-500 italic">
+                      {st.translationFr}
+                    </span>
+                    <span className="text-zinc-400 font-mono">
+                      {st.charCount || st.titleEn.length}/70 car.
+                    </span>
                   </div>
                 </div>
               );
@@ -384,12 +438,20 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
                       onClick={() => handleCopy(desc.captionEn, descKey)}
                       className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer"
                     >
-                      {copiedKey === descKey ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      {copiedKey === descKey ? (
+                        <Check className="w-3 h-3 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-3 h-3" />
+                      )}
                       Copier
                     </button>
                   </div>
-                  <p className="text-xs text-zinc-200 leading-relaxed font-medium">{desc.captionEn}</p>
-                  <p className="text-[11px] text-zinc-500 italic">{desc.translationFr}</p>
+                  <p className="text-xs text-zinc-200 leading-relaxed font-medium">
+                    {desc.captionEn}
+                  </p>
+                  <p className="text-[11px] text-zinc-500 italic">
+                    {desc.translationFr}
+                  </p>
                 </div>
               </div>
             );
@@ -406,8 +468,8 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
           </h2>
           <span className="text-[11px] text-zinc-400">
             {publicationPack.hashtags.trendsVerified
-              ? '✅ Tendances vérifiées en direct (Google Search)'
-              : 'ℹ️ Tags piliers fiables (à vérifier dans TikTok avant publication)'}
+              ? "✅ Tendances vérifiées en direct (Google Search)"
+              : "ℹ️ Tags piliers fiables (à vérifier dans TikTok avant publication)"}
           </span>
         </div>
 
@@ -421,11 +483,18 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               </span>
               <button
                 onClick={() =>
-                  handleCopy(publicationPack.hashtags.tiktok.join(' '), 'tags-tiktok')
+                  handleCopy(
+                    publicationPack.hashtags.tiktok.join(" "),
+                    "tags-tiktok",
+                  )
                 }
                 className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer"
               >
-                {copiedKey === 'tags-tiktok' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                {copiedKey === "tags-tiktok" ? (
+                  <Check className="w-3 h-3 text-emerald-400" />
+                ) : (
+                  <Copy className="w-3 h-3" />
+                )}
                 Copier
               </button>
             </div>
@@ -450,11 +519,18 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               </span>
               <button
                 onClick={() =>
-                  handleCopy(publicationPack.hashtags.reels.join(' '), 'tags-reels')
+                  handleCopy(
+                    publicationPack.hashtags.reels.join(" "),
+                    "tags-reels",
+                  )
                 }
                 className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer"
               >
-                {copiedKey === 'tags-reels' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                {copiedKey === "tags-reels" ? (
+                  <Check className="w-3 h-3 text-emerald-400" />
+                ) : (
+                  <Copy className="w-3 h-3" />
+                )}
                 Copier
               </button>
             </div>
@@ -479,11 +555,18 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               </span>
               <button
                 onClick={() =>
-                  handleCopy(publicationPack.hashtags.shorts.join(' '), 'tags-shorts')
+                  handleCopy(
+                    publicationPack.hashtags.shorts.join(" "),
+                    "tags-shorts",
+                  )
                 }
                 className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer"
               >
-                {copiedKey === 'tags-shorts' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                {copiedKey === "tags-shorts" ? (
+                  <Check className="w-3 h-3 text-emerald-400" />
+                ) : (
+                  <Copy className="w-3 h-3" />
+                )}
                 Copier
               </button>
             </div>
@@ -510,10 +593,16 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               6. Commentaire Épinglé (Catalyseur de Débat)
             </h2>
             <button
-              onClick={() => handleCopy(publicationPack.pinnedComment.textEn, 'pin-comment')}
+              onClick={() =>
+                handleCopy(publicationPack.pinnedComment.textEn, "pin-comment")
+              }
               className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer"
             >
-              {copiedKey === 'pin-comment' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+              {copiedKey === "pin-comment" ? (
+                <Check className="w-3 h-3 text-emerald-400" />
+              ) : (
+                <Copy className="w-3 h-3" />
+              )}
               Copier
             </button>
           </div>
@@ -534,10 +623,16 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               7. Commentaire de Relance (Réponses aux viewers)
             </h2>
             <button
-              onClick={() => handleCopy(publicationPack.replyComment.textEn, 'reply-comment')}
+              onClick={() =>
+                handleCopy(publicationPack.replyComment.textEn, "reply-comment")
+              }
               className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer"
             >
-              {copiedKey === 'reply-comment' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+              {copiedKey === "reply-comment" ? (
+                <Check className="w-3 h-3 text-emerald-400" />
+              ) : (
+                <Copy className="w-3 h-3" />
+              )}
               Copier
             </button>
           </div>
@@ -566,9 +661,14 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
                 Bios de Profil Recommandées
               </span>
               {publicationPack.seriesPack.profileBios.map((bio, idx) => (
-                <div key={idx} className="bg-zinc-900/80 p-2.5 rounded-lg border border-zinc-800">
+                <div
+                  key={idx}
+                  className="bg-zinc-900/80 p-2.5 rounded-lg border border-zinc-800"
+                >
                   <p className="font-semibold text-white">{bio.bioEn}</p>
-                  <p className="text-[11px] text-zinc-500 italic mt-0.5">{bio.bioFr}</p>
+                  <p className="text-[11px] text-zinc-500 italic mt-0.5">
+                    {bio.bioFr}
+                  </p>
                 </div>
               ))}
             </div>
@@ -577,16 +677,20 @@ export const Step6Publication: React.FC<Step6PublicationProps> = ({
               <span className="font-extrabold uppercase tracking-wider text-purple-300 block">
                 Rythme & Contenus Annexes
               </span>
-              <p className="text-zinc-300">{publicationPack.seriesPack.publishingRhythmFr}</p>
+              <p className="text-zinc-300">
+                {publicationPack.seriesPack.publishingRhythmFr}
+              </p>
               <div className="pt-2 border-t border-zinc-800 space-y-1">
                 <span className="text-[10px] uppercase font-bold text-zinc-500 block">
                   Idées de déclinaisons :
                 </span>
-                {publicationPack.seriesPack.sideContentIdeasFr.map((idea, idx) => (
-                  <div key={idx} className="text-zinc-400">
-                    • {idea}
-                  </div>
-                ))}
+                {publicationPack.seriesPack.sideContentIdeasFr.map(
+                  (idea, idx) => (
+                    <div key={idx} className="text-zinc-400">
+                      • {idea}
+                    </div>
+                  ),
+                )}
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   X,
   Flame,
@@ -25,15 +25,15 @@ import {
   MessageSquare,
   Music,
   Tv,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   ViralStoryIdea,
   PRESET_VIRAL_STORIES,
   VIRAL_TROPES_LIST,
   generateSmartViralStory,
   convertViralStoryToStudioProject,
-} from '../services/viralDramaEngine';
-import { FruitProject } from '../types/fruitStudio';
+} from "../services/viralDramaEngine";
+import { FruitProject } from "../types/fruitStudio";
 
 interface ViralDramaStudioModalProps {
   isOpen: boolean;
@@ -46,15 +46,20 @@ export const ViralDramaStudioModal: React.FC<ViralDramaStudioModalProps> = ({
   onClose,
   onLoadStoryIntoStudio,
 }) => {
-  const [activeTab, setActiveTab] = useState<'feed' | 'generator'>('feed');
-  const [selectedStory, setSelectedStory] = useState<ViralStoryIdea>(PRESET_VIRAL_STORIES[0]);
-  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('Tous');
+  const [activeTab, setActiveTab] = useState<"feed" | "generator">("feed");
+  const [selectedStory, setSelectedStory] = useState<ViralStoryIdea>(
+    PRESET_VIRAL_STORIES[0],
+  );
+  const [selectedCategoryFilter, setSelectedCategoryFilter] =
+    useState<string>("Tous");
 
   // Generator form state
-  const [genCategory, setGenCategory] = useState<string>('Trahison & Vengeance');
-  const [genCharType, setGenCharType] = useState<string>('Fruits 3D stylisés');
+  const [genCategory, setGenCategory] = useState<string>(
+    "Trahison & Vengeance",
+  );
+  const [genCharType, setGenCharType] = useState<string>("Fruits 3D stylisés");
   const [genTensionLevel, setGenTensionLevel] = useState<number>(9);
-  const [genCustomIdea, setGenCustomIdea] = useState<string>('');
+  const [genCustomIdea, setGenCustomIdea] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   // Copy feedback
@@ -83,7 +88,7 @@ ${story.loopTrick}
 "${story.commentBaitQuestion}"
 
 🎭 PERSONNAGES :
-${story.characters.map((c) => `- ${c.name} (${c.species}) [${c.archetype}] : ${c.role}. Secret: ${c.secret}`).join('\n')}
+${story.characters.map((c) => `- ${c.name} (${c.species}) [${c.archetype}] : ${c.role}. Secret: ${c.secret}`).join("\n")}
 
 ====================================================
 DÉROULÉ SCÈNE PAR SCÈNE DU DÉBUT À LA FIN (6 SCÈNES DE 10s) :
@@ -97,20 +102,20 @@ ${story.scenes
 • Texte overlay CapCut : "${s.capcutTextOverlay}"
 • Son / Effet sonore : ${s.soundCue}
 • Caméra : ${s.cameraMovement}
-`
+`,
   )
-  .join('\n----------------------------------------------------\n')}
+  .join("\n----------------------------------------------------\n")}
 
 🎵 FICHE TECHNIQUE CAPCUT & SON :
 - Style musical : ${story.tiktokCapcutRecipe.trendingSoundStyle}
 - Voix IA recommandée : ${story.tiktokCapcutRecipe.recommendedVoice}
 - Étalonnage : ${story.tiktokCapcutRecipe.colorGrade}
 - Pacing sous-titres : ${story.tiktokCapcutRecipe.captionPacing}
-- Hashtags : ${story.tiktokCapcutRecipe.recommendedHashtags.join(' ')}
+- Hashtags : ${story.tiktokCapcutRecipe.recommendedHashtags.join(" ")}
 `;
 
     navigator.clipboard.writeText(text);
-    setCopiedId('script-' + story.id);
+    setCopiedId("script-" + story.id);
     setTimeout(() => setCopiedId(null), 2500);
   };
 
@@ -124,7 +129,7 @@ ${story.scenes
         customIdea: genCustomIdea,
       });
       setSelectedStory(newStory);
-      setActiveTab('feed');
+      setActiveTab("feed");
       setIsGenerating(false);
     }, 600);
   };
@@ -136,9 +141,11 @@ ${story.scenes
   };
 
   const filteredStories =
-    selectedCategoryFilter === 'Tous'
+    selectedCategoryFilter === "Tous"
       ? PRESET_VIRAL_STORIES
-      : PRESET_VIRAL_STORIES.filter((s) => s.tropeCategory === selectedCategoryFilter);
+      : PRESET_VIRAL_STORIES.filter(
+          (s) => s.tropeCategory === selectedCategoryFilter,
+        );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md animate-fadeIn">
@@ -152,14 +159,18 @@ ${story.scenes
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  TrendStory & Moqi <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-rose-400">Viral Studio</span>
+                  TrendStory & Moqi{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-rose-400">
+                    Viral Studio
+                  </span>
                 </h2>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-300 border border-rose-500/30 font-semibold uppercase tracking-wider">
                   Moteur de Micro-Dramas TikTok
                 </span>
               </div>
               <p className="text-xs text-zinc-400">
-                Histoires ultra-intelligentes du début à la fin : accroches 0-2s, escalades, twists et boucles infinies.
+                Histoires ultra-intelligentes du début à la fin : accroches
+                0-2s, escalades, twists et boucles infinies.
               </p>
             </div>
           </div>
@@ -167,21 +178,21 @@ ${story.scenes
           <div className="flex items-center gap-2">
             <div className="flex p-1 bg-zinc-900 border border-zinc-800 rounded-xl">
               <button
-                onClick={() => setActiveTab('feed')}
+                onClick={() => setActiveTab("feed")}
                 className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                  activeTab === 'feed'
-                    ? 'bg-rose-600 text-white shadow-md shadow-rose-950/50'
-                    : 'text-zinc-400 hover:text-white'
+                  activeTab === "feed"
+                    ? "bg-rose-600 text-white shadow-md shadow-rose-950/50"
+                    : "text-zinc-400 hover:text-white"
                 }`}
               >
                 🔥 Histoires Tendance ({PRESET_VIRAL_STORIES.length})
               </button>
               <button
-                onClick={() => setActiveTab('generator')}
+                onClick={() => setActiveTab("generator")}
                 className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                  activeTab === 'generator'
-                    ? 'bg-rose-600 text-white shadow-md shadow-rose-950/50'
-                    : 'text-zinc-400 hover:text-white'
+                  activeTab === "generator"
+                    ? "bg-rose-600 text-white shadow-md shadow-rose-950/50"
+                    : "text-zinc-400 hover:text-white"
                 }`}
               >
                 ✨ Créateur Moqi IA
@@ -199,26 +210,28 @@ ${story.scenes
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto">
-          {activeTab === 'feed' ? (
+          {activeTab === "feed" ? (
             <div className="p-6 space-y-6">
               {/* Category Filter Pills */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                 <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-1 mr-1">
                   <Tv className="w-3.5 h-3.5 text-amber-400" /> Tropes :
                 </span>
-                {['Tous', ...VIRAL_TROPES_LIST.map((t) => t.category)].map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategoryFilter(cat)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
-                      selectedCategoryFilter === cat
-                        ? 'bg-rose-600 text-white shadow-md shadow-rose-950/50 ring-1 ring-white/20'
-                        : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:bg-zinc-800 hover:text-zinc-200'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+                {["Tous", ...VIRAL_TROPES_LIST.map((t) => t.category)].map(
+                  (cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategoryFilter(cat)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
+                        selectedCategoryFilter === cat
+                          ? "bg-rose-600 text-white shadow-md shadow-rose-950/50 ring-1 ring-white/20"
+                          : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:bg-zinc-800 hover:text-zinc-200"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ),
+                )}
               </div>
 
               {/* Grid: Story Cards Selector & Detailed Inspector */}
@@ -243,8 +256,8 @@ ${story.scenes
                           onClick={() => setSelectedStory(story)}
                           className={`p-4 rounded-xl cursor-pointer border transition-all text-left relative overflow-hidden group ${
                             isSelected
-                              ? 'bg-gradient-to-br from-rose-950/40 via-zinc-900 to-zinc-900 border-rose-500/60 shadow-lg shadow-rose-950/30'
-                              : 'bg-zinc-900/60 border-zinc-800/80 hover:bg-zinc-900 hover:border-zinc-700'
+                              ? "bg-gradient-to-br from-rose-950/40 via-zinc-900 to-zinc-900 border-rose-500/60 shadow-lg shadow-rose-950/30"
+                              : "bg-zinc-900/60 border-zinc-800/80 hover:bg-zinc-900 hover:border-zinc-700"
                           }`}
                         >
                           {isSelected && (
@@ -269,10 +282,12 @@ ${story.scenes
 
                           <div className="mt-3 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400">
                             <span className="flex items-center gap-1 text-emerald-400 font-semibold">
-                              <TrendingUp className="w-3 h-3" /> Rétention 3s : {story.predictedRetention3s}%
+                              <TrendingUp className="w-3 h-3" /> Rétention 3s :{" "}
+                              {story.predictedRetention3s}%
                             </span>
                             <span className="flex items-center gap-1 text-purple-300">
-                              <Repeat className="w-3 h-3" /> Boucle : {story.completionRate}%
+                              <Repeat className="w-3 h-3" /> Boucle :{" "}
+                              {story.completionRate}%
                             </span>
                           </div>
                         </div>
@@ -292,7 +307,10 @@ ${story.scenes
                             {selectedStory.tropeCategory}
                           </span>
                           <span className="text-xs text-zinc-400 font-mono">
-                            Score Viral: <strong className="text-rose-400">{selectedStory.viralScore}/100</strong>
+                            Score Viral:{" "}
+                            <strong className="text-rose-400">
+                              {selectedStory.viralScore}/100
+                            </strong>
                           </span>
                         </div>
                         <h2 className="text-lg font-extrabold text-white">
@@ -308,7 +326,7 @@ ${story.scenes
                           onClick={() => handleCopyScript(selectedStory)}
                           className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors border border-zinc-700"
                         >
-                          {copiedId === 'script-' + selectedStory.id ? (
+                          {copiedId === "script-" + selectedStory.id ? (
                             <>
                               <Check className="w-3.5 h-3.5 text-emerald-400" />
                               <span>Script Copié !</span>
@@ -335,7 +353,8 @@ ${story.scenes
                     <div className="p-3.5 rounded-xl bg-gradient-to-r from-rose-950/30 via-zinc-950 to-zinc-950 border border-rose-500/30">
                       <div className="flex items-center justify-between text-xs font-bold text-rose-300 mb-1.5">
                         <span className="flex items-center gap-1.5">
-                          <Zap className="w-3.5 h-3.5 text-amber-400" /> ACCROCHE CHOC (0-2s SCROLL-STOPPER)
+                          <Zap className="w-3.5 h-3.5 text-amber-400" />{" "}
+                          ACCROCHE CHOC (0-2s SCROLL-STOPPER)
                         </span>
                         <span className="text-[11px] text-amber-400 font-mono font-normal">
                           Texte overlay : {selectedStory.hook0to2s.textSticker}
@@ -343,7 +362,10 @@ ${story.scenes
                       </div>
                       <div className="space-y-1 text-xs">
                         <p className="text-zinc-200">
-                          <strong className="text-rose-400">Action visuelle :</strong> {selectedStory.hook0to2s.visualShock}
+                          <strong className="text-rose-400">
+                            Action visuelle :
+                          </strong>{" "}
+                          {selectedStory.hook0to2s.visualShock}
                         </p>
                         <p className="font-mono text-amber-300 bg-zinc-900/80 px-2 py-1 rounded border border-zinc-800">
                           Audio EN : {selectedStory.hook0to2s.spokenLineEn}
@@ -358,7 +380,8 @@ ${story.scenes
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800">
                         <span className="font-bold text-purple-400 flex items-center gap-1 mb-1">
-                          <Repeat className="w-3.5 h-3.5" /> Boucle Infinie TikTok :
+                          <Repeat className="w-3.5 h-3.5" /> Boucle Infinie
+                          TikTok :
                         </span>
                         <p className="text-zinc-300 text-[11px] leading-relaxed">
                           {selectedStory.loopTrick}
@@ -366,7 +389,8 @@ ${story.scenes
                       </div>
                       <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800">
                         <span className="font-bold text-amber-400 flex items-center gap-1 mb-1">
-                          <MessageSquare className="w-3.5 h-3.5" /> Question Piquée (Commentaires) :
+                          <MessageSquare className="w-3.5 h-3.5" /> Question
+                          Piquée (Commentaires) :
                         </span>
                         <p className="text-zinc-300 text-[11px] leading-relaxed italic">
                           "{selectedStory.commentBaitQuestion}"
@@ -381,13 +405,22 @@ ${story.scenes
                       </span>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         {selectedStory.characters.map((c, i) => (
-                          <div key={i} className="p-2 rounded bg-zinc-900 border border-zinc-800/80 text-[11px]">
+                          <div
+                            key={i}
+                            className="p-2 rounded bg-zinc-900 border border-zinc-800/80 text-[11px]"
+                          >
                             <div className="font-bold text-white flex items-center justify-between">
                               <span>{c.name}</span>
-                              <span className="text-[9px] text-zinc-400 font-normal">({c.species})</span>
+                              <span className="text-[9px] text-zinc-400 font-normal">
+                                ({c.species})
+                              </span>
                             </div>
-                            <span className="text-[10px] text-rose-300 block font-semibold">{c.archetype}</span>
-                            <p className="text-zinc-400 line-clamp-1 mt-0.5">{c.visualHook}</p>
+                            <span className="text-[10px] text-rose-300 block font-semibold">
+                              {c.archetype}
+                            </span>
+                            <p className="text-zinc-400 line-clamp-1 mt-0.5">
+                              {c.visualHook}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -412,18 +445,26 @@ ${story.scenes
                           >
                             <div className="flex items-center justify-between">
                               <span className="font-bold text-zinc-200">
-                                Scène {s.sceneNum} ({s.timestamp}) : <span className="text-rose-400">{s.title}</span>
+                                Scène {s.sceneNum} ({s.timestamp}) :{" "}
+                                <span className="text-rose-400">{s.title}</span>
                               </span>
                               <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-900 text-amber-300 border border-zinc-800">
                                 {s.act}
                               </span>
                             </div>
-                            <p className="text-zinc-400 text-[11px]">{s.visualAction}</p>
+                            <p className="text-zinc-400 text-[11px]">
+                              {s.visualAction}
+                            </p>
                             <p className="font-mono text-zinc-300 text-[11px] bg-zinc-900/60 px-2 py-0.5 rounded">
                               🗣️ "{s.audioDialogueEn}"
                             </p>
                             <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-1 border-t border-zinc-900">
-                              <span>Overlay: <strong className="text-yellow-400">{s.capcutTextOverlay}</strong></span>
+                              <span>
+                                Overlay:{" "}
+                                <strong className="text-yellow-400">
+                                  {s.capcutTextOverlay}
+                                </strong>
+                              </span>
                               <span>Son: {s.soundCue}</span>
                             </div>
                           </div>
@@ -436,7 +477,9 @@ ${story.scenes
                   <div className="pt-3 border-t border-zinc-800 flex items-center justify-between">
                     <div className="text-[11px] text-zinc-400 flex items-center gap-1.5">
                       <Music className="w-3.5 h-3.5 text-rose-400" />
-                      <span>{selectedStory.tiktokCapcutRecipe.trendingSoundStyle}</span>
+                      <span>
+                        {selectedStory.tiktokCapcutRecipe.trendingSoundStyle}
+                      </span>
                     </div>
 
                     <button
@@ -456,13 +499,16 @@ ${story.scenes
             <div className="p-6 max-w-3xl mx-auto space-y-6">
               <div className="text-center space-y-2">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-rose-500/20 to-amber-500/20 border border-rose-500/30 text-rose-300 text-xs font-semibold">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Intelligence Artificielle Moqi & TrendStory
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />{" "}
+                  Intelligence Artificielle Moqi & TrendStory
                 </div>
                 <h3 className="text-xl font-extrabold text-white">
                   Créateur de Saga Dramatique Ultra-Virale
                 </h3>
                 <p className="text-xs text-zinc-400 max-w-lg mx-auto">
-                  Configurez vos ressorts psychologiques préférés. Le moteur Moqi génère une histoire complète de 6 scènes avec un score viral garanti de 96 à 99%.
+                  Configurez vos ressorts psychologiques préférés. Le moteur
+                  Moqi génère une histoire complète de 6 scènes avec un score
+                  viral garanti de 96 à 99%.
                 </p>
               </div>
 
@@ -481,8 +527,8 @@ ${story.scenes
                         onClick={() => setGenCategory(trope.category)}
                         className={`p-3 rounded-xl border text-left text-xs font-semibold transition-all ${
                           genCategory === trope.category
-                            ? 'bg-gradient-to-r from-rose-950/60 to-zinc-900 border-rose-500 text-white shadow-md shadow-rose-950/30'
-                            : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                            ? "bg-gradient-to-r from-rose-950/60 to-zinc-900 border-rose-500 text-white shadow-md shadow-rose-950/30"
+                            : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-white"
                         }`}
                       >
                         <span className="text-base mr-2">{trope.emoji}</span>
@@ -498,22 +544,25 @@ ${story.scenes
                     2. Univers des Personnages :
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    {['Fruits 3D stylisés', 'Légumes aristocrates', 'Animaux anthropomorphes', 'Objets animés'].map(
-                      (type) => (
-                        <button
-                          key={type}
-                          type="button"
-                          onClick={() => setGenCharType(type)}
-                          className={`py-2 px-3 rounded-lg border text-xs font-medium text-center transition-all ${
-                            genCharType === type
-                              ? 'bg-rose-600/30 border-rose-500 text-white font-bold'
-                              : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700'
-                          }`}
-                        >
-                          {type}
-                        </button>
-                      )
-                    )}
+                    {[
+                      "Fruits 3D stylisés",
+                      "Légumes aristocrates",
+                      "Animaux anthropomorphes",
+                      "Objets animés",
+                    ].map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setGenCharType(type)}
+                        className={`py-2 px-3 rounded-lg border text-xs font-medium text-center transition-all ${
+                          genCharType === type
+                            ? "bg-rose-600/30 border-rose-500 text-white font-bold"
+                            : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700"
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -521,7 +570,9 @@ ${story.scenes
                 <div>
                   <div className="flex items-center justify-between text-xs font-bold text-zinc-300 mb-2">
                     <span>3. Intensité Dramatique (Soap-Opera) :</span>
-                    <span className="text-rose-400 font-mono">{genTensionLevel}/10 (Maximum TikTok)</span>
+                    <span className="text-rose-400 font-mono">
+                      {genTensionLevel}/10 (Maximum TikTok)
+                    </span>
                   </div>
                   <input
                     type="range"
@@ -567,7 +618,9 @@ ${story.scenes
                   ) : (
                     <>
                       <Sparkles className="w-4 h-4 text-amber-200" />
-                      <span>Générer l’Histoire Virale Complète (Début à la Fin)</span>
+                      <span>
+                        Générer l’Histoire Virale Complète (Début à la Fin)
+                      </span>
                     </>
                   )}
                 </button>

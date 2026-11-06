@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   X,
   PlaySquare,
@@ -16,9 +16,9 @@ import {
   FileText,
   Camera,
   ExternalLink,
-} from 'lucide-react';
-import { FruitProject, ScenePrompt } from '../types/fruitStudio';
-import { copyToClipboard } from '../utils/formatters';
+} from "lucide-react";
+import { FruitProject, ScenePrompt } from "../types/fruitStudio";
+import { copyToClipboard } from "../utils/formatters";
 
 interface FlowAssistantModalProps {
   project: FruitProject;
@@ -35,11 +35,13 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
 }) => {
   const { scenes, bible } = project;
   const [currentIdx, setCurrentIdx] = useState(
-    Math.max(0, Math.min(initialSceneNumber - 1, scenes.length - 1))
+    Math.max(0, Math.min(initialSceneNumber - 1, scenes.length - 1)),
   );
   const [isCopied, setIsCopied] = useState(false);
   const [useShortVersion, setUseShortVersion] = useState(false);
-  const [checkedIngredients, setCheckedIngredients] = useState<Record<string, boolean>>({});
+  const [checkedIngredients, setCheckedIngredients] = useState<
+    Record<string, boolean>
+  >({});
 
   const currentScene: ScenePrompt | undefined = scenes[currentIdx];
 
@@ -60,9 +62,9 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
       onUpdateProject((prev) => ({
         ...prev,
         scenes: prev.scenes.map((s, idx) =>
-          idx === currentIdx && s.status === 'todo'
-            ? { ...s, status: 'prompt_copied' }
-            : s
+          idx === currentIdx && s.status === "todo"
+            ? { ...s, status: "prompt_copied" }
+            : s,
         ),
       }));
     }
@@ -72,7 +74,7 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
     onUpdateProject((prev) => ({
       ...prev,
       scenes: prev.scenes.map((s, idx) =>
-        idx === currentIdx ? { ...s, status: 'video_generated' } : s
+        idx === currentIdx ? { ...s, status: "video_generated" } : s,
       ),
     }));
   };
@@ -92,7 +94,9 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-white text-base">Assistant Google Flow / Veo</span>
+                <span className="font-extrabold text-white text-base">
+                  Assistant Google Flow / Veo
+                </span>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
                   Mode Réalisation
                 </span>
@@ -124,15 +128,19 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
 
           <div className="text-center">
             <span className="text-xs font-extrabold text-white">
-              Scène {currentScene.sceneNumber} / {scenes.length} : "{currentScene.title}"
+              Scène {currentScene.sceneNumber} / {scenes.length} : "
+              {currentScene.title}"
             </span>
             <span className="text-[11px] text-zinc-400 block">
-              Durée : 10 secondes pile • {currentScene.wordCount} mots de dialogue
+              Durée : 10 secondes pile • {currentScene.wordCount} mots de
+              dialogue
             </span>
           </div>
 
           <button
-            onClick={() => setCurrentIdx((p) => Math.min(scenes.length - 1, p + 1))}
+            onClick={() =>
+              setCurrentIdx((p) => Math.min(scenes.length - 1, p + 1))
+            }
             disabled={currentIdx === scenes.length - 1}
             className="flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 disabled:opacity-40 cursor-pointer"
           >
@@ -148,9 +156,12 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
             <div className="flex items-center justify-between">
               <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4" />
-                1. Attacher ces images dans Flow (Section Ingrédients de cette scène)
+                1. Attacher ces images dans Flow (Section Ingrédients de cette
+                scène)
               </span>
-              <span className="text-[11px] text-zinc-500">Cochez dès que c'est attaché</span>
+              <span className="text-[11px] text-zinc-500">
+                Cochez dès que c'est attaché
+              </span>
             </div>
 
             <div className="flex flex-wrap gap-2.5">
@@ -163,15 +174,15 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
                     onClick={() => toggleCheck(k)}
                     className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold border transition cursor-pointer ${
                       isChecked
-                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500 line-through'
-                        : 'bg-zinc-950 text-white border-zinc-700 hover:border-emerald-500'
+                        ? "bg-emerald-500/20 text-emerald-300 border-emerald-500 line-through"
+                        : "bg-zinc-950 text-white border-zinc-700 hover:border-emerald-500"
                     }`}
                   >
                     <div
                       className={`w-4 h-4 rounded border flex items-center justify-center ${
                         isChecked
-                          ? 'bg-emerald-500 border-emerald-500 text-zinc-950'
-                          : 'border-zinc-500'
+                          ? "bg-emerald-500 border-emerald-500 text-zinc-950"
+                          : "border-zinc-500"
                       }`}
                     >
                       {isChecked && <Check className="w-3 h-3 font-bold" />}
@@ -182,23 +193,27 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
               })}
 
               <button
-                onClick={() => toggleCheck('loc')}
+                onClick={() => toggleCheck("loc")}
                 className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold border transition cursor-pointer ${
-                  checkedIngredients['loc']
-                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500 line-through'
-                    : 'bg-zinc-950 text-white border-zinc-700 hover:border-emerald-500'
+                  checkedIngredients["loc"]
+                    ? "bg-emerald-500/20 text-emerald-300 border-emerald-500 line-through"
+                    : "bg-zinc-950 text-white border-zinc-700 hover:border-emerald-500"
                 }`}
               >
                 <div
                   className={`w-4 h-4 rounded border flex items-center justify-center ${
-                    checkedIngredients['loc']
-                      ? 'bg-emerald-500 border-emerald-500 text-zinc-950'
-                      : 'border-zinc-500'
+                    checkedIngredients["loc"]
+                      ? "bg-emerald-500 border-emerald-500 text-zinc-950"
+                      : "border-zinc-500"
                   }`}
                 >
-                  {checkedIngredients['loc'] && <Check className="w-3 h-3 font-bold" />}
+                  {checkedIngredients["loc"] && (
+                    <Check className="w-3 h-3 font-bold" />
+                  )}
                 </div>
-                <span>Plate Décor : {currentScene.ingredientChecklist.location}</span>
+                <span>
+                  Plate Décor : {currentScene.ingredientChecklist.location}
+                </span>
               </button>
             </div>
 
@@ -220,8 +235,8 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
                   onClick={() => setUseShortVersion(false)}
                   className={`px-3 py-1 rounded-lg text-xs font-semibold transition cursor-pointer ${
                     !useShortVersion
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                      ? "bg-emerald-600 text-white"
+                      : "bg-zinc-800 text-zinc-400 hover:text-white"
                   }`}
                 >
                   Prompt Complet 6C
@@ -230,8 +245,8 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
                   onClick={() => setUseShortVersion(true)}
                   className={`px-3 py-1 rounded-lg text-xs font-semibold transition cursor-pointer ${
                     useShortVersion
-                      ? 'bg-amber-600 text-white'
-                      : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                      ? "bg-amber-600 text-white"
+                      : "bg-zinc-800 text-zinc-400 hover:text-white"
                   }`}
                 >
                   Version Courte 6D (120 mots)
@@ -255,7 +270,9 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
               ) : (
                 <>
                   <Copy className="w-5 h-5" />
-                  <span>COPIER LE PROMPT DE LA SCÈNE {currentScene.sceneNumber}</span>
+                  <span>
+                    COPIER LE PROMPT DE LA SCÈNE {currentScene.sceneNumber}
+                  </span>
                 </>
               )}
             </button>
@@ -269,8 +286,11 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
               </span>
               {currentScene.dialogues.map((d, idx) => (
                 <div key={idx} className="text-zinc-300">
-                  <strong className="text-rose-400">{d.speaker} :</strong> « {d.lineEn} »
-                  <span className="text-zinc-500 italic block mt-0.5">↳ {d.translationFr}</span>
+                  <strong className="text-rose-400">{d.speaker} :</strong> «{" "}
+                  {d.lineEn} »
+                  <span className="text-zinc-500 italic block mt-0.5">
+                    ↳ {d.translationFr}
+                  </span>
                 </div>
               ))}
             </div>
@@ -284,16 +304,16 @@ export const FlowAssistantModal: React.FC<FlowAssistantModalProps> = ({
             <button
               onClick={markAsGenerated}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border ${
-                currentScene.status === 'video_generated'
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700'
+                currentScene.status === "video_generated"
+                  ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                  : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700"
               }`}
             >
               <Check className="w-3.5 h-3.5 text-emerald-400" />
               <span>
-                {currentScene.status === 'video_generated'
-                  ? 'Vidéo 10s Générée dans Flow'
-                  : 'Marquer comme Vidéo Générée'}
+                {currentScene.status === "video_generated"
+                  ? "Vidéo 10s Générée dans Flow"
+                  : "Marquer comme Vidéo Générée"}
               </span>
             </button>
           </div>

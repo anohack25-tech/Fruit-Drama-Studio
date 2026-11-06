@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   ListOrdered,
   Clock,
@@ -16,10 +16,10 @@ import {
   MapPin,
   Users,
   Flame,
-} from 'lucide-react';
-import { FruitProject, BeatSheetScene } from '../types/fruitStudio';
-import { generateFullStudioProject } from '../services/studioEngine';
-import { DEMO_PROJECT } from '../data/demoProject';
+} from "lucide-react";
+import { FruitProject, BeatSheetScene } from "../types/fruitStudio";
+import { generateFullStudioProject } from "../services/studioEngine";
+import { DEMO_PROJECT } from "../data/demoProject";
 
 interface Step4BeatSheetProps {
   project: FruitProject;
@@ -40,9 +40,9 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
     setIsGenerating(true);
     setError(null);
     try {
-      const res = await fetch('/api/gemini/generate-beatsheet', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/gemini/generate-beatsheet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bible,
           sceneCount: project.scratchConfig.targetScenes || 6,
@@ -50,7 +50,7 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
       });
 
       if (!res.ok) {
-        throw new Error('Fallback to studio engine');
+        throw new Error("Fallback to studio engine");
       }
 
       const data = await res.json();
@@ -59,9 +59,16 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
         beatSheet: data.beatSheet,
       }));
     } catch (err: any) {
-      console.warn('Utilisation du moteur studio pour le plan de scènes:', err);
-      const scen = project.scenarios.find((s) => s.id === project.selectedScenarioId) || project.scenarios[0] || DEMO_PROJECT.scenarios[0];
-      const fullData = generateFullStudioProject(scen, project.scratchConfig, project.settings);
+      console.warn("Utilisation du moteur studio pour le plan de scènes:", err);
+      const scen =
+        project.scenarios.find((s) => s.id === project.selectedScenarioId) ||
+        project.scenarios[0] ||
+        DEMO_PROJECT.scenarios[0];
+      const fullData = generateFullStudioProject(
+        scen,
+        project.scratchConfig,
+        project.settings,
+      );
       onUpdateProject((prev) => ({
         ...prev,
         beatSheet: fullData.beatSheet,
@@ -92,15 +99,18 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
               Étape 4 / 7
             </span>
             <span className="text-zinc-500">•</span>
-            <span className="text-xs text-zinc-400">10 secondes par scène · Escalade garantie</span>
+            <span className="text-xs text-zinc-400">
+              10 secondes par scène · Escalade garantie
+            </span>
           </div>
           <h1 className="text-2xl font-extrabold text-white flex items-center gap-3">
             <ListOrdered className="w-6 h-6 text-cyan-400" />
             Plan Scène par Scène (Beat Sheet)
           </h1>
           <p className="mt-1 text-xs text-zinc-300 max-w-2xl">
-            {beatSheet.length} scènes de 10s ({totalDuration} secondes au total). Chaque scène a un objectif,
-            un conflit, une progression de secret et une montée de tension calculée.
+            {beatSheet.length} scènes de 10s ({totalDuration} secondes au
+            total). Chaque scène a un objectif, un conflit, une progression de
+            secret et une montée de tension calculée.
           </p>
         </div>
 
@@ -110,7 +120,9 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
             disabled={isGenerating}
             className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`}
+            />
             <span>Régénérer le plan IA</span>
           </button>
 
@@ -127,7 +139,10 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
       {error && (
         <div className="bg-rose-950/60 border border-rose-700/80 rounded-xl p-4 text-xs text-rose-200 flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={() => setError(null)} className="underline cursor-pointer">
+          <button
+            onClick={() => setError(null)}
+            className="underline cursor-pointer"
+          >
             Fermer
           </button>
         </div>
@@ -155,15 +170,18 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
               const heightPct = (tension / 10) * 100;
               const color =
                 tension >= 9
-                  ? 'bg-rose-500'
+                  ? "bg-rose-500"
                   : tension >= 7
-                  ? 'bg-amber-500'
-                  : tension >= 5
-                  ? 'bg-cyan-500'
-                  : 'bg-emerald-500';
+                    ? "bg-amber-500"
+                    : tension >= 5
+                      ? "bg-cyan-500"
+                      : "bg-emerald-500";
 
               return (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group">
+                <div
+                  key={i}
+                  className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group"
+                >
                   <span className="text-[10px] font-bold text-zinc-400 opacity-0 group-hover:opacity-100 transition">
                     {tension}/10
                   </span>
@@ -193,7 +211,8 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
                 Aucun plan de scènes (Beat Sheet) dans ce projet
               </h3>
               <p className="text-xs text-zinc-400 max-w-md mx-auto mt-1">
-                Générez la structure scène par scène (tension dramatique, objectifs, cliffhangers) avant de passer aux prompts vidéo.
+                Générez la structure scène par scène (tension dramatique,
+                objectifs, cliffhangers) avant de passer aux prompts vidéo.
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -216,8 +235,8 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
               key={scene.sceneNumber || idx}
               className={`bg-zinc-900/90 border rounded-2xl p-5 shadow-lg transition space-y-4 ${
                 isOverflow
-                  ? 'border-amber-500/50 ring-1 ring-amber-500/20'
-                  : 'border-zinc-800 hover:border-zinc-700'
+                  ? "border-amber-500/50 ring-1 ring-amber-500/20"
+                  : "border-zinc-800 hover:border-zinc-700"
               }`}
             >
               {/* Scene card header */}
@@ -244,14 +263,16 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
 
                 {/* Tension badge */}
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-zinc-400">Tension :</span>
+                  <span className="text-xs font-semibold text-zinc-400">
+                    Tension :
+                  </span>
                   <span
                     className={`px-2.5 py-1 rounded-lg text-xs font-extrabold ${
                       scene.tensionLevel >= 9
-                        ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                        ? "bg-rose-500/20 text-rose-300 border border-rose-500/40"
                         : scene.tensionLevel >= 7
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                        : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                          : "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
                     }`}
                   >
                     {scene.tensionLevel}/10
@@ -277,7 +298,8 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
                 {isOverflow && (
                   <div className="text-xs text-amber-300 flex items-center gap-1 bg-amber-950/40 border border-amber-500/40 px-2.5 py-0.5 rounded-lg">
                     <AlertCircle className="w-3 h-3 text-amber-400" />
-                    Attention : plus de 3 personnages dans 10s réduit la netteté dans Flow.
+                    Attention : plus de 3 personnages dans 10s réduit la netteté
+                    dans Flow.
                   </div>
                 )}
               </div>
@@ -302,7 +324,9 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
                   <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block mb-0.5">
                     Twist / Cliffhanger de fin de scène (10s)
                   </span>
-                  <p className="text-amber-200/90 font-medium">{scene.twistOrCliffhanger}</p>
+                  <p className="text-amber-200/90 font-medium">
+                    {scene.twistOrCliffhanger}
+                  </p>
                 </div>
 
                 {scene.secretProgression && (
@@ -317,7 +341,9 @@ export const Step4BeatSheet: React.FC<Step4BeatSheetProps> = ({
 
               {/* Emotional shift */}
               <div className="text-[11px] text-zinc-400 italic">
-                <span className="font-semibold text-zinc-500">Évolution émotionnelle : </span>
+                <span className="font-semibold text-zinc-500">
+                  Évolution émotionnelle :{" "}
+                </span>
                 {scene.emotionalShift}
               </div>
             </div>

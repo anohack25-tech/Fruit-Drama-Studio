@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React from "react";
 import {
   X,
   Settings,
@@ -13,8 +13,8 @@ import {
   Sliders,
   CheckCircle2,
   AlertCircle,
-} from 'lucide-react';
-import { FruitProject, ProjectSettings } from '../types/fruitStudio';
+} from "lucide-react";
+import { FruitProject, ProjectSettings } from "../types/fruitStudio";
 
 interface SettingsModalProps {
   settings: ProjectSettings;
@@ -75,24 +75,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Search className="w-4 h-4 text-rose-400" />
-                <span className="font-bold text-white">Recherche de Tendances en direct (Google Search)</span>
+                <span className="font-bold text-white">
+                  Recherche de Tendances en direct (Google Search)
+                </span>
               </div>
               <button
-                onClick={() => toggle('enableSearchGrounding')}
+                onClick={() => toggle("enableSearchGrounding")}
                 className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
-                  settings.enableSearchGrounding ? 'bg-rose-600' : 'bg-zinc-800'
+                  settings.enableSearchGrounding ? "bg-rose-600" : "bg-zinc-800"
                 }`}
               >
                 <div
                   className={`w-4 h-4 rounded-full bg-white transition-transform absolute top-1 ${
-                    settings.enableSearchGrounding ? 'left-6' : 'left-1'
+                    settings.enableSearchGrounding ? "left-6" : "left-1"
                   }`}
                 />
               </button>
             </div>
             <p className="text-[11px] text-zinc-400 leading-relaxed">
-              Utilise le grounding Google Search de Gemini pour déceler les hashtags émergents du jour. Sans cette option,
-              les hashtags sont étiquetés « à vérifier dans TikTok avant publication ».
+              Utilise le grounding Google Search de Gemini pour déceler les
+              hashtags émergents du jour. Sans cette option, les hashtags sont
+              étiquetés « à vérifier dans TikTok avant publication ».
             </p>
           </div>
 
@@ -101,23 +104,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Camera className="w-4 h-4 text-amber-400" />
-                <span className="font-bold text-white">Prompts Gros Plan Visage (Modèle 6A-bis)</span>
+                <span className="font-bold text-white">
+                  Prompts Gros Plan Visage (Modèle 6A-bis)
+                </span>
               </div>
               <button
-                onClick={() => toggle('enableCloseUpPortraitPrompt')}
+                onClick={() => toggle("enableCloseUpPortraitPrompt")}
                 className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
-                  settings.enableCloseUpPortraitPrompt ? 'bg-rose-600' : 'bg-zinc-800'
+                  settings.enableCloseUpPortraitPrompt
+                    ? "bg-rose-600"
+                    : "bg-zinc-800"
                 }`}
               >
                 <div
                   className={`w-4 h-4 rounded-full bg-white transition-transform absolute top-1 ${
-                    settings.enableCloseUpPortraitPrompt ? 'left-6' : 'left-1'
+                    settings.enableCloseUpPortraitPrompt ? "left-6" : "left-1"
                   }`}
                 />
               </button>
             </div>
             <p className="text-[11px] text-zinc-400 leading-relaxed">
-              Génère pour chaque personnage un second prompt Gemini centré sur le buste et le visage, utile pour les gros plans et le lip-sync.
+              Génère pour chaque personnage un second prompt Gemini centré sur
+              le buste et le visage, utile pour les gros plans et le lip-sync.
             </p>
           </div>
 
@@ -126,23 +134,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-cyan-400" />
-                <span className="font-bold text-white">Prompts de Première Image de Scène (Modèle 6E)</span>
+                <span className="font-bold text-white">
+                  Prompts de Première Image de Scène (Modèle 6E)
+                </span>
               </div>
               <button
-                onClick={() => toggle('enableFirstFramePrompt')}
+                onClick={() => toggle("enableFirstFramePrompt")}
                 className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
-                  settings.enableFirstFramePrompt ? 'bg-rose-600' : 'bg-zinc-800'
+                  settings.enableFirstFramePrompt
+                    ? "bg-rose-600"
+                    : "bg-zinc-800"
                 }`}
               >
                 <div
                   className={`w-4 h-4 rounded-full bg-white transition-transform absolute top-1 ${
-                    settings.enableFirstFramePrompt ? 'left-6' : 'left-1'
+                    settings.enableFirstFramePrompt ? "left-6" : "left-1"
                   }`}
                 />
               </button>
             </div>
             <p className="text-[11px] text-zinc-400 leading-relaxed">
-              Génère pour chaque scène le prompt d'image fixe du premier plan (First Frame State) pour verrouiller la pose de départ dans Flow.
+              Génère pour chaque scène le prompt d'image fixe du premier plan
+              (First Frame State) pour verrouiller la pose de départ dans Flow.
             </p>
           </div>
 
@@ -151,14 +164,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div>
               <div className="flex justify-between font-bold text-white mb-1">
                 <span>Scènes max par épisode</span>
-                <span className="text-rose-400">{settings.maxScenesPerEpisode} scènes ({settings.maxScenesPerEpisode * 10}s)</span>
+                <span className="text-rose-400">
+                  {settings.maxScenesPerEpisode} scènes (
+                  {settings.maxScenesPerEpisode * 10}s)
+                </span>
               </div>
               <input
                 type="range"
                 min={4}
                 max={24}
                 value={settings.maxScenesPerEpisode}
-                onChange={(e) => setNumber('maxScenesPerEpisode', Number(e.target.value))}
+                onChange={(e) =>
+                  setNumber("maxScenesPerEpisode", Number(e.target.value))
+                }
                 className="w-full accent-rose-500 cursor-pointer"
               />
             </div>
@@ -166,18 +184,23 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div>
               <div className="flex justify-between font-bold text-white mb-1">
                 <span>Personnages max par scène Flow</span>
-                <span className="text-amber-400">{settings.maxCharactersPerScene} personnages max</span>
+                <span className="text-amber-400">
+                  {settings.maxCharactersPerScene} personnages max
+                </span>
               </div>
               <input
                 type="range"
                 min={2}
                 max={4}
                 value={settings.maxCharactersPerScene}
-                onChange={(e) => setNumber('maxCharactersPerScene', Number(e.target.value))}
+                onChange={(e) =>
+                  setNumber("maxCharactersPerScene", Number(e.target.value))
+                }
                 className="w-full accent-amber-500 cursor-pointer"
               />
               <span className="text-[10px] text-zinc-500 block mt-1">
-                Recommandé : 2 à 3 personnages maximum par scène de 10s pour préserver la fidélité visuelle de Flow.
+                Recommandé : 2 à 3 personnages maximum par scène de 10s pour
+                préserver la fidélité visuelle de Flow.
               </span>
             </div>
           </div>
