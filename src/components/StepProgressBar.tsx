@@ -40,11 +40,11 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
   onStepChange,
 }) => {
   return (
-    <div className="w-full bg-zinc-950/70 border-b border-zinc-800/80 px-4 py-3">
+    <div className="w-full bg-transparent px-4 py-4 mb-2">
       <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
         <div className="flex items-center min-w-[760px] justify-between relative">
           {/* Connecting line */}
-          <div className="absolute left-6 right-6 top-5 h-0.5 bg-zinc-800 -z-0" />
+          <div className="absolute left-8 right-8 top-6 h-[2px] bg-zinc-800/50 -z-0" />
 
           {STEPS.map((s) => {
             const Icon = s.icon;
@@ -59,12 +59,12 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                 className="relative z-10 flex flex-col items-center group cursor-pointer focus:outline-none"
               >
                 <div
-                  className={`flex items-center justify-center w-10 h-10 rounded-xl font-bold text-xs transition-all duration-200 ${
+                  className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-sm transition-all duration-300 ${
                     isActive
-                      ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/20 shadow-lg shadow-rose-950/50 scale-110'
+                      ? 'bg-gradient-to-br from-rose-500 to-orange-500 text-white shadow-[0_0_20px_rgba(244,63,94,0.4)] scale-110 ring-2 ring-white/20'
                       : isCompleted
-                      ? 'bg-zinc-800 text-rose-300 border border-rose-500/40 hover:bg-zinc-700'
-                      : 'bg-zinc-900 text-zinc-500 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-400'
+                      ? 'bg-zinc-800/80 text-rose-300 border border-rose-500/30 hover:bg-zinc-700'
+                      : 'bg-zinc-900/50 text-zinc-500 border border-white/5 hover:border-white/10 hover:text-zinc-400 backdrop-blur-sm'
                   }`}
                 >
                   {isStep2Locked ? (
@@ -75,11 +75,11 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                 </div>
 
                 <div className="mt-2 text-center">
-                  <div className="flex items-center justify-center gap-1">
+                  <div className="flex items-center justify-center gap-1.5">
                     <span
-                      className={`text-xs font-semibold tracking-tight transition ${
+                      className={`text-xs font-bold tracking-tight transition ${
                         isActive
-                          ? 'text-white'
+                          ? 'text-white drop-shadow-md'
                           : isCompleted
                           ? 'text-zinc-300'
                           : 'text-zinc-500 group-hover:text-zinc-400'
@@ -88,10 +88,12 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                       {s.step}. {s.label}
                     </span>
                     {isStep2Locked && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse shadow-[0_0_5px_rgba(251,146,60,0.8)]" />
                     )}
                   </div>
-                  <span className="text-[10px] text-zinc-500 block leading-tight">
+                  <span className={`text-[10px] block leading-tight transition mt-0.5 ${
+                    isActive ? 'text-zinc-300' : 'text-zinc-600 group-hover:text-zinc-500'
+                  }`}>
                     {s.step === 2 && isBibleLocked ? 'Verrouillée' : s.desc}
                   </span>
                 </div>
