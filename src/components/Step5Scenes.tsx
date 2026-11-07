@@ -243,17 +243,17 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header bar */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-zinc-900/50 backdrop-blur-sm border border-white/5 rounded-3xl p-6 shadow-2xl flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs uppercase font-extrabold tracking-widest text-emerald-400">
+            <span className="text-[10px] uppercase font-black tracking-widest text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/20">
               Étape 5 / 7
             </span>
-            <span className="text-zinc-500">•</span>
-            <span className="text-xs text-zinc-400">Google Flow / Veo · 10 secondes pile</span>
+            <span className="text-zinc-600">•</span>
+            <span className="text-[11px] font-medium text-zinc-400">Google Flow / Veo · 10 secondes pile</span>
           </div>
-          <h1 className="text-2xl font-extrabold text-white flex items-center gap-3">
-            <Film className="w-6 h-6 text-emerald-400" />
+          <h1 className="text-2xl font-black text-white flex items-center gap-3 tracking-tight mt-2">
+            <Film className="w-6 h-6 text-rose-400" />
             Prompts des Scènes Vidéo (10s)
           </h1>
           <p className="mt-1 text-xs text-zinc-300 max-w-2xl">
@@ -262,12 +262,12 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {scenes.length < beatSheet.length && (
             <button
               onClick={handleGenerateNextBatch}
               disabled={isBatchGenerating}
-              className="flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer"
+              className="flex items-center gap-1.5 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-200 border border-white/5 px-4 py-2.5 rounded-xl text-xs font-semibold transition cursor-pointer shadow-lg"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isBatchGenerating ? 'animate-spin' : ''}`} />
               <span>Générer le lot suivant (+4)</span>
@@ -276,7 +276,7 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
 
           <button
             onClick={onProceedToStep6}
-            className="flex items-center gap-1.5 bg-gradient-to-r from-rose-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md transition cursor-pointer"
+            className="flex items-center gap-1.5 bg-white hover:bg-zinc-100 text-zinc-950 font-black px-5 py-2.5 rounded-xl text-xs shadow-[0_0_15px_rgba(255,255,255,0.2)] transition cursor-pointer"
           >
             <span>Passer au Pack Publication (Étape 6)</span>
             <ArrowRight className="w-4 h-4" />
@@ -294,19 +294,19 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
       )}
 
       {/* Timeline Quick Bar & Status Filters */}
-      <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-4 backdrop-blur-sm">
         {/* Horizontal Mini Timeline */}
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1">
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1 px-1">
           {scenes.map((s) => {
             const isCompleted = s.status === 'video_generated';
             return (
               <button
                 key={s.id}
                 onClick={() => onOpenFlowAssistantWithScene(s.sceneNumber)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 border ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition cursor-pointer shrink-0 border ${
                   isCompleted
-                    ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/20'
-                    : 'bg-zinc-800/80 text-zinc-300 border-zinc-700 hover:bg-zinc-800'
+                    ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20 hover:bg-emerald-500/20'
+                    : 'bg-zinc-800/50 text-zinc-300 border-white/5 hover:bg-zinc-800'
                 }`}
               >
                 <span>Scène {s.sceneNumber}</span>
@@ -318,16 +318,15 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
         </div>
 
         {/* Filter status */}
-        <div className="flex items-center gap-1.5 text-xs">
-          <span className="text-zinc-500 font-semibold mr-1">Filtrer :</span>
+        <div className="flex items-center gap-1 text-xs bg-zinc-950/50 p-1 rounded-xl border border-white/5">
           {['all', 'todo', 'prompt_copied', 'video_generated', 'redo'].map((st) => (
             <button
               key={st}
               onClick={() => setFilterStatus(st)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
                 filterStatus === st
-                  ? 'bg-rose-600 text-white'
-                  : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-zinc-800 text-white shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
               }`}
             >
               {st === 'all' ? 'Toutes' : STATUS_OPTIONS.find((o) => o.value === st)?.labelFr}
@@ -379,54 +378,57 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
           return (
             <div
               key={scene.id}
-              className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-6 shadow-xl space-y-5"
+              className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 shadow-xl space-y-6 backdrop-blur-md"
             >
               {/* Scene Card Header */}
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 text-emerald-300 font-black text-base">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 pb-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-zinc-800/80 border border-white/10 text-white font-black text-lg shadow-inner">
                     S{scene.sceneNumber}
                   </div>
                   <div>
-                    <h3 className="text-lg font-extrabold text-white flex items-center gap-2">
+                    <h3 className="text-xl font-black text-white flex items-center gap-2 tracking-tight">
                       <span>{scene.title}</span>
-                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-400 border border-white/5">
                         10 secondes
                       </span>
                     </h3>
-                    <div className="text-xs text-zinc-400 mt-0.5">
-                      {bible.seriesTitle} — Épisode {scene.episodeNumber || 1} • Lieu : {scene.location}
+                    <div className="text-xs text-zinc-500 mt-1 font-medium">
+                      {bible.seriesTitle} — Épisode {scene.episodeNumber || 1} • Lieu : <span className="text-zinc-300">{scene.location}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Status Switcher & Action buttons */}
                 <div className="flex items-center gap-2">
-                  <select
-                    value={scene.status}
-                    onChange={(e) => updateSceneStatus(scene.id, e.target.value as any)}
-                    className="bg-zinc-950 border border-zinc-700 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-zinc-200 focus:outline-none cursor-pointer"
-                  >
-                    {STATUS_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.labelFr}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      value={scene.status}
+                      onChange={(e) => updateSceneStatus(scene.id, e.target.value as any)}
+                      className="bg-zinc-950/50 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold text-zinc-200 focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-zinc-900 transition"
+                    >
+                      {STATUS_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value} className="bg-zinc-900">
+                          {opt.labelFr}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-zinc-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
 
                   <button
                     onClick={() => handleCopy(scene.flowPrompt, promptKey)}
-                    className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-1.5 rounded-xl text-xs shadow-md shadow-emerald-950/40 transition cursor-pointer"
+                    className="flex items-center gap-1.5 bg-zinc-100 hover:bg-white text-zinc-950 font-black px-4 py-2 rounded-xl text-xs shadow-lg transition cursor-pointer"
                   >
                     {copiedKey === promptKey ? (
                       <>
-                        <Check className="w-4 h-4" />
+                        <Check className="w-4 h-4 text-emerald-600" />
                         <span>Copié !</span>
                       </>
                     ) : (
                       <>
                         <Copy className="w-4 h-4" />
-                        <span>Copier Prompt Flow</span>
+                        <span>Copier Flow</span>
                       </>
                     )}
                   </button>
@@ -434,30 +436,30 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
               </div>
 
               {/* CHECKLIST INGRÉDIENTS (Obligatoire en Français) */}
-              <div className="bg-zinc-950 border border-emerald-500/30 rounded-xl p-4 space-y-2">
+              <div className="bg-zinc-950/50 border border-white/5 rounded-2xl p-5 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4" />
-                    Checklist : Ingrédients à attacher dans Flow avant de générer
+                  <span className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    Checklist : Ingrédients à attacher
                   </span>
-                  <span className="text-[10px] text-zinc-500">Cochez pour préparer</span>
+                  <span className="text-[10px] text-zinc-500 font-medium">Cochez pour préparer</span>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-1">
+                <div className="flex flex-wrap gap-2.5 pt-1">
                   {scene.ingredientChecklist.characters.map((charItem, i) => {
                     const isChecked = !!checkedIngredients[`${scene.id}-char-${i}`];
                     return (
                       <button
                         key={i}
                         onClick={() => toggleIngredient(scene.id, `char-${i}`)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition cursor-pointer ${
+                        className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold border transition cursor-pointer ${
                           isChecked
-                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 line-through opacity-75'
-                            : 'bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800'
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 line-through opacity-60'
+                            : 'bg-zinc-900 text-zinc-300 border-white/5 hover:bg-zinc-800'
                         }`}
                       >
                         <div
-                          className={`w-3.5 h-3.5 rounded border flex items-center justify-center ${
+                          className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition-colors ${
                             isChecked
                               ? 'bg-emerald-500 border-emerald-500 text-zinc-950'
                               : 'border-zinc-500'
@@ -472,14 +474,14 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
 
                   <button
                     onClick={() => toggleIngredient(scene.id, 'loc')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition cursor-pointer ${
+                    className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold border transition cursor-pointer ${
                       checkedIngredients[`${scene.id}-loc`]
-                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 line-through opacity-75'
-                        : 'bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800'
+                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 line-through opacity-60'
+                        : 'bg-zinc-900 text-zinc-300 border-white/5 hover:bg-zinc-800'
                     }`}
                   >
                     <div
-                      className={`w-3.5 h-3.5 rounded border flex items-center justify-center ${
+                      className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition-colors ${
                         checkedIngredients[`${scene.id}-loc`]
                           ? 'bg-emerald-500 border-emerald-500 text-zinc-950'
                           : 'border-zinc-500'
@@ -492,48 +494,48 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                 </div>
 
                 {/* Visible reminder banner */}
-                <div className="bg-amber-950/20 border border-amber-500/20 rounded-lg p-2.5 text-[11px] text-amber-200 flex items-center gap-2">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                  <span>
-                    <strong>Rappel capital :</strong> « {scene.ingredientChecklist.reminderFr} »
+                <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-xs text-amber-200/90 flex items-start gap-2.5 mt-2">
+                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">
+                    <strong className="text-amber-400">Rappel capital :</strong> « {scene.ingredientChecklist.reminderFr} »
                   </span>
                 </div>
               </div>
 
               {/* Dialogue breakdown with French translation below */}
               {scene.dialogues && scene.dialogues.length > 0 && (
-                <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4 space-y-2">
+                <div className="bg-zinc-950/30 border border-white/5 rounded-2xl p-5 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
-                      <MessageSquare className="w-3.5 h-3.5 text-purple-400" />
+                    <span className="text-xs font-black uppercase tracking-wider text-zinc-300 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 text-purple-400" />
                       Répliques & Lip-sync
                     </span>
 
                     <span
-                      className={`text-xs font-extrabold px-2 py-0.5 rounded ${
+                      className={`text-[10px] font-bold px-2 py-1 rounded-md ${
                         isWordCountAlert
-                          ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                          : 'bg-zinc-800 text-zinc-300'
+                          ? 'bg-rose-500/20 text-rose-300 border border-rose-500/20'
+                          : 'bg-zinc-800/50 text-zinc-400 border border-white/5'
                       }`}
                     >
-                      {scene.wordCount} mots anglais {isWordCountAlert ? '(> 30 mots : Alerte !)' : '(<= 30 mots : Conforme)'}
+                      {scene.wordCount} mots {isWordCountAlert ? '(> 30 : Alerte !)' : '(<= 30 : OK)'}
                     </span>
                   </div>
 
-                  <div className="space-y-2 pt-1">
+                  <div className="space-y-2.5 pt-1">
                     {scene.dialogues.map((dlg, i) => (
-                      <div key={i} className="bg-zinc-900/60 p-2.5 rounded-lg border border-zinc-800/80">
-                        <div className="text-xs font-bold text-white flex items-center gap-2">
+                      <div key={i} className="bg-zinc-900/50 p-3 rounded-xl border border-white/5">
+                        <div className="text-xs font-bold flex items-center gap-2 mb-1">
                           <span className="text-rose-400">{dlg.speaker}</span>
-                          <span className="text-[10px] font-normal text-zinc-400 italic">
-                            ({dlg.emotion})
+                          <span className="text-[10px] font-medium text-zinc-500 bg-zinc-950 px-1.5 py-0.5 rounded">
+                            {dlg.emotion}
                           </span>
                         </div>
-                        <div className="text-xs text-zinc-100 font-medium mt-0.5">
+                        <div className="text-sm text-zinc-200 font-medium mb-1">
                           "{dlg.lineEn}"
                         </div>
-                        <div className="text-[11px] text-zinc-500 italic mt-0.5">
-                          {dlg.translationFr} (non inclus dans le prompt)
+                        <div className="text-[11px] text-zinc-500 italic">
+                          {dlg.translationFr} (non inclus)
                         </div>
                       </div>
                     ))}
@@ -542,19 +544,20 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
               )}
 
               {/* Full Flow Prompt Box (6C) */}
-              <div className="bg-zinc-950 border-2 border-emerald-500/60 rounded-xl p-4 space-y-3 shadow-lg shadow-emerald-950/20">
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-2">
+              <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 space-y-4 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-rose-500 to-orange-500" />
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800/50 pb-3 pl-2">
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-black uppercase tracking-wider text-emerald-400">
-                        PROMPT GOOGLE FLOW / VEO (10 SECONDES) — PRÊT À COPIER
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-black uppercase tracking-wider text-zinc-200">
+                        PROMPT GOOGLE FLOW (10S)
                       </span>
-                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-bold">
-                        9:16 vertical • 10s pile
+                      <span className="text-[9px] bg-zinc-800 text-zinc-400 border border-zinc-700 px-2 py-0.5 rounded-full font-bold">
+                        9:16 vertical • 10s
                       </span>
                     </div>
-                    <span className="text-[11px] text-zinc-400 block mt-0.5">
-                      Descripteurs verrouillés, cadence stricte (0-3s, 3-6s, 6-10s) et réplique lip-sync
+                    <span className="text-[11px] text-zinc-500 font-medium">
+                      Descripteurs verrouillés, cadence stricte et réplique lip-sync
                     </span>
                   </div>
 
@@ -562,96 +565,77 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                     {/* Copy Full Flow Package Button */}
                     <button
                       onClick={() => handleCopy(formatFullFlowPackage(scene, bible), `pack-${scene.id}`)}
-                      className="flex items-center gap-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md transition cursor-pointer"
-                      title="Copie le pack complet prêt pour Google Flow : Ingrédients + Prompt + Dialogues + Réglages"
+                      className="flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer"
+                      title="Copie le pack complet"
                     >
                       {copiedKey === `pack-${scene.id}` ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>PACK COMPLET COPIÉ !</span>
-                        </>
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
                       ) : (
-                        <>
-                          <Layers className="w-4 h-4" />
-                          <span>📦 PACK COMPLET FLOW</span>
-                        </>
+                        <Layers className="w-3.5 h-3.5 text-rose-400" />
                       )}
+                      <span>Pack Complet</span>
                     </button>
 
                     {/* Copy Prompt Only */}
                     <button
                       onClick={() => handleCopy(scene.flowPrompt, promptKey)}
-                      className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md transition cursor-pointer"
+                      className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white px-4 py-1.5 rounded-xl text-xs font-black shadow-lg shadow-rose-950/50 transition cursor-pointer"
                     >
                       {copiedKey === promptKey ? (
                         <>
                           <Check className="w-4 h-4" />
-                          <span>PROMPT COPIÉ !</span>
+                          <span>Copié !</span>
                         </>
                       ) : (
                         <>
                           <Copy className="w-4 h-4" />
-                          <span>COPIER PROMPT (10s)</span>
+                          <span>Copier Prompt</span>
                         </>
                       )}
                     </button>
                   </div>
                 </div>
 
-                {/* Director Style Presets & Quality Badges */}
-                <div className="flex flex-wrap items-center justify-between gap-2 bg-zinc-900/60 p-2 rounded-lg border border-zinc-800 text-xs">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[11px] font-bold text-zinc-400 mr-1 flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                      Preset Réalisation :
-                    </span>
-                    <button
-                      onClick={() => handlePresetChange(scene.id, 'imax-cinematic')}
-                      className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-medium border border-zinc-700 hover:border-emerald-500/50 transition cursor-pointer"
-                    >
-                      🎬 IMAX 8K
-                    </button>
-                    <button
-                      onClick={() => handlePresetChange(scene.id, 'soap-opera-noir')}
-                      className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-medium border border-zinc-700 hover:border-emerald-500/50 transition cursor-pointer"
-                    >
-                      🎭 Soap Noir
-                    </button>
-                    <button
-                      onClick={() => handlePresetChange(scene.id, 'tiktok-hook')}
-                      className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-medium border border-zinc-700 hover:border-emerald-500/50 transition cursor-pointer"
-                    >
-                      ⚡ TikTok Hook
-                    </button>
-                    <button
-                      onClick={() => handlePresetChange(scene.id, 'macro-fruit')}
-                      className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-medium border border-zinc-700 hover:border-emerald-500/50 transition cursor-pointer"
-                    >
-                      🍓 Macro SSS
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-[10px] text-zinc-400 flex-wrap">
-                    <span className="bg-emerald-950/60 text-emerald-300 border border-emerald-800/40 px-2 py-0.5 rounded font-mono">
-                      🔒 Lock 100%
-                    </span>
-                    <span className="bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono">
-                      ⏱️ 3 Temps (0-3s, 3-6s, 6-10s)
-                    </span>
-                    <span className="bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono">
-                      📐 9:16 Safe
-                    </span>
-                  </div>
+                {/* Director Style Presets */}
+                <div className="flex flex-wrap items-center gap-2 pl-2">
+                  <span className="text-[10px] font-bold text-zinc-500 mr-1 flex items-center gap-1 uppercase tracking-wider">
+                    <Sparkles className="w-3 h-3 text-amber-500" />
+                    Presets :
+                  </span>
+                  <button
+                    onClick={() => handlePresetChange(scene.id, 'imax-cinematic')}
+                    className="px-2.5 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] font-bold border border-zinc-800 hover:border-zinc-600 transition cursor-pointer"
+                  >
+                    🎬 IMAX 8K
+                  </button>
+                  <button
+                    onClick={() => handlePresetChange(scene.id, 'soap-opera-noir')}
+                    className="px-2.5 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] font-bold border border-zinc-800 hover:border-zinc-600 transition cursor-pointer"
+                  >
+                    🎭 Soap Noir
+                  </button>
+                  <button
+                    onClick={() => handlePresetChange(scene.id, 'tiktok-hook')}
+                    className="px-2.5 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] font-bold border border-zinc-800 hover:border-zinc-600 transition cursor-pointer"
+                  >
+                    ⚡ TikTok Hook
+                  </button>
+                  <button
+                    onClick={() => handlePresetChange(scene.id, 'macro-fruit')}
+                    className="px-2.5 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] font-bold border border-zinc-800 hover:border-zinc-600 transition cursor-pointer"
+                  >
+                    🍓 Macro SSS
+                  </button>
                 </div>
 
-                <pre className="text-xs text-zinc-100 bg-zinc-900/90 border border-zinc-800 rounded-xl p-4 overflow-x-auto whitespace-pre-wrap font-mono leading-relaxed select-all">
+                <pre className="text-xs text-zinc-300 bg-zinc-900/50 rounded-xl p-4 overflow-x-auto whitespace-pre-wrap font-mono leading-relaxed select-all ml-2 border border-zinc-800/50">
                   {scene.flowPrompt}
                 </pre>
               </div>
 
               {/* Bottom utilities */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2.5 flex-wrap">
                   {/* Short Backup Button (6D) */}
                   <button
                     onClick={() =>
@@ -661,10 +645,10 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                         key: shortKey,
                       })
                     }
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition cursor-pointer"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 border border-white/5 transition cursor-pointer"
                   >
-                    <FileText className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Version courte 6D</span>
+                    <FileText className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Courte 6D</span>
                   </button>
 
                   {/* First Frame Button (6E) */}
@@ -677,27 +661,27 @@ export const Step5Scenes: React.FC<Step5ScenesProps> = ({
                           key: firstFrameKey,
                         })
                       }
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition cursor-pointer"
+                      className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 border border-white/5 transition cursor-pointer"
                     >
-                      <Camera className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Première image 6E</span>
+                      <Camera className="w-3.5 h-3.5 text-cyan-500" />
+                      <span>1ère image 6E</span>
                     </button>
                   )}
 
                   {/* Regenerate scene button */}
                   <button
                     onClick={() => setRegeneratingScene(scene)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition cursor-pointer"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 border border-white/5 transition cursor-pointer"
                   >
-                    <RefreshCw className="w-3.5 h-3.5 text-rose-400" />
-                    <span>Régénérer avec consigne</span>
+                    <RefreshCw className="w-3.5 h-3.5 text-rose-500" />
+                    <span>Régénérer</span>
                   </button>
                 </div>
 
                 {/* Flow Assistant shortcut */}
                 <button
                   onClick={() => onOpenFlowAssistantWithScene(scene.sceneNumber)}
-                  className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer"
+                  className="flex items-center gap-1.5 text-xs text-rose-400 hover:text-rose-300 font-bold cursor-pointer bg-rose-500/10 hover:bg-rose-500/20 px-3.5 py-2 rounded-xl transition"
                 >
                   <Play className="w-3.5 h-3.5" />
                   <span>Ouvrir dans l'Assistant Flow</span>
