@@ -14,7 +14,9 @@ import {
   ShieldCheck,
   Lock,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { FruitProject } from '../types/fruitStudio';
+import { cn } from '../utils/cn';
 
 interface StepProgressBarProps {
   currentStep: number;
@@ -40,11 +42,20 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
   onStepChange,
 }) => {
   return (
-    <div className="w-full bg-zinc-950/70 border-b border-zinc-800/80 px-4 py-3">
-      <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
-        <div className="flex items-center min-w-[760px] justify-between relative">
+    <div className="w-full bg-zinc-950/40 backdrop-blur-xl border-b border-zinc-800/50 px-4 py-4 shadow-sm">
+      <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none pb-2 -mb-2">
+        <div className="flex items-center min-w-[760px] justify-between relative px-2">
           {/* Connecting line */}
-          <div className="absolute left-6 right-6 top-5 h-0.5 bg-zinc-800 -z-0" />
+          <div className="absolute left-8 right-8 top-5 h-0.5 bg-zinc-800/80 -z-0 rounded-full" />
+
+          {/* Active Progress Line */}
+          <motion.div
+            className="absolute left-8 top-5 h-0.5 bg-gradient-to-r from-rose-500 to-amber-500 -z-0 rounded-full shadow-[0_0_10px_rgba(244,63,94,0.5)]"
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.max(0, (currentStep - 1) / (STEPS.length - 1)) * 100}%` }}
+            transition={{ type: 'spring', stiffness: 50, damping: 15 }}
+            style={{ maxWidth: 'calc(100% - 4rem)' }}
+          />
 
           {STEPS.map((s) => {
             const Icon = s.icon;
@@ -58,40 +69,53 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                 onClick={() => onStepChange(s.step as any)}
                 className="relative z-10 flex flex-col items-center group cursor-pointer focus:outline-none"
               >
-                <div
-                  className={`flex items-center justify-center w-10 h-10 rounded-xl font-bold text-xs transition-all duration-200 ${
+                <motion.div
+                  initial={false}
+                  animate={{
+                    scale: isActive ? 1.15 : 1,
+                  }}
+                  className={cn(
+                    "flex items-center justify-center w-10 h-10 rounded-2xl font-bold text-xs transition-all duration-300 relative",
                     isActive
-                      ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/20 shadow-lg shadow-rose-950/50 scale-110'
+                      ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/20 shadow-[0_0_20px_rgba(244,63,94,0.4)]'
                       : isCompleted
-                      ? 'bg-zinc-800 text-rose-300 border border-rose-500/40 hover:bg-zinc-700'
-                      : 'bg-zinc-900 text-zinc-500 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-400'
-                  }`}
+                      ? 'bg-zinc-800/80 text-rose-300 border border-rose-500/30 hover:border-rose-500/50 hover:bg-zinc-700/80'
+                      : 'bg-zinc-900/80 text-zinc-500 border border-zinc-700/50 hover:border-zinc-600 hover:text-zinc-300 hover:bg-zinc-800 backdrop-blur-md'
+                  )}
                 >
                   {isStep2Locked ? (
                     <Lock className="w-4 h-4 text-amber-300" />
                   ) : (
                     <Icon className="w-4 h-4" />
                   )}
-                </div>
+                  {/* Subtle active glow */}
+                  {isActive && (
+                     <div className="absolute inset-0 rounded-2xl bg-white/20 blur-md -z-10 mix-blend-overlay" />
+                  )}
+                </motion.div>
 
-                <div className="mt-2 text-center">
-                  <div className="flex items-center justify-center gap-1">
+                <div className="mt-3 text-center">
+                  <div className="flex items-center justify-center gap-1.5">
                     <span
-                      className={`text-xs font-semibold tracking-tight transition ${
+                      className={cn(
+                        "text-xs font-bold tracking-wide transition-colors duration-300",
                         isActive
-                          ? 'text-white'
+                          ? 'text-transparent bg-clip-text bg-gradient-to-r from-rose-200 to-amber-200 drop-shadow-sm'
                           : isCompleted
-                          ? 'text-zinc-300'
-                          : 'text-zinc-500 group-hover:text-zinc-400'
-                      }`}
+                          ? 'text-zinc-300 group-hover:text-white'
+                          : 'text-zinc-500 group-hover:text-zinc-300'
+                      )}
                     >
                       {s.step}. {s.label}
                     </span>
                     {isStep2Locked && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_5px_rgba(251,191,36,0.8)]" />
                     )}
                   </div>
-                  <span className="text-[10px] text-zinc-500 block leading-tight">
+                  <span className={cn(
+                    "text-[10px] block leading-tight mt-0.5 transition-colors duration-300 font-medium",
+                    isActive ? "text-rose-300/80" : "text-zinc-600 group-hover:text-zinc-500"
+                  )}>
                     {s.step === 2 && isBibleLocked ? 'Verrouillée' : s.desc}
                   </span>
                 </div>
