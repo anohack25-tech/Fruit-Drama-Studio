@@ -1,0 +1,140 @@
+                </p>
+                <p className="text-xs text-amber-300/80">
+                  Générez tous les prompts (Personnages 6A, Décors 6B, Scènes Flow 10s 6C/6D/6E, Couvertures 6F) en 1 clic.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleRepairCurrentProject}
+              className="bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white font-black px-4 py-2 rounded-xl text-xs shadow-lg transition cursor-pointer"
+            >
+              ⚡ Générer tous les Prompts maintenant
+            </button>
+          </div>
+        )}
+        {currentProject.currentStep === 1 && (
+          <Step1Scenarios
+            project={currentProject}
+            onUpdateProject={updateCurrentProject}
+            onSelectScenarioAndProceed={handleSelectScenarioAndProceed}
+          />
+        )}
+
+        {currentProject.currentStep === 2 && (
+          <Step2Bible
+            project={currentProject}
+            onUpdateProject={updateCurrentProject}
+            onProceedToStep3={() => handleStepChange(3)}
+          />
+        )}
+
+        {currentProject.currentStep === 3 && (
+          <Step3Characters
+            project={currentProject}
+            onUpdateProject={updateCurrentProject}
+            onProceedToStep4={() => handleStepChange(4)}
+          />
+        )}
+
+        {currentProject.currentStep === 4 && (
+          <Step4BeatSheet
+            project={currentProject}
+            onUpdateProject={updateCurrentProject}
+            onProceedToStep5={() => handleStepChange(5)}
+          />
+        )}
+
+        {currentProject.currentStep === 5 && (
+          <Step5Scenes
+            project={currentProject}
+            onUpdateProject={updateCurrentProject}
+            onProceedToStep6={() => handleStepChange(6)}
+            onOpenFlowAssistantWithScene={(sceneNum) => {
+              setFlowAssistantSceneNum(sceneNum);
+              setIsFlowAssistantOpen(true);
+            }}
+          />
+        )}
+
+        {currentProject.currentStep === 6 && (
+          <Step6Publication
+            project={currentProject}
+            onUpdateProject={updateCurrentProject}
+            onProceedToStep7={() => handleStepChange(7)}
+          />
+        )}
+
+        {currentProject.currentStep === 7 && (
+          <Step7Audit
+            project={currentProject}
+            onUpdateProject={updateCurrentProject}
+            onOpenProductionDossier={() => setIsProductionDossierOpen(true)}
+          />
+        )}
+      </main>
+
+      {/* Modals */}
+      {isFlowAssistantOpen && (
+        <FlowAssistantModal
+          project={currentProject}
+          initialSceneNumber={flowAssistantSceneNum}
+          onClose={() => setIsFlowAssistantOpen(false)}
+          onUpdateProject={updateCurrentProject}
+        />
+      )}
+
+      {isPublicationAssistantOpen && (
+        <PublicationAssistantModal
+          project={currentProject}
+          onClose={() => setIsPublicationAssistantOpen(false)}
+        />
+      )}
+
+      {isNarrativeArcOpen && (
+        <NarrativeArcVisualizer
+          project={currentProject}
+          onClose={() => setIsNarrativeArcOpen(false)}
+        />
+      )}
+
+      {isViralAnalyticsOpen && (
+        <ViralAnalyticsDashboard
+          project={currentProject}
+          onClose={() => setIsViralAnalyticsOpen(false)}
+        />
+      )}
+
+      {isProductionDossierOpen && (
+        <ProductionDossierModal
+          project={currentProject}
+          onClose={() => setIsProductionDossierOpen(false)}
+        />
+      )}
+
+      {isSettingsOpen && (
+        <SettingsModal
+          settings={currentProject.settings}
+          onUpdateSettings={(newSettings) =>
+            updateCurrentProject((prev) => ({ ...prev, settings: newSettings }))
+          }
+          onClose={() => setIsSettingsOpen(false)}
+        />
+      )}
+
+      {isViralDramaStudioOpen && (
+        <ViralDramaStudioModal
+          isOpen={isViralDramaStudioOpen}
+          onClose={() => setIsViralDramaStudioOpen(false)}
+          onLoadStoryIntoStudio={(projectPartial) => {
+            updateCurrentProject((prev) => ({
+              ...prev,
+              ...projectPartial,
+              isBibleLocked: true,
+              currentStep: 1,
+            }));
+          }}
+        />
+      )}
+    </div>
+  );
+}

@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import {
   Clapperboard,
   Sparkles,
@@ -84,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 px-4 py-2.5 shadow-xl">
+    <header className="sticky top-0 z-40 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/60 px-4 py-2.5 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
         {/* Brand */}
         <div className="flex items-center gap-3">
@@ -123,109 +124,131 @@ export const Header: React.FC<HeaderProps> = ({
             </select>
           </div>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onNewProject}
             title="Créer un nouveau projet"
             className="flex items-center gap-1 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700/80 rounded-lg px-2.5 py-1.5 text-xs font-medium transition cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5 text-rose-400" />
             <span className="hidden sm:inline">Nouveau</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onLoadDemoProject}
             title="Charger le projet démo complet avec tous ses prompts"
             className="flex items-center gap-1 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-500/40 rounded-lg px-2.5 py-1.5 text-xs font-bold transition cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span className="hidden sm:inline">Démo Complète</span>
-          </button>
+          </motion.button>
         </div>
 
         {/* Studio Tools Navigation */}
         <div className="flex items-center gap-1.5 flex-wrap">
           {onOpenViralDramaStudio && (
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onOpenViralDramaStudio}
               title="Studio de Dramas Viraux Moqi & TrendStory (Histoires complètes du début à la fin)"
               className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 hover:opacity-95 text-white rounded-lg px-2.5 py-1.5 text-xs font-bold shadow-md shadow-rose-950/50 transition cursor-pointer ring-1 ring-white/20"
             >
               <Flame className="w-3.5 h-3.5 text-amber-200 fill-amber-200" />
               <span>TrendStory & Moqi</span>
-            </button>
+            </motion.button>
           )}
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenFlowAssistant}
             title="Assistant de génération scène par scène dans Google Flow / Veo"
             className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg px-2.5 py-1.5 text-xs font-semibold shadow-md shadow-emerald-950/40 transition cursor-pointer"
           >
             <PlaySquare className="w-3.5 h-3.5" />
             <span>Assistant Flow</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenPublicationAssistant}
             title="Assistant pas à pas pour publier sur TikTok, Reels et Shorts"
             className="flex items-center gap-1.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white rounded-lg px-2.5 py-1.5 text-xs font-semibold shadow-md shadow-rose-950/40 transition cursor-pointer"
           >
             <Share2 className="w-3.5 h-3.5" />
             <span className="hidden md:inline">Assistant</span> Publi
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenNarrativeArc}
             title="Visualisation de la courbe de tension et de l'arc dramatique"
             className="flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700/80 rounded-lg px-2.5 py-1.5 text-xs font-medium transition cursor-pointer"
           >
             <LineChart className="w-3.5 h-3.5 text-amber-400" />
             <span className="hidden lg:inline">Arc Narratif</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenViralAnalytics}
             title="Tableau de bord viral et estimation de rétention"
             className="flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700/80 rounded-lg px-2.5 py-1.5 text-xs font-medium transition cursor-pointer"
           >
             <TrendingUp className="w-3.5 h-3.5 text-cyan-400" />
             <span className="hidden lg:inline">Tableau Viral</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenProductionDossier}
             title="Dossier de production complet & export script"
             className="flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700/80 rounded-lg px-2.5 py-1.5 text-xs font-medium transition cursor-pointer"
           >
             <FileText className="w-3.5 h-3.5 text-purple-400" />
             <span>Dossier</span>
-          </button>
+          </motion.button>
 
           {/* Export JSON */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={handleExportJson}
             title="Exporter tout le projet en JSON"
             className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800 transition cursor-pointer"
           >
             <Download className="w-4 h-4" />
-          </button>
+          </motion.button>
 
           {/* Import JSON */}
-          <label
+          <motion.label
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             title="Importer un projet JSON"
-            className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800 transition cursor-pointer"
+            className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800 transition cursor-pointer flex"
           >
             <Upload className="w-4 h-4" />
             <input type="file" accept=".json" onChange={handleImportFile} className="hidden" />
-          </label>
+          </motion.label>
 
           {/* Settings */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenSettings}
             title="Paramètres de pré-production"
             className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800 transition cursor-pointer"
           >
             <Settings className="w-4 h-4" />
-          </button>
+          </motion.button>
         </div>
       </div>
 

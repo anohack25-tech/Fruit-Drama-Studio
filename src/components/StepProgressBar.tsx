@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { motion } from 'motion/react';
 import {
   Sparkles,
   BookOpen,
@@ -53,15 +54,17 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
             const isStep2Locked = s.step === 2 && isBibleLocked;
 
             return (
-              <button
+              <motion.button
                 key={s.step}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => onStepChange(s.step as any)}
                 className="relative z-10 flex flex-col items-center group cursor-pointer focus:outline-none"
               >
                 <div
                   className={`flex items-center justify-center w-10 h-10 rounded-xl font-bold text-xs transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/20 shadow-lg shadow-rose-950/50 scale-110'
+                      ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white ring-4 ring-rose-500/40 shadow-[0_0_20px_rgba(244,63,94,0.6)] scale-110'
                       : isCompleted
                       ? 'bg-zinc-800 text-rose-300 border border-rose-500/40 hover:bg-zinc-700'
                       : 'bg-zinc-900 text-zinc-500 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-400'
@@ -95,7 +98,7 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
                     {s.step === 2 && isBibleLocked ? 'Verrouillée' : s.desc}
                   </span>
                 </div>
-              </button>
+              </motion.button>
             );
           })}
         </div>

@@ -24,6 +24,7 @@ import { SettingsModal } from './components/SettingsModal';
 import { ViralDramaStudioModal } from './components/ViralDramaStudioModal';
 import { AlertTriangle, Sparkles } from 'lucide-react';
 import { generateFullStudioProject } from './services/studioEngine.ts';
+import { motion, AnimatePresence } from 'motion/react';
 
 const STORAGE_PROJECTS_KEY = 'fruit_studio_projects_v1';
 const STORAGE_ACTIVE_ID_KEY = 'fruit_studio_active_id_v1';
@@ -257,7 +258,7 @@ export default function App() {
     !currentProject.publicationPack?.thumbnails?.length;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans selection:bg-rose-500 selection:text-white">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-950 to-black text-zinc-100 flex flex-col font-sans selection:bg-rose-500 selection:text-white">
       {/* Header */}
       <Header
         project={currentProject}
@@ -309,65 +310,81 @@ export default function App() {
             </button>
           </div>
         )}
-        {currentProject.currentStep === 1 && (
-          <Step1Scenarios
-            project={currentProject}
-            onUpdateProject={updateCurrentProject}
-            onSelectScenarioAndProceed={handleSelectScenarioAndProceed}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          {currentProject.currentStep === 1 && (
+            <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+              <Step1Scenarios
+                project={currentProject}
+                onUpdateProject={updateCurrentProject}
+                onSelectScenarioAndProceed={handleSelectScenarioAndProceed}
+              />
+            </motion.div>
+          )}
 
-        {currentProject.currentStep === 2 && (
-          <Step2Bible
-            project={currentProject}
-            onUpdateProject={updateCurrentProject}
-            onProceedToStep3={() => handleStepChange(3)}
-          />
-        )}
+          {currentProject.currentStep === 2 && (
+            <motion.div key="step2" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+              <Step2Bible
+                project={currentProject}
+                onUpdateProject={updateCurrentProject}
+                onProceedToStep3={() => handleStepChange(3)}
+              />
+            </motion.div>
+          )}
 
-        {currentProject.currentStep === 3 && (
-          <Step3Characters
-            project={currentProject}
-            onUpdateProject={updateCurrentProject}
-            onProceedToStep4={() => handleStepChange(4)}
-          />
-        )}
+          {currentProject.currentStep === 3 && (
+            <motion.div key="step3" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+              <Step3Characters
+                project={currentProject}
+                onUpdateProject={updateCurrentProject}
+                onProceedToStep4={() => handleStepChange(4)}
+              />
+            </motion.div>
+          )}
 
-        {currentProject.currentStep === 4 && (
-          <Step4BeatSheet
-            project={currentProject}
-            onUpdateProject={updateCurrentProject}
-            onProceedToStep5={() => handleStepChange(5)}
-          />
-        )}
+          {currentProject.currentStep === 4 && (
+            <motion.div key="step4" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+              <Step4BeatSheet
+                project={currentProject}
+                onUpdateProject={updateCurrentProject}
+                onProceedToStep5={() => handleStepChange(5)}
+              />
+            </motion.div>
+          )}
 
-        {currentProject.currentStep === 5 && (
-          <Step5Scenes
-            project={currentProject}
-            onUpdateProject={updateCurrentProject}
-            onProceedToStep6={() => handleStepChange(6)}
-            onOpenFlowAssistantWithScene={(sceneNum) => {
-              setFlowAssistantSceneNum(sceneNum);
-              setIsFlowAssistantOpen(true);
-            }}
-          />
-        )}
+          {currentProject.currentStep === 5 && (
+            <motion.div key="step5" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+              <Step5Scenes
+                project={currentProject}
+                onUpdateProject={updateCurrentProject}
+                onProceedToStep6={() => handleStepChange(6)}
+                onOpenFlowAssistantWithScene={(sceneNum) => {
+                  setFlowAssistantSceneNum(sceneNum);
+                  setIsFlowAssistantOpen(true);
+                }}
+              />
+            </motion.div>
+          )}
 
-        {currentProject.currentStep === 6 && (
-          <Step6Publication
-            project={currentProject}
-            onUpdateProject={updateCurrentProject}
-            onProceedToStep7={() => handleStepChange(7)}
-          />
-        )}
+          {currentProject.currentStep === 6 && (
+            <motion.div key="step6" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+              <Step6Publication
+                project={currentProject}
+                onUpdateProject={updateCurrentProject}
+                onProceedToStep7={() => handleStepChange(7)}
+              />
+            </motion.div>
+          )}
 
-        {currentProject.currentStep === 7 && (
-          <Step7Audit
-            project={currentProject}
-            onUpdateProject={updateCurrentProject}
-            onOpenProductionDossier={() => setIsProductionDossierOpen(true)}
-          />
-        )}
+          {currentProject.currentStep === 7 && (
+            <motion.div key="step7" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+              <Step7Audit
+                project={currentProject}
+                onUpdateProject={updateCurrentProject}
+                onOpenProductionDossier={() => setIsProductionDossierOpen(true)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       {/* Modals */}
